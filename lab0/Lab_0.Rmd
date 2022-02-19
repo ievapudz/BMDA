@@ -11,14 +11,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Užduotis
 
-Produktų pardavimą reguliuojanti viešoji istaiga nori paženklinti ypač pavojingus produktus.
+1 - Akvilė
+2 - Ieva
+
+Produktų pardavimą reguliuojanti viešoji istaiga nori paženklinti ypač 
+pavojingus produktus.
 Reikalinga informacija apie produktus, sukeliančius rimtus simptomus.
 
-1. Top 5 "rimčiausi" (labiausiai neigiamai sveikatą paveikiantys) simptomai?
-2. Kokios industrijos produktai dažniausiai sukelia mirtis?
-3. Kiek ir kokių produktų reikėtų uždrausti, norint mirčių skaičių sumažinti 20%?
-4. Kokių dar įdomių įžvalgų galite rasti?
+1. Top 5 "rimčiausi" (labiausiai neigiamai sveikatą paveikiantys) simptomai? (1)
+2. Kokios industrijos produktai dažniausiai sukelia mirtis? (1)
+3. Kiek ir kokių produktų reikėtų uždrausti, norint mirčių skaičių sumažinti 
+   20%? (2)
+4. Kokių dar įdomių įžvalgų galite rasti? (bendras)
+
+5. Papildoma biblioteka duomenų vaizdavimui (2)
+6. Bent penki papildomi klausimai (bendras)
 
 ```{r }
-print("Hello, World, from Eve")
+
 ```
