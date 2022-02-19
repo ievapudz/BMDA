@@ -1,0 +1,24 @@
+---
+title: "0 užduotis"
+author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė (AI)"
+date: '2021-10-08'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Užduotis
+
+Produktų pardavimą reguliuojanti viešoji istaiga nori paženklinti ypač pavojingus produktus.
+Reikalinga informacija apie produktus, sukeliančius rimtus simptomus.
+
+1. Top 5 "rimčiausi" (labiausiai neigiamai sveikatą paveikiantys) simptomai?
+2. Kokios industrijos produktai dažniausiai sukelia mirtis?
+3. Kiek ir kokių produktų reikėtų uždrausti, norint mirčių skaičių sumažinti 20%?
+4. Kokių dar įdomių įžvalgų galite rasti?
+
+```{r }
+print("Hello, World, from Eve")
+```
