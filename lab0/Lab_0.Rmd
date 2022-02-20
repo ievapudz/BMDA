@@ -5,10 +5,6 @@ date: '2021-10-08'
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 # Užduotis
 
 1 - Akvilė
@@ -27,6 +23,23 @@ Reikalinga informacija apie produktus, sukeliančius rimtus simptomus.
 5. Papildoma biblioteka duomenų vaizdavimui (2)
 6. Bent penki papildomi klausimai (bendras)
 
-```{r }
+# Įkeliami duomenys
 
+```{r }
+data <- readRDS("data.rds")
+tm <- readRDS("tm.rds")
+
+head(data)
 ```
+# Duomenų aprašymas
+
+- id
+- created
+- date 
+- type
+- product
+- code
+- industry
+- age
+- sex
+- outcome
