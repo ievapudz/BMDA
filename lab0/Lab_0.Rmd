@@ -37,6 +37,8 @@ Reikalinga informacija apie produktus, sukeliančius rimtus simptomus.
 - Papildoma biblioteka duomenų vaizdavimui (2)
 - Bent penki papildomi klausimai (bendras)
 
+\newpage
+
 # Uploading data
 
 ```{r }
@@ -55,19 +57,22 @@ tm <- readRDS("tm.rds")
 - industry - a literal identifier of an industry
 - age - age of a patient (years)
 - sex - gender of a patient ("M" - male, "F" - female, "U" - unidentified)
-- outcome - symptoms that the product caused (or suspected to cause) 
+- outcome - symptoms that the product caused (or was suspected to cause) 
 
 # Lethal products
 
-```{r}
+```{r include=FALSE}
 # Saving a subset of reports that included death as an outcome:
 lethal_reports <- data[grep('death', data$outcome),]
 
-# Number of different outcomes with death included:
-length(unique(lethal_reports$outcome))
-
 # Overall number of lethal outcomes:
 length(lethal_reports$outcome)
+
+# 20% of all:
+length(lethal_reports$outcome)*0.2
+
+# Number of different outcomes with death included:
+length(unique(lethal_reports$outcome))
 
 # Number of different products that caused death:
 length(unique(lethal_reports$product))
@@ -82,14 +87,65 @@ length(lethal_reports[lethal_reports$type == "concomitant", c("product")])
 lethal_reports[lethal_reports$type == "concomitant", ]
 ```
 
-There were `r length(unique(lethal_reports$outcome))` different outcomes that 
-included death.
-
 Overall number of lethal outcomes was `r length(lethal_reports$outcome)`. Only 
 `r length(lethal_reports[lethal_reports$type == "concomitant", c("product")])` 
 of them had a type "concomitant", the remaining ones were only suspected to 
 cause death. The concomitant case was about 
-`r lethal_reports[lethal_reports$type == "concomitant", c("product")]` that
-caused death for a male patient, who was
+`r lethal_reports[lethal_reports$type == "concomitant", c("product")]` from 
+`r lethal_reports[lethal_reports$type == "concomitant", c("industry")]` 
+industry that caused death for a male patient, who was
 `r lethal_reports[lethal_reports$type == "concomitant", c("age")]` years old.
+
+Overall there were `r length(unique(lethal_reports$outcome))` different outcomes
+that included death as one of them.
+
+```{r include=FALSE}
+# Frequency of each product that caused death:
+product_freq <- table(lethal_reports$product)
+max(table(lethal_reports$product))
+sum(table(lethal_reports$product))
+
+most_lethal_product_name <- row.names(product_freq[order(product_freq, 
+                                                         decreasing = TRUE)])[1]
+most_lethal_product_name_cap <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2",   
+                                      most_lethal_product_name,
+                                      perl = TRUE)
+most_lethal_product_industry <- lethal_reports[
+                                data$product == most_lethal_product_name, 
+                                c("industry")][1]
+
+most_lethal_number_deaths <- max(table(lethal_reports$product))
+most_lethal_percen_deaths <- max(table(lethal_reports$product))/
+                                sum(table(lethal_reports$product))*100
+
+```
+
+## Reducing death numbers by 20%
+
+In order to answer the question, which product group should be banned to reduce
+the number of deaths by 20%, we would have to find the product or several 
+products that would make up 20% of all deaths reported. 
+
+- Number of all death cases: `r length(lethal_reports$outcome)`
+- Number of death cases that makes up 20%: `r 0.2*length(lethal_reports$outcome)`
+
+Formally, the goal is to find a group of products that would be the suspected
+cause of roughly `r 0.2*length(lethal_reports$outcome)` death cases.
+
+However, after performed analysis of the data, such group cannot be found, 
+since there is one product "`r most_lethal_product_name_cap`" from 
+`r most_lethal_product_industry` industry which is responsible for 
+`r most_lethal_number_deaths` death cases, which makes
+up `r round(most_lethal_percen_deaths, 2)`%
+of all cases. Therefore, there are two possible subsequent actions:
+
+- Ban all other products except "`r most_lethal_product_name_cap`" - this action 
+  would decrease the number of deaths by 
+  `r round(100 - most_lethal_percen_deaths, 2)`%
+
+- Ban "`r most_lethal_product_name_cap`" - this action would reduce the 
+  number of deaths by `r round(most_lethal_percen_deaths, 2)`%
+
+Therefore, if the goal is to reduce the number of deaths by at least 20%, 
+"`r most_lethal_product_name_cap`" should be prohibited.
 
