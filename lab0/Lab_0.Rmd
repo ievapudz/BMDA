@@ -1,46 +1,95 @@
 ---
-title: "0 užduotis"
+title: "0 task"
 author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė (AI)"
-date: '2021-10-08'
+date: '2022-02-17'
 output: pdf_document
 ---
 
-# Užduotis
+# Task
 
 1 - Akvilė
 2 - Ieva
+
+A public institution that regulates sells products is willing to label dangerous
+products accordingly. Therefore, it requests for information about the products
+that cause the most serious symptoms.
+
+1. Top 5 most serious (the most harmful to health) symptoms (1)
+2. Which industry products cause death most frequently? (1)
+3. How many and what kind of products should be banned in order to reduce number
+   of deaths by 20%?
+4. What other interesting insight can be found? (mutual)
+5. Additional library to visualise data (2)
+6. At least five additional questions (mutual)
+
+## Lithuanian version as a draft
 
 Produktų pardavimą reguliuojanti viešoji istaiga nori paženklinti ypač 
 pavojingus produktus.
 Reikalinga informacija apie produktus, sukeliančius rimtus simptomus.
 
-1. Top 5 "rimčiausi" (labiausiai neigiamai sveikatą paveikiantys) simptomai? (1)
-2. Kokios industrijos produktai dažniausiai sukelia mirtis? (1)
-3. Kiek ir kokių produktų reikėtų uždrausti, norint mirčių skaičių sumažinti 
+- Top 5 "rimčiausi" (labiausiai neigiamai sveikatą paveikiantys) simptomai? (1)
+- Kokios industrijos produktai dažniausiai sukelia mirtis? (1)
+- Kiek ir kokių produktų reikėtų uždrausti, norint mirčių skaičių sumažinti 
    20%? (2)
-4. Kokių dar įdomių įžvalgų galite rasti? (bendras)
+- Kokių dar įdomių įžvalgų galite rasti? (bendras)
 
-5. Papildoma biblioteka duomenų vaizdavimui (2)
-6. Bent penki papildomi klausimai (bendras)
+- Papildoma biblioteka duomenų vaizdavimui (2)
+- Bent penki papildomi klausimai (bendras)
 
-# Įkeliami duomenys
+# Uploading data
 
 ```{r }
 data <- readRDS("data.rds")
 tm <- readRDS("tm.rds")
-
-head(data)
 ```
-# Duomenų aprašymas
 
-- id
-- created
-- date 
-- type
-- product
-- code
-- industry
-- age
-- sex
-- outcome
+# Description of data
+
+- id - an identifier of the report
+- created - a date when the report was created
+- date - a date when symptoms occurred
+- type - a label whether the product is considered as "suspect" or "concomitant"
+- product - a name of reported product
+- code - a numeral identifier of an industry
+- industry - a literal identifier of an industry
+- age - age of a patient (years)
+- sex - gender of a patient ("M" - male, "F" - female, "U" - unidentified)
+- outcome - symptoms that the product caused (or suspected to cause) 
+
+# Lethal products
+
+```{r}
+# Saving a subset of reports that included death as an outcome:
+lethal_reports <- data[grep('death', data$outcome),]
+
+# Number of different outcomes with death included:
+length(unique(lethal_reports$outcome))
+
+# Overall number of lethal outcomes:
+length(lethal_reports$outcome)
+
+# Number of different products that caused death:
+length(unique(lethal_reports$product))
+
+# Number of lethal reports with type "suspect":  
+length(lethal_reports[lethal_reports$type == "suspect", c("product")])
+
+# Number of lethal reports with type "concomitant":
+length(lethal_reports[lethal_reports$type == "concomitant", c("product")])
+
+# The concomitant case
+lethal_reports[lethal_reports$type == "concomitant", ]
+```
+
+There were `r length(unique(lethal_reports$outcome))` different outcomes that 
+included death.
+
+Overall number of lethal outcomes was `r length(lethal_reports$outcome)`. Only 
+`r length(lethal_reports[lethal_reports$type == "concomitant", c("product")])` 
+of them had a type "concomitant", the remaining ones were only suspected to 
+cause death. The concomitant case was about 
+`r lethal_reports[lethal_reports$type == "concomitant", c("product")]` that
+caused death for a male patient, who was
+`r lethal_reports[lethal_reports$type == "concomitant", c("age")]` years old.
 
