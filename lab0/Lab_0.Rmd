@@ -21,6 +21,10 @@ that cause the most serious symptoms.
 4. What other interesting insight can be found? (mutual)
 5. Additional library to visualise data (2)
 6. At least five additional questions (mutual)
+6.1. Were there any other reports (not lethal) of folligen solution therapy?
+6.2. What are other symptoms caused by "Exemption 4"?
+6.3. Which gender uses product "Exemption 4" more?
+6.4. Which age group uses "Exemption 4" the most?
 
 ## Lithuanian version as a draft
 
@@ -102,11 +106,11 @@ that included death as one of them.
 ```{r include=FALSE}
 # Frequency of each product that caused death:
 product_freq <- table(lethal_reports$product)
+product_freq <- product_freq[order(product_freq, decreasing = TRUE)]
 max(table(lethal_reports$product))
 sum(table(lethal_reports$product))
 
-most_lethal_product_name <- row.names(product_freq[order(product_freq, 
-                                                         decreasing = TRUE)])[1]
+most_lethal_product_name <- row.names(product_freq)[1]
 most_lethal_product_name_cap <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2",   
                                       most_lethal_product_name,
                                       perl = TRUE)
@@ -124,13 +128,13 @@ most_lethal_percen_deaths <- max(table(lethal_reports$product))/
 
 In order to answer the question, which product group should be banned to reduce
 the number of deaths by 20%, we would have to find the product or several 
-products that would make up 20% of all deaths reported. 
+products that makes up 20% of all deaths reported. 
 
 - Number of all death cases: `r length(lethal_reports$outcome)`
 - Number of death cases that makes up 20%: `r 0.2*length(lethal_reports$outcome)`
 
 Formally, the goal is to find a group of products that would be the suspected
-cause of roughly `r 0.2*length(lethal_reports$outcome)` death cases.
+cause of at least `r 0.2*length(lethal_reports$outcome)` death cases.
 
 However, after performed analysis of the data, such group cannot be found, 
 since there is one product "`r most_lethal_product_name_cap`" from 
@@ -148,4 +152,19 @@ of all cases. Therefore, there are two possible subsequent actions:
 
 Therefore, if the goal is to reduce the number of deaths by at least 20%, 
 "`r most_lethal_product_name_cap`" should be prohibited.
+
+```{r pie_chart_lethal_products }
+length(product_freq)
+other <- sum(product_freq[3:length(product_freq)])
+
+label_1 <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2",   
+                                      row.names(product_freq)[1],
+                                      perl = TRUE)
+label_2 <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2",   
+                                      row.names(product_freq)[2],
+                                      perl = TRUE)
+pie(c(product_freq[1], product_freq[2], other), 
+    labels=c(label_1, label_2, 'Other products'), 
+    main="Products reported with death included as outcome")
+```
 
