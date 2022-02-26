@@ -8,6 +8,7 @@ output: pdf_document
 # Task
 
 1 - Akvilė
+
 2 - Ieva
 
 A public institution that regulates sells products is willing to label dangerous
@@ -19,12 +20,13 @@ that cause the most serious symptoms.
 3. How many and what kind of products should be banned in order to reduce number
    of deaths by 20%?
 4. What other interesting insight can be found? (mutual)
-5. Additional library to visualise data (2)
+5. Additional library to visualise data (2 - treemap used)
 6. At least five additional questions (mutual)
-6.1. Were there any other reports (not lethal) of folligen solution therapy?
-6.2. What are other symptoms caused by "Exemption 4"?
-6.3. Which gender uses product "Exemption 4" more?
-6.4. Which age group uses "Exemption 4" the most?
+6.1. What products were concomitant to cause death?
+6.2. Were there any other reports (not lethal) of folligen solution therapy?
+6.3. What are other symptoms caused by "Exemption 4"?
+6.4. Which gender uses product "Exemption 4" more?
+6.5. Which age group uses "Exemption 4" the most?
 
 ## Lithuanian version as a draft
 
@@ -32,22 +34,30 @@ Produktų pardavimą reguliuojanti viešoji istaiga nori paženklinti ypač
 pavojingus produktus.
 Reikalinga informacija apie produktus, sukeliančius rimtus simptomus.
 
-- Top 5 "rimčiausi" (labiausiai neigiamai sveikatą paveikiantys) simptomai? (1)
-- Kokios industrijos produktai dažniausiai sukelia mirtis? (1)
-- Kiek ir kokių produktų reikėtų uždrausti, norint mirčių skaičių sumažinti 
+1. Top 5 "rimčiausi" (labiausiai neigiamai sveikatą paveikiantys) simptomai? (1)
+2. Kokios industrijos produktai dažniausiai sukelia mirtis? (1)
+3. Kiek ir kokių produktų reikėtų uždrausti, norint mirčių skaičių sumažinti 
    20%? (2)
-- Kokių dar įdomių įžvalgų galite rasti? (bendras)
-
-- Papildoma biblioteka duomenų vaizdavimui (2)
-- Bent penki papildomi klausimai (bendras)
+4. Kokių dar įdomių įžvalgų galite rasti? (bendras)
+5. Papildoma biblioteka duomenų vaizdavimui (2)
+6. Bent penki papildomi klausimai (bendras)
 
 \newpage
 
-# Uploading data
+```{r echo=FALSE}
+#install.packages('treemap')
+#install.packages('stringr')
+```
 
-```{r }
+```{r echo=FALSE}
 data <- readRDS("data.rds")
 tm <- readRDS("tm.rds")
+```
+
+```{r echo=FALSE}
+library(treemap)
+# Color vector
+pastel_pie_color_vector <- c('#D6C9BD', '#FFDCCD', '#F7F6E6')
 ```
 
 # Description of data
@@ -91,14 +101,29 @@ length(lethal_reports[lethal_reports$type == "concomitant", c("product")])
 lethal_reports[lethal_reports$type == "concomitant", ]
 ```
 
+*What products were concomitant to cause death?*
+
 Overall number of lethal outcomes was `r length(lethal_reports$outcome)`. Only 
 `r length(lethal_reports[lethal_reports$type == "concomitant", c("product")])` 
-of them had a type "concomitant", the remaining ones were only suspected to 
+of them had a type **concomitant**, the remaining ones were only suspected to 
 cause death. The concomitant case was about 
 `r lethal_reports[lethal_reports$type == "concomitant", c("product")]` from 
 `r lethal_reports[lethal_reports$type == "concomitant", c("industry")]` 
 industry that caused death for a male patient, who was
 `r lethal_reports[lethal_reports$type == "concomitant", c("age")]` years old.
+
+\  
+
+*Were there any other reports (not lethal) of folligen solution therapy?*
+
+```{r include=FALSE}
+data[grep(lethal_reports[lethal_reports$type == "concomitant", c("product")], 
+          data$product),]
+```
+
+The concomitant report regarding the death of the 29 years old male was the only
+one with `r lethal_reports[lethal_reports$type == "concomitant", c("product")]`
+included.
 
 Overall there were `r length(unique(lethal_reports$outcome))` different outcomes
 that included death as one of them.
@@ -153,18 +178,163 @@ of all cases. Therefore, there are two possible subsequent actions:
 Therefore, if the goal is to reduce the number of deaths by at least 20%, 
 "`r most_lethal_product_name_cap`" should be prohibited.
 
-```{r pie_chart_lethal_products }
-length(product_freq)
+## Visualisation of proportions
+
+Below a pie chart presenting the proportions of the death causing products is
+shown. Alternatively, "treemap" package was used to visualise proportions of 
+products that are suspected to cause death for more clarity, since a most 
+common argument against pie charts is that people are not good at detecting 
+differences between angle sizes.
+
+```{r echo=FALSE, fig.height=6, fig.width=6, out.width="50%" }
+# Summing up frequency of other products
 other <- sum(product_freq[3:length(product_freq)])
 
+# Setting labels for a pie chart
+label_1 <- paste(round((product_freq[1]/length(lethal_reports$outcome))*100, 2), 
+                 '%')
+
+label_2 <- paste(round((product_freq[2]/length(lethal_reports$outcome))*100, 2), 
+                 '%')
+
+label_other <- paste(round((sum(product_freq[3:length(product_freq)])
+                            /length(lethal_reports$outcome))*100, 2), '%')
+
+# Drawing the pie chart
+pie(c(product_freq[1], product_freq[2], other), 
+    labels=c(label_1, label_2, label_other), 
+    main="", 
+    col=pastel_pie_color_vector)
+
+# Setting labels for a treemap
 label_1 <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2",   
                                       row.names(product_freq)[1],
                                       perl = TRUE)
+
 label_2 <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2",   
                                       row.names(product_freq)[2],
                                       perl = TRUE)
-pie(c(product_freq[1], product_freq[2], other), 
-    labels=c(label_1, label_2, 'Other products'), 
-    main="Products reported with death included as outcome")
+
+name <- c(label_1, label_2, 'Other products')
+frequency <- c(product_freq[1], product_freq[2], other)
+
+df <- data.frame(name, frequency)
+
+# Drawing the treemap
+p <- treemap(df, index=c('name'), vSize='frequency', 
+                             palette=pastel_pie_color_vector, 
+             title='',
+             fontsize.labels=c(16, 10, 10), fontsize.title=16, 
+             align.labels=list(c("center", "center")))
+
 ```
 
+Fig. X. The proportions of products that were reported with death as an outcome
+
+\  
+
+*What are other outcomes caused by "`r most_lethal_product_name_cap`"?*
+
+```{r echo=FALSE, include=FALSE}
+library(stringr)
+exemption_4_data <- data[grep(most_lethal_product_name, data$product), ]
+exemption_4_data <- na.omit(exemption_4_data)
+exemption_4_outcomes <- c(str_split(exemption_4_data$outcome, ', '))
+exemption_4_outcomes <- unlist(exemption_4_outcomes)
+unique(exemption_4_outcomes)
+```
+
+There were 10 other outcomes listed for "`r most_lethal_product_name_cap`":
+
+1. hospitalization
+2. medically important
+3. patient visited healthcare provider
+4. other outcome
+5. other seriousness
+6. patient visited er
+7. disability
+8. life threatening
+9. required intervention
+10. congenital anomaly
+
+
+*Which gender uses the product "`r most_lethal_product_name_cap`" more?*
+
+```{r echo=FALSE}
+exemption_4_gender_freq <- table(exemption_4_data$sex)
+```
+
+The gender group that uses "`r most_lethal_product_name_cap`" more is female 
+group, which makes up 
+`r round((exemption_4_gender_freq[1]/length(exemption_4_data$outcome))*100, 2)`%
+of all reports regarding this product.
+
+```{r echo=FALSE, figures-side, fig.height=6, fig.width=6, out.width="50%" }
+label_1 <- paste(round((exemption_4_gender_freq[1]/length(exemption_4_data$outcome))*100, 2), 
+                 '%')
+
+label_2 <- paste(round((exemption_4_gender_freq[2]/length(exemption_4_data$outcome))*100, 2), 
+                 '%')
+
+label_3 <- paste(round((exemption_4_gender_freq[3]/length(exemption_4_data$outcome))*100, 2), 
+                 '%')
+
+# Drawing the pie chart
+pie(c(exemption_4_gender_freq[1], exemption_4_gender_freq[2], 
+      exemption_4_gender_freq[3]), 
+    labels=c(label_1, label_2, label_3), 
+    main="", 
+    col=pastel_pie_color_vector)
+
+# Setting labels for a treemap
+label_1 <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2",   
+                                      row.names(exemption_4_gender_freq)[1],
+                                      perl=TRUE)
+
+label_2 <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2",   
+                                      row.names(exemption_4_gender_freq)[2],
+                                      perl=TRUE)
+
+label_3 <- gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2",   
+                                      row.names(exemption_4_gender_freq)[3],
+                                      perl=TRUE)
+
+name <- c(label_1, label_2, label_3)
+frequency <- c(exemption_4_gender_freq[1], exemption_4_gender_freq[2], 
+               exemption_4_gender_freq[3])
+
+df <- data.frame(name, frequency)
+
+# Drawing the treemap
+p <- treemap(df, index=c('name'), vSize='frequency', 
+                             palette=pastel_pie_color_vector, 
+             title='',
+             fontsize.labels=c(16, 10, 10), fontsize.title=16, 
+             align.labels=list(c("center", "center")))
+```
+Fig. X. The proportions of gender groups that used product "Exemption 4"
+
+\  
+
+*Which age group uses "`r most_lethal_product_name_cap`" the most?*
+
+```{r echo=FALSE, include=FALSE}
+exemption_4_age_freq <- table(exemption_4_data$age)
+
+exemption_4_age_freq_df <- as.data.frame(exemption_4_age_freq)
+exemption_4_age_freq_df[exemption_4_age_freq_df$Freq == 
+                          max(exemption_4_age_freq_df$Freq),]
+```
+
+```{r echo=FALSE, include=FALSE}
+exemption_4_data[exemption_4_data$ age == 60,c('sex')]
+length(exemption_4_data[exemption_4_data$ age == 60,c('sex')])
+sum(exemption_4_data[exemption_4_data$ age == 60,c('sex')]=='F')
+sum(exemption_4_data[exemption_4_data$ age == 60,c('sex')]=='M')
+sum(exemption_4_data[exemption_4_data$ age == 60,c('sex')]=='U')
+```
+
+"`r most_lethal_product_name_cap`" is mostly reported by 60 year old people, of 
+which majority are female 
+(`r sum(exemption_4_data[exemption_4_data$ age == 60,c('sex')]=='F')` out of 
+`r length(exemption_4_data[exemption_4_data$ age == 60,c('sex')])`).
