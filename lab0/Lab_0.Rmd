@@ -78,7 +78,23 @@ with the following information:
 
 *Which are top 5 most serious (the most harmful to health) symptoms?*
 
-!!!!!!!!!!!!!!!!
+After surfing the data, there were cases of death reported, which would 
+naturally be the most harmful symptom to one's health. However, the analysis to
+reported cases of death will be presented below, thus for this section 
+an attempt of filtering the most serious symptoms was attempted. 
+
+Seriousness can be interpreted differently. In our view, any form of cancer,
+stroke, or paralysis are serious symptoms, or, more precisely, outcomes. 
+Although, these groups are rather diverse.
+
+```{r}
+colnames(tm)[grep('death', colnames(tm))]
+colnames(tm)[grep('cancer', colnames(tm))]
+colnames(tm)[grep('stroke', colnames(tm))]
+colnames(tm)[grep('brain', colnames(tm))]
+colnames(tm)[grep('heart', colnames(tm))]
+colnames(tm)[grep('paralysis', colnames(tm))]
+```
 
 \  
 
