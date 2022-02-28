@@ -87,6 +87,15 @@ Seriousness can be interpreted differently. In our view, any form of cancer,
 stroke, or paralysis are serious symptoms, or, more precisely, outcomes. 
 Although, these groups are rather diverse.
 
+There were:
+- 9 different types of death reports
+- 70 different types of cancer reports
+- 5 different types of stroke reports
+- 15 different types of reports related to brain
+- 8 different types of reports related to heart
+- 4 different types of paralysis reports 
+
+
 ```{r}
 colnames(tm)[grep('death', colnames(tm))]
 colnames(tm)[grep('cancer', colnames(tm))]
