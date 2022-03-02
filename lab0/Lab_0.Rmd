@@ -1,43 +1,49 @@
 ---
-title: "Analysis of the most harmful and lethal products"
+title: "Analysis of the most harmful and lethal products' reports from CAERS dataset"
 author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė (AI)"
-date: '2022-02-17'
+date: '2022-03-02'
 output: pdf_document
 ---
 
-# Description of the task
+# Introduction
 
 A public institution that regulates sales of the products is willing to label 
 dangerous products accordingly. The information about the products that cause 
 the most serious symptoms was requested. More formally, answers to the following 
 questions needed to be provided:
 
-1. Top 5 most serious (the most harmful to health) symptoms
+1. What are top 5 most serious (the most harmful to health) symptoms?
 2. Which industry products cause death most frequently?
 3. How many and what kind of products should be banned in order to reduce number
    of deaths by 20%?
 4. What other interesting insight can be found?
-5. Additional library to visualise data 
-6. At least five additional questions:
+5. What additional library to visualise data could be used (demonstrate the usage)? 
+6. Give answers to least five additional questions:
 
 - What products were concomitant to cause death?
-- Were there any other reports (not lethal) of folligen solution therapy?
+- Were there any other reports of folligen solution therapy?
 - What are other symptoms caused by "Exemption 4"?
 - Which gender uses product "Exemption 4" more?
 - Which age group uses "Exemption 4" the most?
 
-## Comments about report
+## Comments about the report
 
-The first, second, third and additional questions are written down in the report
-in *italics* for clarity. The additional library for data visualisation was 
-described in a separate section named "Visualisation of proportions".
+- The first, second, third, and additional questions are written down in the 
+  report in *italics* font for a clear separation. 
+- Additional questions were formulated in a course of analysis, thus the 
+  sequential reading of the report will explain why certain additional questions
+  were raised. 
+- Choice and usage of the additional library for data visualisation was 
+  described in a separate section named "Visualisation of proportions".
 
 \newpage
 
-```{r echo=FALSE}
+```{r echo=FALSE, include=FALSE}
 #install.packages('treemap')
 #install.packages('stringr')
 #install.packages('FSA')
+library(treemap)
+library(stringr)
 library(FSA)
 ```
 
@@ -47,7 +53,6 @@ tm <- readRDS("tm.rds")
 ```
 
 ```{r echo=FALSE}
-library(treemap)
 # Color vector
 pastel_pie_color_vector <- c('#D6C9BD', '#FFDCCD', '#F7F6E6')
 ```
@@ -61,14 +66,19 @@ from the United States and are related to foods, dietary supplements, or
 cosmetics.
 
 The original data for analysis is presented in a form of a comma-separated value 
-table. The original dataset [2] had few modifications for data consistency. 
-Consequentially, the dataset of reports, which was used for analysis, 
-consisted of 10 columns with the following information:
+table. The original dataset [2] had few modifications for data consistency: 
+duplicate report identifiers were removed, representation of an unknown gender 
+was set to be consistent (by "U" letter), all values in the dataset changed to 
+be lower case, whitespaces trimmed, age units converted to years, and a separate 
+matrix indicating the symptoms was created. Consequentially, the main dataset of 
+reports, which was used for analysis, consisted of 10 columns with the following
+information:
 
 - id - an identifier of the report
 - created - a date when the report was created
 - date - a date when symptoms occurred
 - type - a label whether the product is considered as "suspect" or "concomitant"
+  to cause the reported outcome
 - product - a name of the reported product
 - code - a numeral identifier of an industry of the reported product
 - industry - a literal identifier of an industry of the reported product
@@ -92,17 +102,20 @@ or, more precisely, outcomes that appeared after consuming or using the product.
 Therefore, we extracted and listed out these groups, although, the symptoms 
 within these groups are rather diverse.
 
-There were reports of different types:
+There were reports of different types (number of types is provided after each
+dash):
 
 - death (including sudden, foethal, cardiac, 
-  and brain): 9
+  and brain) - 9
 - stroke (including ischaemic, haemorrhagic, 
-  and brain stem): 5
+  and brain stem) - 5
 - cancer (including stage IV and metastatic
-  forms): 70
-- related to brain: 15
-- related to heart: 8
-- paralysis: 4
+  forms) - 70
+- related to brain - 15
+- related to heart - 8
+- paralysis - 4
+
+\newpage
 
 In order to give a clear answer to the question, we picked out five most serious
 symptoms from these groups that were apparent in the dataset of the reports:
@@ -155,7 +168,7 @@ lethal_reports[lethal_reports$type == "concomitant", ]
 
 The overall number of lethal outcomes was `r length(lethal_reports$outcome)`.
 These outcomes could be grouped to `r length(unique(lethal_reports$outcome))` 
-different types of outcomes that included death as one of them.
+different collections of outcomes that included death as one of them.
 
 \  
 
@@ -185,7 +198,16 @@ data[grep("folligen solution therapy", data$product),]
 
 The concomitant report regarding the death of the 29 years old male was the only
 one with `r lethal_reports[lethal_reports$type == "concomitant", c("product")]`
-included.
+included. 
+
+\  
+
+*Interesting insight about this report*
+
+After checking the original data (before modifications) another report with the 
+same identifier, outcome, and type "concomitant" was found about "Emu Oil-S", 
+therefore `r lethal_reports[lethal_reports$type == "concomitant", c("product")]`
+might not necessarilly be the main cause of this death case.
 
 \  
 
@@ -224,12 +246,15 @@ products that makes up 20% of all deaths reported.
 Formally, the goal is to find a group of products that would be the suspected
 cause of at least `r 0.2*length(lethal_reports$outcome)` death cases.
 
-However, after performed analysis of the data, such group cannot be found, 
-since there is one product named "`r most_lethal_product_name_cap`" from 
+\newpage
+
+However, analysis of the data brought us to another *interesting insight* - it 
+was apparent that such group could not be found, since there is one product 
+named "`r most_lethal_product_name_cap`" from 
 `r most_lethal_product_industry` industry which is responsible for 
-`r most_lethal_number_deaths` death cases, which makes
-up `r round(most_lethal_percen_deaths, 2)`%
-of all cases. Therefore, there are two possible subsequent actions:
+`r most_lethal_number_deaths` death cases, therefore it is responsible for
+`r round(most_lethal_percen_deaths, 2)`% of all cases. Consequentially, there 
+are two possible actions that could be suggested:
 
 - Ban all other products except "`r most_lethal_product_name_cap`" - this action 
   would decrease the number of deaths by 
@@ -253,11 +278,21 @@ industry to which "`r most_lethal_product_name_cap`" belongs.
 
 ## Visualisation of proportions
 
-Below a pie chart presenting the proportions of the death causing products is
-shown. For more clarity, "treemap" package was used as an alternative to 
+A pie chart below presents the proportions of the death causing products. 
+For more clarity, "treemap" package was used as an alternative to 
 visualise proportions, since the most common argument against pie charts is that 
 varied angles complicate the process of detecting differences between displayed
 areas [4].
+
+The pie chart shows only two products separately, since these products had at 
+least 100 reports ("`r most_lethal_product_name_cap`" 5078 and "Kratom" 122). 
+The third most frequently reported product regarding death cases was 
+"Centrum silver men's 50+" with 7 reports, thus products with fewer than 100 
+cases were grouped and displayed as "Other products".
+
+```{r include=FALSE}
+head(product_freq)
+```
 
 ```{r echo=FALSE, fig.height=6, fig.width=6, out.width="50%" }
 # Summing up frequency of other products
@@ -304,7 +339,7 @@ p <- treemap(df, index=c('name'), vSize='frequency',
 
 Fig. 1. The proportions of products that were reported with death as an outcome
 
-\  
+\newpage
 
 *What are other outcomes caused by "`r most_lethal_product_name_cap`"?*
 
@@ -388,7 +423,7 @@ p <- treemap(df, index=c('name'), vSize='frequency',
 ```
 Fig. 2. The proportions of gender groups that used product "Exemption 4"
 
-\  
+\newpage
 
 *Which age group uses "`r most_lethal_product_name_cap`" the most?*
 
@@ -408,8 +443,9 @@ sum(exemption_4_data[exemption_4_data$ age == 60,c('sex')]=='M')
 sum(exemption_4_data[exemption_4_data$ age == 60,c('sex')]=='U')
 ```
 
-"`r most_lethal_product_name_cap`" is mostly reported by 60 year old people, of 
-which majority are female 
+"`r most_lethal_product_name_cap`" is mostly reported by 40-80 year old people.
+The exact age with the most reports was 60 years and the majority of cases 
+reported by this age group were female 
 (`r sum(exemption_4_data[exemption_4_data$ age == 60,c('sex')]=='F')` out of 
 `r length(exemption_4_data[exemption_4_data$ age == 60,c('sex')])`).
 
@@ -443,6 +479,8 @@ products used at the time. The majority of death cases reported included
 `r most_lethal_product_industry` product - no additional information about it
 was provided, yet it might be responsible for around 95% of reported death 
 cases.
+
+\newpage
 
 # References
 
