@@ -1,0 +1,27 @@
+---
+title: "First task"
+author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė"
+date: "3/11/2022"
+output: pdf_document
+bibliography: references.bib
+nocite: '@*'
+---
+
+# Introduction
+
+This work will present data analysis from a research that studied the 
+enchancer's at *IGF2* differential methylation association with abnormal 
+dopamine synthesis in major psychosis.
+
+Our samples were taken from ...
+
+How many samples and what information was given abou them ...
+
+The experiment design was ...
+
+What was the goal of the research, what researchers intended to look for and 
+what results they received ...
+
+Additional information ...
+
+# References
