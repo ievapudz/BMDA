@@ -1,0 +1,67 @@
+#--- pirmas žingsnis -----------------------------------------------------------
+
+Kiekviena komanda išsirenka duomenis, kuriuos vėliau analizuos kurso metu.
+Duomenų ieškokite "Gene Expression Omnibus" (GEO) duomenų bazėje:
+
+https://www.ncbi.nlm.nih.gov/
+
+Paieškai naudokite vieną iš šių raktažodžių:
+
+GPL21145[Accession] AND ("gse"[Filter] AND "IDAT"[Supplementary Files])
+GPL13534[Accession] AND ("gse"[Filter] AND "IDAT"[Supplementary Files])
+
+Pirmas variantas ras duomenis paruoštus naudojant naujesnes "EPIC (850k)" mikrogardeles, o antrasis variantas senesnes "450k" DNR modifikacijų mikrogardeles.
+Mūsų tikslams didelio skirtumo tarp jų nebus - duomenis rinkitės pagal tai, ką norėsite analizuoti praktikos metu.
+Apie savo pasirinktus duomenis iš anksto praneškite MS Teams; gavus sutikimą parsisiūskite "raw" duomenų archyvą, turintę "idat" failus.
+
+Reikalavimai duomenims:
+1. Mėginių bent 50 arba daugiau.
+2. Parsisiuntimui pateikiami "idat" failai.
+3. Mėginiai turi nurodytą amžiaus informaciją.
+
+
+Keletas tinkamų duomenų pavyzdžių:
+
+Methylation data from healthy, adjacent normal and tumor colon cells  (GEO: GSE131013)
+[240 samples, 450k, tissue, tumor stage, gender, age]
+
+DNA methylation-based classification of MCD in the human brain (GEO: GSE185090)
+[215 samples, 850k, diagnosis, lobe, gender, age, onset]
+
+Human immune cell epigenetic profiles (GEO: GSE184269)
+[167 samples, 850k, cell type, age, gender]
+
+Cell lineage-specific genome-wide DNA methylation analysis of patients with paediatric-onset systemic lupus erythematosus  (GEO: GSE118144)
+[145 samples, 850k, tissue, gender, age, group(lupus, control)]
+
+Smoking effect on DNA methylation in human blood CD8T cells (GEO: GSE147430)
+[132 samples, 450k, race, gender, age, smoking status, years smoking, cigarettes per day, cotinine]
+
+Epigenome analysis of normal breast samples  (GEO: GSE101961)
+[121 samples, 450k, race, age, bmi]
+
+DNA methylation profiling of human prefrontal cortex neurons in heroin users shows significant difference between genomic contexts of hyper- and hypomethylation and a younger epigenetic age  (GEO: GSE98203)
+[88 samples, 450k, race, gender, age, cause of death, group(heroin, suicide, control)]
+
+DNA methylation signatures of chronic alcohol dependence in purified CD3+ T-cells of patients undergoing alcohol treatment  (GEO: GSE98876)
+[71 samples, 450k, gender, age, drinking status, cigaretts per day, group(patient, control)]
+
+Tobacco smoking induces changes in true DNA methylation, hydroxymethylation and gene expression in bronchoalveolar lavage cells  (GEO: GSE133062)
+[70(35 meth / 35 oxy) samples, 850k, gender, age, smoking status, packs per year, cigarettes per day]
+
+
+#--- antras žingsnis -----------------------------------------------------------
+
+Komanda perskaito su jų pasirinktais duomenimis susijusią publikaciją ir trumpai
+pristato savo pasirinktus duomenis papasakojant apie:
+
+1. Kokio audinio mėginiai.
+2. Kiek mėginių ir kokia informacija apie juos pateikiama.
+3. Koks naudotas eksperimento dizaino tipas.
+4. Ko tyrėjai ieškojo, kaip analizavo duomenis, ir kokius rezultatus gavo.
+5. ir t.t. (priklausomai kiek suprasit ir kas jums pasirodys įdomu/svarbu).
+
+
+#--- trečias žingsnis ----------------------------------------------------------
+
+[TBD]
