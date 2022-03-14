@@ -17,10 +17,28 @@ Our samples were taken from ...
 
 How many samples and what information was given about them ...
 
-The experiment design was ...
+## Experiment design
 
-What was the goal of the research, what researchers intended to look for and 
-what results they received ...
+The experiment design was multi-omics study with 55 cases (with schizophrenia or
+bipolar disorder) and 27 controls.
+
+## Objective of the research
+
+According to authors, schizophrenia and bipolar disorder have got characteristic of periods of psychosis. The main objective of the research was to gather epigenomic profiling data to get a more accurate model of neuronal dysregulation in diseases with periods of psychosis.
+
+## Biological targets of the research
+
+Researchers intended to look for specific patters of DNA methylation in 
+isolated neurons from the frontal cortex of individuals that had diseases.
+
+## Results received
+
+They found a strong association between methylation of *IGF2* locus' 
+enhancer and tyrosine hydroxylase (TH) synthesis. TH is the bottleneck 
+enzyme that is responsible for dopamine synthesis. If enhancer *Igf2* is 
+hypomethylated, levels of TH are higher, which determines higher production
+of dopamine. Apparently, dopamine is responsible for psychosis in the 
+mental disorders of interest.
 
 Additional information ...
 
