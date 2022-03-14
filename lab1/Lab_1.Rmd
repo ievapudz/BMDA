@@ -13,9 +13,12 @@ This work will present data analysis from a research that studied the
 enchancer's at *IGF2* differential methylation association with abnormal 
 dopamine synthesis in major psychosis.
 
-Our samples were taken from ...
+Our samples were taken from the prefrontal cortex isolated neurons in 
+schizophrenia and bipolar disorder.
 
-How many samples and what information was given abou them ...
+Study analysed data from individuals diagnosed with schizophrenia, bipolar
+disorder and controls (29, 26 and 27 individuals, respectively).
+In the analysis study controlled for age, sex, post-mortem interval, genetic ancestry (determined by genotyping the same individuals).
 
 The experiment design was ...
 
