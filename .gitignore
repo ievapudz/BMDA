@@ -1,4 +1,3 @@
 data/
-lab0/.RData
-lab0/.Rhistory
-lab0/Lab_0.tgz
+lab*/.Rdata
+lab*/.Rhistory
