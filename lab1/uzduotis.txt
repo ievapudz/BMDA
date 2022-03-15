@@ -1,12 +1,19 @@
-#--- pirmas žingsnis -----------------------------------------------------------
+#--- duomenu pasirinkimas ------------------------------------------------------
 
-Kiekviena komanda išsirenka duomenis, kuriuos vėliau analizuos kurso metu.
-Duomenų ieškokite "Gene Expression Omnibus" (GEO) duomenų bazėje:
+1. Komandos issirenka duomenis su kuriais dirbs praktiniu uzsiemimu metu (is pateiktu zemiau)
+2. Parsisiuskite savo issirinktu duomenu .idat failus (pridekite pateikta GEO id sio adreso pabaigoje: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=)
+3. Parsisiuskite paruosta sample-key informacija apie meginius (paruosti sample-key failai bus pateikti emokymai puslapyje)
+4. Isirasykite R BioConductor "minfi" biblioteka (instrukcijos cia: https://bioconductor.org/packages/release/bioc/html/minfi.html)
+5. Komanda perskaito su savo pasirinktais duomenimis susijusia publikacija ir paruosia trumpa pristatyma apie:
+   - Eksperimento uzdavinius, hipoteze ir tiksla
+   - Eksperimente naudotus meginius ir ju parametrus
+   - Eksperimentu dizaino tipa
+   - Naudotus metodus
+   - Gautus rezultatus
 
-https://www.ncbi.nlm.nih.gov/
+PASTABOS:
 
 Paieškai naudokite vieną iš šių raktažodžių:
-
 GPL21145[Accession] AND ("gse"[Filter] AND "IDAT"[Supplementary Files])
 GPL13534[Accession] AND ("gse"[Filter] AND "IDAT"[Supplementary Files])
 
@@ -15,53 +22,48 @@ Mūsų tikslams didelio skirtumo tarp jų nebus - duomenis rinkitės pagal tai, 
 Apie savo pasirinktus duomenis iš anksto praneškite MS Teams; gavus sutikimą parsisiūskite "raw" duomenų archyvą, turintę "idat" failus.
 
 Reikalavimai duomenims:
-1. Mėginių bent 50 arba daugiau.
-2. Parsisiuntimui pateikiami "idat" failai.
-3. Mėginiai turi nurodytą amžiaus informaciją.
+- Mėginių bent 50 arba daugiau.
+- Parsisiuntimui pateikiami "idat" failai.
+- Mėginiai turi nurodytą amžiaus informaciją.
 
 
-Keletas tinkamų duomenų pavyzdžių:
+#--- duomenu paruosimas --------------------------------------------------------
 
-Methylation data from healthy, adjacent normal and tumor colon cells  (GEO: GSE131013)
-[240 samples, 450k, tissue, tumor stage, gender, age]
+1.  Pasiruoskite sau paskirtus sample-key failus (apvalydami reiksmes, panasiai kaip aptareme paskaitu metu)
+    - sample-key nuskaitymui R galite naudoti read.csv() funkcija.
+2.  Nuskaitykite parsisiustus idat failus i "RGChannelSet" tipo objekta
+    - tam naudokite `read.metharray.exp()` funkcija is R minfi bibliotekos
+    - si funkcija kaip argumenta naudoja "sample-key" lentele, kurioje stulpelis Basename turi rodyti i failo vieta jusu kompiuteryje (galite paskaityti sios funkcijos help()).
+    - nuskaicius duomenis gauta objekta issaugokite su saveRDS()
+    - veliau ji pasikrauti i atminti galesite su readRDS() funkcija
+3.  Gaukite "detection p-value" kiekvienam DNR modifikacijos iverciui
+    - naudokite funkcija `detectionP()` is minfi
+    - si funkcija grazins iverciu matrica (vienas ivertis vienai modifikacijos reiksmei) parodanti ar matuojamas intensyvumas skiriasi nuo background
+    - visas vertes kuriu p-verte didesne uz 0.01 laikykite "blogomis"
+    - is RGChannelSet objekto ismeskite visus meginius (stulpelius) kurie turi daugiau nei 1% "blogu" detection p reiksmiu.
+    - PAGALBA: is RGChannelSet objekto reiksmes ismesti galima taip, kaip ir is matricos: `myData[,-1]` - ismestu pirma megini (stulpeli)
+4.  Normalizuokite savo duomenis
+    - naudokite viena is siu funkciju: preprocessSWAN(), preprocessFunnorm() or preproccessIllumina() is "minfi" bibliotekos.
+    - galite pasirinkti laisvai, apie tai kuo skiriasi sie normalizavimo budai galite pasiskaityti siu funkciju help() dokumentacijoje.
+5.  Ismeskite visas genomines pozicijas (eilutes) kurios turi daugiau nei 1% "blogu" detection p reiksmiu
+    - detection p-reikmes paskaiciuojamos pries normalizacija, taigi naudokite pries tai paskaiciuota p-reiksmiu matrica.
+    - jeigu is nuskaityto objekto buvo pasalinta pavyzdziu - nepamirskiti pries atliekant si zingsni ju pasalinti ir is detection p-reiksmiu matricos.
+    - PAGALBA: normalizavimo zingsni gali pasalinti kai kurias genomines pozicijas (eilutes) is nuskaityto objekto, todel naudokite `rownames()`, kad suzinotumete, kurios pozicijos turi buti pasalintos.
+6.  Ismeskite genomines pozicijas (eilutes) neturincias "CG" nukleotidu poros (CH) arba esancias salia DNR polimorfizmu
+    - tam naudokite funkcija dropMethylationLoci(), galite perskaityti jos help().
+7.  Pasalinkite meginius kuriu nurodyta lytis skiriasi nuo spejamos lyties (spejimus galite gauti su funkcija getSex()).
+8.  Po duomenu paruosimo is gauto objekto pasidarykite tris atskirus objektus:
+    - pagrindine modifikacijos iverciu matrica: getBeta()
+    - informacija apie pagrindines matricos meginius (stulpelius): pData()
+    - informacija apie pagrindines matricos pozicijas (eilutes): getAnnotation()
+9.  Savarankiskai parasykite koda, atliekanti IAC isskirciu ismetima.
+    - Detalus sios proceduros aprasymas, net su kodo pavyzdziais, gali buti rastas cia: https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/HumanBrainTranscriptome/Identification%20and%20Removal%20of%20Outlier%20Samples.pdf)
+10. Atlikite bent viena kokybes kontroles zingsni aptarta paskaitu metu, arba susigalvota savo paties (zinoma galite atlikti ir daugiau nei viena).
+11. Issisaugokite paruostus duomenis (su saveRDS()), juos naudosite kitose uzduotyse
 
-DNA methylation-based classification of MCD in the human brain (GEO: GSE185090)
-[215 samples, 850k, diagnosis, lobe, gender, age, onset]
+PASTABOS: Nuo sios uzduoties visi jusu komandos rezultatai gauti tiriant pasirinktus duomenis turetu buti aprasomi bendroje ataskaitoje.
+          Todel ataskaitoje nepamirskite aprasyti ir atvaizduoti sios uzduoties metu priimtu sprendimu ir gautu rezultatu.
+          Pvz.: Kiek meginiu buvo pasalinta del per didelio "blogu" detection p-reiksmiu kiekio? Kiek poziciju?
+                Kiek meginiu pasalinote po IAC isskirciu ismetimo? Kaip buvo pasiskirste vidutiniai panasumai tarp meginiu (koreliacijos)?
+                Kiek finalineje jusu paruostu duomenu versijoje liko sveiku ir ligoniu? Moteru ir vyru? etc.
 
-Human immune cell epigenetic profiles (GEO: GSE184269)
-[167 samples, 850k, cell type, age, gender]
-
-Cell lineage-specific genome-wide DNA methylation analysis of patients with paediatric-onset systemic lupus erythematosus  (GEO: GSE118144)
-[145 samples, 850k, tissue, gender, age, group(lupus, control)]
-
-Smoking effect on DNA methylation in human blood CD8T cells (GEO: GSE147430)
-[132 samples, 450k, race, gender, age, smoking status, years smoking, cigarettes per day, cotinine]
-
-Epigenome analysis of normal breast samples  (GEO: GSE101961)
-[121 samples, 450k, race, age, bmi]
-
-DNA methylation profiling of human prefrontal cortex neurons in heroin users shows significant difference between genomic contexts of hyper- and hypomethylation and a younger epigenetic age  (GEO: GSE98203)
-[88 samples, 450k, race, gender, age, cause of death, group(heroin, suicide, control)]
-
-DNA methylation signatures of chronic alcohol dependence in purified CD3+ T-cells of patients undergoing alcohol treatment  (GEO: GSE98876)
-[71 samples, 450k, gender, age, drinking status, cigaretts per day, group(patient, control)]
-
-Tobacco smoking induces changes in true DNA methylation, hydroxymethylation and gene expression in bronchoalveolar lavage cells  (GEO: GSE133062)
-[70(35 meth / 35 oxy) samples, 850k, gender, age, smoking status, packs per year, cigarettes per day]
-
-
-#--- antras žingsnis -----------------------------------------------------------
-
-Komanda perskaito su jų pasirinktais duomenimis susijusią publikaciją ir trumpai
-pristato savo pasirinktus duomenis papasakojant apie:
-
-1. Kokio audinio mėginiai.
-2. Kiek mėginių ir kokia informacija apie juos pateikiama.
-3. Koks naudotas eksperimento dizaino tipas.
-4. Ko tyrėjai ieškojo, kaip analizavo duomenis, ir kokius rezultatus gavo.
-5. ir t.t. (priklausomai kiek suprasit ir kas jums pasirodys įdomu/svarbu).
-
-
-#--- trečias žingsnis ----------------------------------------------------------
-
-[TBD]
