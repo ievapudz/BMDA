@@ -40,7 +40,7 @@ isolated neurons from the frontal cortex of individuals that had diseases.
 
 - IGF2 - insulin growth factor 2 protein
 - *IGF2* - IGF2 gene
-- *Igf2* - enhancer of *IGF2* gene
+- *Igf2* - enhancer of *IGF2*
 - TH - tyrosine hydroxylase protein
 - dopamine - a neuromodulatory molecule
 - psychosis - an abnormal condition of the mind that results in difficulties 
