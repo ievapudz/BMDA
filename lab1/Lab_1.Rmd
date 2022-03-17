@@ -18,7 +18,8 @@ schizophrenia and bipolar disorder.
 
 Study analysed data from individuals diagnosed with schizophrenia, bipolar
 disorder and controls (29, 26 and 27 individuals, respectively).
-In the analysis study controlled for age, sex, post-mortem interval, genetic ancestry (determined by genotyping the same individuals).
+In the analysis study controlled for age, sex, post-mortem interval, genetic 
+ancestry (determined by genotyping the same individuals).
 
 ## Experiment design
 
@@ -27,20 +28,46 @@ bipolar disorder) and 27 controls.
 
 ## Objective of the research
 
-According to authors, schizophrenia and bipolar disorder have got characteristic of periods of psychosis. The main objective of the research was to gather epigenomic profiling data to get a more accurate model of neuronal dysregulation in diseases with periods of psychosis.
+According to authors, schizophrenia and bipolar disorder have got characteristic 
+of periods of psychosis. The main objective of the research was to gather 
+epigenomic profiling data to get a more accurate model of neuronal 
+dysregulation in diseases with periods of psychosis.
 
 ## Biological targets of the research
 
 Researchers intended to look for specific patters of DNA methylation in 
 isolated neurons from the frontal cortex of individuals that had diseases.
 
+- IGF2 - insulin growth factor 2 protein
+- *IGF2* - IGF2 gene
+- *Igf2* - enhancer of *IGF2* gene
+- TH - tyrosine hydroxylase protein
+- dopamine - a neuromodulatory molecule
+- psychosis - an abnormal condition of the mind that results in difficulties 
+  determining what is real and what is not real 
+
 ## Results received
 
-They found a strong association between methylation of *IGF2* locus' 
-enhancer and tyrosine hydroxylase (TH) synthesis. TH is the bottleneck 
-enzyme that is responsible for dopamine synthesis. If enhancer *Igf2* is 
-hypomethylated, levels of TH are higher, which determines higher production
+Authors found a strong association between methylation of *Igf2* and TH 
+synthesis. 
+TH is the bottleneck enzyme that is responsible for dopamine synthesis. 
+If enhancer *Igf2* is hypomethylated, levels of TH are higher, which 
+determines the higher production
 of dopamine. Apparently, dopamine is responsible for psychosis in the 
 mental disorders of interest.
+
+## Additional information
+
+Schizophrenia and bipolar disorder patients are consistently hypomethylated
+at *IGF2* locus when compared to controls. This locus remained significantly 
+hypomethylated even after accounting lifestyle-related variables of smoking
+and anti-psychotic use.
+
+The reaction chain of interest of the research (upward arrows show elevated
+expression or synthesis of the protein, product, or effect):
+
+Hypomethylation of *Igf2* $\rightarrow$ $\uparrow$ IGF2 $\rightarrow$ 
+$\uparrow$ TH $\rightarrow$ $\uparrow$ dopamine $\rightarrow$ $\uparrow$ 
+psychosis
 
 # References
