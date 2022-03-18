@@ -70,4 +70,11 @@ Hypomethylation of *Igf2* $\rightarrow$ $\uparrow$ IGF2 $\rightarrow$
 $\uparrow$ TH $\rightarrow$ $\uparrow$ dopamine $\rightarrow$ $\uparrow$ 
 psychosis
 
+# Data preparation
+
+```{r}
+sample_keys <- read.csv('../data/GSE112179.csv')
+head(sample_keys)
+```
+
 # References
