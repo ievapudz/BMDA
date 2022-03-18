@@ -4,14 +4,14 @@ author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė"
 date: "3/11/2022"
 output: pdf_document
 bibliography: references.bib
-nocite: '@*'
+csl: apa-single-spaced.csl
 ---
 
 # Introduction
 
 This work will present data analysis from a research that studied the 
 enchancer's at *IGF2* differential methylation association with abnormal 
-dopamine synthesis in major psychosis.
+dopamine synthesis in major psychosis [@pai2019differential].
 
 Our samples were taken from the prefrontal cortex isolated neurons in 
 schizophrenia and bipolar disorder.
@@ -74,7 +74,50 @@ psychosis
 
 ```{r}
 sample_keys <- read.csv('../data/GSE112179.csv')
-head(sample_keys)
+
+# Columns names in lower case
+colnames(sample_keys)[5] <- tolower(colnames(sample_keys)[5])
+
+# Unknown values
+sample_keys$pmi[sample_keys$pmi == "unknown"] <- NA_real_
+sample_keys$pmi[sample_keys$pmi == "?"] <- NA_real_
+sample_keys$race[sample_keys$race == "?"] <- NA_character_
+
+# Lower case
+sample_keys$race <- tolower(sample_keys$race)
+sample_keys$sex <- tolower(sample_keys$sex)
+sample_keys$diagnosis <- tolower(sample_keys$diagnosis)
+
+sample_keys
 ```
 
-# References
+Sample keys heading is made of the following columns names:
+
+- *id* - an identifier of the sample
+- *sentrix_id* - Illumina's Sentrix BeadChip identifier 
+  (`r length(unique(sample_keys$sentrix_id))` unique values) 
+  [@imatsentrix]
+- *sentrix_row* - row number in the Sentrix array
+- *sentrix_col* - column number in the Sentrix array
+- *basename* - sample identifier in the research (joined values in a format:
+  \newline [*id*]_[*sentrix_id*]_R0[*sentrix_row*]C0[*sentrix_id*])
+- *tissue_bank_id* - an identifying number of the tissue bank from which the 
+  sample was taken
+- *tissue_bank* - the literal identifier of the tissue bank
+- *tissue* - a tissue type from which the sample was taken
+- *cell_type* - a cell type found in the sample
+- *donor* - an integer number that identifies the donor of the sample 
+  (`r length(unique(sample_keys$donor))` unique values)
+- *pmi* - a post-mortem interval (time units???????????), unknown values were
+  labeled as NA
+- *race* - a race of the donor (white, black, hispanic, or unknown (NA))
+- *sex* - a gender of the donor
+- *diagnosis* - an experimental group of the patient (bipolar, schizophrenia, or
+  control)
+- *age* - an age of the donor (years)
+  
+As it was noted in the article, there were 100 records in the sample keys 
+dataset.
+
+# References {-}
+
