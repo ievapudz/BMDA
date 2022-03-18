@@ -72,9 +72,13 @@ psychosis
 
 # Data preparation
 
-```{r}
-#BiocManager::install("minfi")
-#BiocManager::install("IlluminaHumanMethylationEPICmanifest")
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+```
+
+```{r include=FALSE, eval=FALSE}
+BiocManager::install("minfi")
+BiocManager::install("IlluminaHumanMethylationEPICmanifest")
 library(minfi)
 library(IlluminaHumanMethylationEPICmanifest)
 ```
@@ -83,7 +87,8 @@ library(IlluminaHumanMethylationEPICmanifest)
 sample_keys <- read.csv('../data/GSE112179_RAW/GSE112179.csv')
 
 # Basename
-sample_keys$Basename <- paste('../data/GSE112179_RAW/', sample_keys$Basename, sep='')
+sample_keys$Basename <- paste('../data/GSE112179_RAW/', sample_keys$Basename, 
+                              sep='')
 (sample_keys$Basename)
 
 # Unknown values
@@ -101,7 +106,7 @@ Sample keys heading is made of the following columns names:
 
 - *id* - an identifier of the sample
 - *sentrix_id* - Illumina's Sentrix BeadChip identifier 
-  (`r length(unique(sample_keys$sentrix_id))` unique values) 
+  (13 unique values) 
   [@imatsentrix]
 - *sentrix_row* - row number in the Sentrix array
 - *sentrix_col* - column number in the Sentrix array
@@ -113,7 +118,7 @@ Sample keys heading is made of the following columns names:
 - *tissue* - a tissue type from which the sample was taken
 - *cell_type* - a cell type found in the sample
 - *donor* - an integer number that identifies the donor of the sample 
-  (`r length(unique(sample_keys$donor))` unique values)
+  (82 unique values)
 - *pmi* - a post-mortem interval (**time units???????????**), unknown values were
   labeled as NA
 - *race* - race of the donor (white, black, hispanic, or unknown (NA))
@@ -125,43 +130,42 @@ Sample keys heading is made of the following columns names:
 As it was noted in the article, there were 100 records in the sample keys 
 dataset.
 
-Reading IDAT data.
-
-```{r include=FALSE}
-#rgcs <- read.metharray.exp(targets=sample_keys)
+```{r include=FALSE, eval=FALSE}
+# Reading IDAT data
+rgcs <- read.metharray.exp(targets=sample_keys)
 ```
 
-Saving RGChannelSet object data to file '../data/GSE112179_RGCS.rgcs'.
-
-```{r include=FALSE}
+```{r include=FALSE, eval=FALSE}
+# Saving RGChannelSet object data to file 
 rgcs_location <- '../data/GSE112179_RGCS.rgcs'
-#saveRDS(rgcs, file='../data/GSE112179_RGCS.rgcs')
+saveRDS(rgcs, file='../data/GSE112179_RGCS.rgcs')
 ```
 
-Loading RGChannelSet object to RAM.
-
-```{r include=FALSE}
-rgcs_obj <- readRDS(file=rgcs_location)
+```{r include=FALSE, eval=FALSE}
+# Loading RGChannelSet object to RAM.
+RGSet <- readRDS(file=rgcs_location)
 ```
 
-Getting detection p-value for each score of DNA modification. This function 
-returns a matrix of scores (one score for each value of modification), which
-show, whether the measured intensity can be distinguished from the background.
+## Calculating detection p-values
 
-```{r include=FALSE}
-detP <- detectionP(rgcs_obj)
-```
+Getting detection p-value for each score of DNA modification. These p-values
+determine whether the measured intensity can be distinguished from the 
+background.
 
-```{r}
+```{r include=FALSE, eval=FALSE}
+# Getting detection p values as matrix
+detP <- detectionP(RGSet)
+
+# Converting matrix to a data frame
 detP_f <- data.frame(detP)
 ```
 
-All values that have got p value higher than 0.01 are considered as bad and 
-all samples that have more than 1% of bad detection p values will be removed.
+All values that have got p-value higher than 0.01 are considered as bad and 
+all samples that have more than 1% of bad detection p-values should be removed.
 
-Columns determine samples, rows define location of modification.
+```{r include=FALSE, eval=FALSE}
+# Columns determine samples, rows define location of modification
 
-```{r}
 # Calculating how many values compose one percent
 one_perc <- round(nrow(detP) / 100)
 
@@ -182,10 +186,82 @@ for(i in 1:ncol(detP_f)) {
 }
 ```
 
-None of the samples had more than 1% of bad values, therefore none of the samples
-was removed.
+Although, in our data, none of the samples had more than 1% of bad values, 
+therefore no 
+sample was removed.
 
+## Data normalisation
 
+According to the documentation of *minfi* package [@fortin485512analysis], 
+*preprocessFunnnorm()* function is recommended for known large-scale differences
+(for example, cancer/normal) or between-tissue studies. Our chosen data 
+spans only over one cell type of one tissue, therefore it was decided to opt for
+different normalisation methods.
+
+Authors [@pai2019differential] noted
+that they used noob normalisation followed by the quantile one. Quantile 
+normalisation performs processing of Type I and Type II array design 
+differences. Whereas, *preprocessIllumina()* normalisation has only background 
+subtraction 
+and control normalisation implemented. Therefore, we decided to choose 
+*preprocessSWAN()* normalisation, since this method performs within-array 
+normalisation correction for technical differences between Type I and Type II 
+array designs.
+
+```{r include=FALSE, eval=FALSE}
+set.seed(1)
+MSet.swan <- preprocessSWAN(RGSet)
+```
+
+## Filtering position data by detection p-values
+
+```{r include=FALSE, eval=FALSE}
+# Columns determine samples, rows define location of modification
+
+# Calculating how many values compose one percent
+one_perc_samples <- round(ncol(detP) / 100)
+
+bad_positions <- list()
+# Looping over each position
+for(i in 1:nrow(detP_f)) {    
+  higher_p <- 0
+  # Looping over p values of each position
+  for(p in detP_f[i, ]){
+    # p value higher than 0.01 is considered as bad
+    if(p > 0.01){
+      higher_p <- higher_p+1
+      if(higher_p > one_perc_samples){
+        bad_positions[[length(bad_positions)+1]] <- rownames(detP_f)[i]
+        break
+      }
+    }
+  }
+}
+```
+
+There were 5835 positions found that had p-value higher than 0.01 in 1% of the
+samples. These positions were removed from the dataset. After this procedure,
+we have 861001 positions in each sample.
+
+```{r include=FALSE, eval=FALSE}
+length(unique(bad_positions))
+MSet.swan <- MSet.swan[!(row.names(MSet.swan) %in% bad_positions), ]
+```
+
+```{r include=FALSE, eval=FALSE}
+intermed_file_loc <- '../data/GSE112179_MSet_SWAN_clean.rds'
+```
+
+```{r include=FALSE, eval=FALSE}
+saveRDS(MSet.swan, file=intermed_file_loc)
+```
+
+## Load data for the 6th point of data preparation
+
+```{r include=FALSE, eval=FALSE}
+MSet.swan <- readRDS(intermed_file_loc)
+MSet.swan
+```
 
 # References {-}
 
