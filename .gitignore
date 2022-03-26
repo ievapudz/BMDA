@@ -1,3 +1,4 @@
 data/
 lab*/.Rdata
 lab*/.Rhistory
+.Rproj.user
