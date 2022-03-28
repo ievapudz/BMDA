@@ -296,71 +296,49 @@ intermed_file_loc <- '../data/GSE112179_MSet_SWAN_clean.rds'
 saveRDS(MSet.swan, file=intermed_file_loc)
 ```
 
-## Load data for the 6th point of data preparation
-
-```{r include=FALSE, eval=FALSE}
-MSet.swan <- readRDS(intermed_file_loc)
-MSet.swan
-```
 
 ## Removing methylation loci positions
+
 ```{r include=FALSE, eval=FALSE}
 MSet.swan <- dropMethylationLoci(MSet.swan, dropRS = TRUE, dropCH = TRUE)
 ```
 
 Removed 2918 methylation loci, that do not contain "CG" nucleotide 
-pair (CH probes) or are close to DNR polymorphism. After removal data contains
+pair (CH probes) or are close to DNR polymorphisms. After removal data contains
 858083 positions in each sample.
-
-## Filtering position data by predicted sex
-
-```{r include=FALSE, eval=FALSE}
-#Instaling package for 'mapToGenome' usage
-BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19") 
-
-#Mapping Ilumina methylation array data to the genome using an annotation package
-#Preparing data for function getSex()
-GMSet.swan <- mapToGenome(MSet.swan)
-
-#Calculating predicted sex for each sample
-predicted_sex <- getSex(GMSet.swan)
-
-#Changing names for easier evaluation
-predicted_sex$predictedSex[predicted_sex$predictedSex == "M"] <- "male"
-predicted_sex$predictedSex[predicted_sex$predictedSex == "F"] <- "female"
-
-deletion_pos <- list()
-#Looping over each sample
-for(index in 1:100) {
-  #Different from predicted sex samples are considered invalid
-  if(MSet.swan$sex[index]!= predicted_sex$predictedSex[index]){
-    deletion_pos[[length(deletion_pos)+1]] <- colnames(MSet.swan)[index]
-  }
-}
-
-#Saving only samples with sex "Male"
-MSet.swan <- MSet.swan[,!(colnames(MSet.swan) %in% deletion_pos)]
-```
-
-An inconsistency was encountered while determining sex. Only one sex is present
-("Male"). Data does not give any clues of that inconsistency reasons.
-25 samples were selected for removal, 75 samples left after these operations.
 
 ## Making three different data objects
 
 ```{r include=FALSE, eval=FALSE}
 #Each score of DNA modification matrix
 beta <- getBeta(MSet.swan)
+
+#Saving data to file
+beta_matrix_file <- '../data/GSE112179_beta_matrix.rds'
+saveRDS(beta, file=beta_matrix_file)
+
 #Information about main matrix samples (columns)
 pdata <- pData(MSet.swan)
+
+#Saving data to file
+pdata_file <- '../data/GSE112179_pdata.rds'
+saveRDS(pdata, file=pdata_file)
+
 #Information about main matrix positions (rows)
 anot <- getAnnotation(MSet.swan)
+
+#Saving data to file
+anot_file <- '../data/GSE112179_anot.rds'
+saveRDS(anot, file=anot_file)
 ```
 
 Generated DNA modification score matrix, information about main matrix samples
- and information about main matrix positions.
+ and information about main matrix positions and saved this data into files for
+ later manipulations.
  
 ## Interarray correlation outliers elimination
+
+Identification and removal of samples with divergent modification scores.
 
 ```{r include=FALSE, eval=FALSE}
 #Calculating IACs for all pairs of samples
@@ -370,29 +348,34 @@ IAC_matrix = cor(beta, use="p")
 hist(IAC_matrix)
 ```
 
-Our data is not fully distributed normally, so we need to eliminate outliers.
-
-![First histogram.](./1..png)
+![First histogram.](./1.png)
+Histogram identifies, that in our data set exists distribution distorting values.
+For further investigation standard deviation from mean in each sample was 
+calculated.
 
 ```{r include=FALSE, eval=FALSE}
 #Mean for each column
 mean_IAC=apply(IAC_matrix,2,mean)
+
 #Calculating standard deviation for data
 SDev=sd(mean_IAC) 
+
 #From each column mean substracting all data mean and dividing by standard deviation
 column_sd=(mean_IAC-mean(mean_IAC))/SDev
+
 #Ploting each column result
 plot(column_sd) 
+
 #selecting boundary
-abline(h=-2)
+abline(h=-3)
 ```
 
-Data outliers are clearly visible and will be taken out.
-
 ![Outlier identification.](./2.png)
+Scatter plot of each sample (column) standard deviation from mean
+visually highlights data outliers (under -3 limit).
 
 ```{r include=FALSE, eval=FALSE}
-limit = -2
+limit = -3
 outliers=dimnames(beta)[[2]][numbersd<limit]
 #removing outliers
 beta <- beta[,!(column_sd<limit)]
@@ -400,7 +383,8 @@ MSet.swan <- MSet.swan[,!(colnames(MSet.swan) %in% outliers)]
 #Selecting IDs of outliers
 ```
 
-Removed 3 outliers: *"GSM3059463_200590500069_R01C01" "GSM3059462_200590490031_R08C01" "GSM3059520_200357150067_R08C01"*.
+Algorithm identified and removed 3 outliers: *"GSM3059462_200590490031_R08C01"  
+"GSM3059520_200357150067_R08C01" "GSM3059454_200590490031_R01C01"*. 
 
 ```{r include=FALSE, eval=FALSE}
 #Calculating IACs for all pairs of samples
@@ -410,9 +394,9 @@ IAC_matrix = cor(beta, use="p")
 hist(IAC_matrix)
 ```
 
-There is visible difference from initial data. But data is still not fully arranged, so we repeated proccess one more time.
-
 ![Second histogram.](./3.png)
+There is visible difference on the left side of the histogram. This change 
+indicated that we correctly removed distorting values.
 
 ```{r include=FALSE, eval=FALSE}
 #Mean for each column
@@ -424,33 +408,167 @@ column_sd=(mean_IAC-mean(mean_IAC))/SDev
 #Ploting each column result
 plot(column_sd) 
 #selecting boundary
-abline(h=-2)
+abline(h=-3)
 ```
-
-Data outliers are clearly visible and will be taken out.
 
 ![Outlier identification](./4.png)
+No outliers are left in recalculated scatter plot.
+
+## Quality control
+
+After all data manipulations, our set has 97 samples with 861001 positions.
 
 ```{r include=FALSE, eval=FALSE}
-limit = -2
-outliers=dimnames(beta)[[2]][column_sd<limit]
-#removing outliers
-beta <- beta[,!(column_sd<limit)]
-MSet.swan <- MSet.swan[,!(colnames(MSet.swan) %in% outliers)]
-#Selecting IDs of outliers
+control_pos <- list()
+case_pos <- list()
+
+#Separating control and case id's
+for(index in 1:length(colnames(MSet.swan))) {
+  if(MSet.swan$diagnosis[index]== "control"){
+    control_pos[[length(control_pos)+1]] <- colnames(MSet.swan)[index]
+  } else {
+    case_pos[[length(case_pos)+1]] <- colnames(MSet.swan)[index]
+  }
+}
+
+#Saving separated case and control data 
+MSet.swan_control <- MSet.swan[,(colnames(MSet.swan) %in% control_pos)]
+MSet.swan_case <- MSet.swan[,(colnames(MSet.swan) %in% case_pos)]
 ```
 
-Removed 7 outliers: *"GSM3059445_200357150067_R01C01" "GSM3059543_200586750013_R04C01" "GSM3059534_200357150128_R06C01" "GSM3059519_200357150082_R03C01" "GSM3059541_200586750013_R02C01" "GSM3059515_200590490012_R01C01" "GSM3059489_200590500059_R05C01*.
+Data for quality control was separated into case (65) and control (32). Our main
+ goal is to check if there exists distortions in methylation data.
+ 
+```{r include=FALSE, eval=FALSE}
+#Obtaining methylation estimates for case and control data separately
+meth_control <- getMeth(MSet.swan_control)
+meth_case <- getMeth(MSet.swan_case)
+```
 
 ```{r include=FALSE, eval=FALSE}
-#Calculating IACs for all pairs of samples
-IAC_matrix = cor(beta, use="p")
-
-#Histogram for outliers examinatiot
-hist(IAC_matrix)
+#Calculating pair-to-pair correlation in control data
+cor_control <- cor(meth_control, use = "p")
+hist(cor_control)
 ```
 
-![Third histogram.](./5.png)
+![Control histogram](./5.png)
+Histogram represents pair-to-pair correlation in control methylation data.
+
+```{r include=FALSE, eval=FALSE}
+mean_control=apply(cor_control,2,mean)
+#Calculating standard deviation for data
+SDev=sd(mean_control) 
+#From each column mean substracting all data mean and dividing by standard deviation
+column_sd=(mean_control-mean(mean_control))/SDev
+#Ploting each column result
+plot(column_sd) 
+```
+
+![Control scatter plot](./7.png)
+We can indicate both from histogram and scatter plot,  that data is distributed 
+mostly normal and there is no need for data removal.
+
+```{r include=FALSE, eval=FALSE}
+cor_case <- cor(meth_case, use = "p")
+hist(cor_case)
+
+```
+
+![Case histogram](./6.png)
+Case methylation data indicates, that our data has distorted values. 
+
+```{r include=FALSE, eval=FALSE}
+mean_case=apply(cor_case,2,mean)
+#Calculating standard deviation for data
+SDev=sd(mean_case) 
+#From each column mean substracting all data mean and dividing by standard deviation
+column_sd=(mean_case-mean(mean_case))/SDev
+#Ploting each column result
+plot(column_sd)
+```
+
+![Case scatter plot](./8.png)
+Scatter plot demonstrates two outliers in standard deviation from methylation
+mean. For further analysis we separated case data into "bipolar" and 
+ "schizophrenia" cases.
+
+```{r include=FALSE, eval=FALSE}
+case_bipolar <- list()
+case_schi <- list()
+#Separating data into "bipolar" and "schizophrenia"
+for(index in 1:length(colnames(MSet.swan))) {
+  if(MSet.swan$diagnosis[index]== "bipolar"){
+    case_bipolar[[length(case_bipolar)+1]] <- colnames(MSet.swan)[index]
+  } else if(MSet.swan$diagnosis[index]== "schizophrenia"){
+    case_schi[[length(case_schi)+1]] <- colnames(MSet.swan)[index]
+  }
+}
+
+#Saving separated cases
+MSet.swan_bipol <- MSet.swan[,(colnames(MSet.swan) %in% case_bipolar)]
+MSet.swan_schi <- MSet.swan[,(colnames(MSet.swan) %in% case_schi)]
+```
+
+```{r include=FALSE, eval=FALSE}
+#Obtaining methylation estimates for both cases
+meth_bipol <- getMeth(MSet.swan_bipol)
+meth_schi <- getMeth(MSet.swan_schi)
+
+#Calculating pair-to-pair correlation
+cor_bipolar <- cor(meth_bipol, use = "p")
+cor_schi <- cor(meth_schi, use = "p")
+```
+
+```{r include=FALSE, eval=FALSE}
+mean_case=apply(meth_bipol,2,mean)
+#Calculating standard deviation for data
+SDev=sd(mean_case) 
+#From each column mean substracting all data mean and dividing by standard deviation
+column_sd=(mean_case-mean(mean_case))/SDev
+#Ploting each column result
+plot(column_sd) 
+```
+
+![Bipolar scatter plot](./9.png)
+Bipolar cases does not show any big fluctuations from methylation mean value.
+
+```{r include=FALSE, eval=FALSE}
+mean_case=apply(meth_schi,2,mean)
+#Calculating standard deviation for data
+SDev=sd(mean_case) 
+#From each column mean substracting all data mean and dividing by standard deviation
+column_sd=(mean_case-mean(mean_case))/SDev
+#Ploting each column result
+plot(column_sd) 
+```
+
+![Schizophrenia scatterplot](./10.png)
+Schizophrenia cases also does not show any wide variations from methylation
+mean value.
+
+This separated each case data indicated, that there is no need to remove any
+data.
+
+```{r include=FALSE, eval=FALSE}
+
+qc <- getQC(MSet.swan)
+addQC(MSet.swan, qc)
+plotQC(qc)
+```
+
+Estimated sample-specific quality control for methylation data with getQC, 
+addQC and plotQC functions.
+
+![QC plot](./11.png)
+PlotQC demonstrates, that in our data set bad samples does not exist.
+
+## Saving data
+
+```{r include=FALSE, eval=FALSE}
+saveRDS(MSet.swan, file='GSE112179_clear.rds')
+```
+
+Saved data after all manipulations into *GSE112179_clear.rds* file.
 
 # References {-}
 
