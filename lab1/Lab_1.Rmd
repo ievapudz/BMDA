@@ -83,6 +83,11 @@ library(minfi)
 library(IlluminaHumanMethylationEPICmanifest)
 ```
 
+```{r}
+BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
+library(IlluminaHumanMethylationEPICanno.ilm10b4.hg19)
+```
+
 ```{r include=FALSE}
 sample_keys <- read.csv('../data/GSE112179_RAW/GSE112179.csv')
 
@@ -190,6 +195,41 @@ Although, in our data, none of the samples had more than 1% of bad values,
 therefore no 
 sample was removed.
 
+## Predicting sample sex
+
+This stage estimates sample sex based on methylation data.
+
+```{r include=FALSE, eval=FALSE}
+GMSet <- mapToGenome(RGSet)
+RGSet_est_sex <- getSex(GMSet)
+```
+
+Number of females and males after estimation matched original data (25 female 
+and 75 male).
+
+Converted 'M' and 'F' notation to 'male' and 'female'.
+
+```{r include=FALSE, eval=FALSE}
+RGSet_est_sex$predictedSex[RGSet_est_sex$predictedSex == 'M'] <- 'male'
+RGSet_est_sex$predictedSex[RGSet_est_sex$predictedSex == 'F'] <- 'female'
+```
+
+```{r include=FALSE, eval=FALSE}
+
+bad_samples <- list()
+
+# Looping over each position
+for(i in 1:length(RGSet_est_sex$predictedSex)) {    
+  if(RGSet_est_sex$predictedSex[i] != RGSet$sex[i]){
+    bad_samples[[length(bad_samples)+1]] <- rownames(RGSet_est_sex)[i]
+  }
+}
+
+bad_sample
+```
+
+No mismatches between real and estimated sex were found.
+
 ## Data normalisation
 
 According to the documentation of *minfi* package [@fortin485512analysis], 
@@ -262,6 +302,15 @@ saveRDS(MSet.swan, file=intermed_file_loc)
 MSet.swan <- readRDS(intermed_file_loc)
 MSet.swan
 ```
+
+# Quality control
+
+We checked standard deviations within each group. 
+
+Samples that were outliers by more than 2 standard deviations within cases
+
+82_R01C01
+74_R07C01
 
 # References {-}
 
