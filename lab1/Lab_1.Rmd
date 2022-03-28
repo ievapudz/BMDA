@@ -303,14 +303,154 @@ MSet.swan <- readRDS(intermed_file_loc)
 MSet.swan
 ```
 
-# Quality control
+## Removing methylation loci positions
+```{r include=FALSE, eval=FALSE}
+MSet.swan <- dropMethylationLoci(MSet.swan, dropRS = TRUE, dropCH = TRUE)
+```
 
-We checked standard deviations within each group. 
+Removed 2918 methylation loci, that do not contain "CG" nucleotide 
+pair (CH probes) or are close to DNR polymorphism. After removal data contains
+858083 positions in each sample.
 
-Samples that were outliers by more than 2 standard deviations within cases
+## Filtering position data by predicted sex
 
-82_R01C01
-74_R07C01
+```{r include=FALSE, eval=FALSE}
+#Instaling package for 'mapToGenome' usage
+BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19") 
+
+#Mapping Ilumina methylation array data to the genome using an annotation package
+#Preparing data for function getSex()
+GMSet.swan <- mapToGenome(MSet.swan)
+
+#Calculating predicted sex for each sample
+predicted_sex <- getSex(GMSet.swan)
+
+#Changing names for easier evaluation
+predicted_sex$predictedSex[predicted_sex$predictedSex == "M"] <- "male"
+predicted_sex$predictedSex[predicted_sex$predictedSex == "F"] <- "female"
+
+deletion_pos <- list()
+#Looping over each sample
+for(index in 1:100) {
+  #Different from predicted sex samples are considered invalid
+  if(MSet.swan$sex[index]!= predicted_sex$predictedSex[index]){
+    deletion_pos[[length(deletion_pos)+1]] <- colnames(MSet.swan)[index]
+  }
+}
+
+#Saving only samples with sex "Male"
+MSet.swan <- MSet.swan[,!(colnames(MSet.swan) %in% deletion_pos)]
+```
+
+An inconsistency was encountered while determining sex. Only one sex is present
+("Male"). Data does not give any clues of that inconsistency reasons.
+25 samples were selected for removal, 75 samples left after these operations.
+
+## Making three different data objects
+
+```{r include=FALSE, eval=FALSE}
+#Each score of DNA modification matrix
+beta <- getBeta(MSet.swan)
+#Information about main matrix samples (columns)
+pdata <- pData(MSet.swan)
+#Information about main matrix positions (rows)
+anot <- getAnnotation(MSet.swan)
+```
+
+Generated DNA modification score matrix, information about main matrix samples
+ and information about main matrix positions.
+ 
+## Interarray correlation outliers elimination
+
+```{r include=FALSE, eval=FALSE}
+#Calculating IACs for all pairs of samples
+IAC_matrix = cor(beta, use="p")
+
+#Histogram for outliers examination
+hist(IAC_matrix)
+```
+
+Our data is not fully distributed normally, so we need to eliminate outliers.
+
+![First histogram.](./1..png)
+
+```{r include=FALSE, eval=FALSE}
+#Mean for each column
+mean_IAC=apply(IAC_matrix,2,mean)
+#Calculating standard deviation for data
+SDev=sd(mean_IAC) 
+#From each column mean substracting all data mean and dividing by standard deviation
+column_sd=(mean_IAC-mean(mean_IAC))/SDev
+#Ploting each column result
+plot(column_sd) 
+#selecting boundary
+abline(h=-2)
+```
+
+Data outliers are clearly visible and will be taken out.
+
+![Outlier identification.](./2.png)
+
+```{r include=FALSE, eval=FALSE}
+limit = -2
+outliers=dimnames(beta)[[2]][numbersd<limit]
+#removing outliers
+beta <- beta[,!(column_sd<limit)]
+MSet.swan <- MSet.swan[,!(colnames(MSet.swan) %in% outliers)]
+#Selecting IDs of outliers
+```
+
+Removed 3 outliers: *"GSM3059463_200590500069_R01C01" "GSM3059462_200590490031_R08C01" "GSM3059520_200357150067_R08C01"*.
+
+```{r include=FALSE, eval=FALSE}
+#Calculating IACs for all pairs of samples
+IAC_matrix = cor(beta, use="p")
+
+#Histogram for outliers examinatiot
+hist(IAC_matrix)
+```
+
+There is visible difference from initial data. But data is still not fully arranged, so we repeated proccess one more time.
+
+![Second histogram.](./3.png)
+
+```{r include=FALSE, eval=FALSE}
+#Mean for each column
+mean_IAC=apply(IAC_matrix,2,mean)
+#Calculating standard deviation for data
+SDev=sd(mean_IAC) 
+#From each column mean substracting all data mean and dividing by standard deviation
+column_sd=(mean_IAC-mean(mean_IAC))/SDev
+#Ploting each column result
+plot(column_sd) 
+#selecting boundary
+abline(h=-2)
+```
+
+Data outliers are clearly visible and will be taken out.
+
+![Outlier identification](./4.png)
+
+```{r include=FALSE, eval=FALSE}
+limit = -2
+outliers=dimnames(beta)[[2]][column_sd<limit]
+#removing outliers
+beta <- beta[,!(column_sd<limit)]
+MSet.swan <- MSet.swan[,!(colnames(MSet.swan) %in% outliers)]
+#Selecting IDs of outliers
+```
+
+Removed 7 outliers: *"GSM3059445_200357150067_R01C01" "GSM3059543_200586750013_R04C01" "GSM3059534_200357150128_R06C01" "GSM3059519_200357150082_R03C01" "GSM3059541_200586750013_R02C01" "GSM3059515_200590490012_R01C01" "GSM3059489_200590500059_R05C01*.
+
+```{r include=FALSE, eval=FALSE}
+#Calculating IACs for all pairs of samples
+IAC_matrix = cor(beta, use="p")
+
+#Histogram for outliers examinatiot
+hist(IAC_matrix)
+```
+
+![Third histogram.](./5.png)
 
 # References {-}
 
