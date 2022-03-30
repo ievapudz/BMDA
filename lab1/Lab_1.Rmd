@@ -4,6 +4,7 @@ author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė"
 date: "3/11/2022"
 output: pdf_document
 bibliography: references.bib
+biblio-style: alphadin
 csl: apa-single-spaced.csl
 ---
 
@@ -13,12 +14,12 @@ This work will present data analysis from a research that studied the
 enchancer's at *IGF2* differential methylation association with abnormal 
 dopamine synthesis in major psychosis [@pai2019differential].
 
-Our samples were taken from the prefrontal cortex isolated neurons in 
-schizophrenia and bipolar disorder.
+Our samples were taken from the prefrontal cortex isolated neurons from patients 
+with schizophrenia and bipolar disorder.
 
-Study analysed data from individuals diagnosed with schizophrenia, bipolar
-disorder and controls (29, 26 and 27 individuals, respectively).
-In the analysis study controlled for age, sex, post-mortem interval, genetic 
+The study analysed data from individuals diagnosed with schizophrenia, bipolar
+disorder and controls (29, 26 and 27 individuals respectively).
+In the analysis, study controlled for age, sex, post-mortem interval, genetic 
 ancestry (determined by genotyping the same individuals).
 
 ## Experiment design
@@ -35,7 +36,7 @@ dysregulation in diseases with periods of psychosis.
 
 ## Biological targets of the research
 
-Researchers intended to look for specific patters of DNA methylation in 
+Researchers intended to look for specific patterns of DNA methylation in 
 isolated neurons from the frontal cortex of individuals that had diseases.
 
 - IGF2 - insulin growth factor 2 protein
@@ -83,7 +84,7 @@ library(minfi)
 library(IlluminaHumanMethylationEPICmanifest)
 ```
 
-```{r}
+```{r include=FALSE, eval=FALSE}
 BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
 library(IlluminaHumanMethylationEPICanno.ilm10b4.hg19)
 ```
@@ -124,8 +125,8 @@ Sample keys heading is made of the following columns names:
 - *cell_type* - a cell type found in the sample
 - *donor* - an integer number that identifies the donor of the sample 
   (82 unique values)
-- *pmi* - a post-mortem interval (**time units???????????**), unknown values were
-  labeled as NA
+- *pmi* - a post-mortem interval, unknown values 
+  were labeled as NA
 - *race* - race of the donor (white, black, hispanic, or unknown (NA))
 - *sex* - gender of the donor
 - *diagnosis* - an experimental group of the donor (bipolar, schizophrenia, or
@@ -349,19 +350,20 @@ hist(IAC_matrix)
 ```
 
 ![First histogram.](./1.png)
-Histogram identifies, that in our data set exists distribution distorting values.
-For further investigation standard deviation from mean in each sample was 
+Histogram identifies that our dataset contains values which distort the 
+overall distribution.
+For further investigation, standard deviation from mean in each sample was 
 calculated.
 
 ```{r include=FALSE, eval=FALSE}
 #Mean for each column
-mean_IAC=apply(IAC_matrix,2,mean)
+mean_IAC <- apply(IAC_matrix,2,mean)
 
 #Calculating standard deviation for data
-SDev=sd(mean_IAC) 
+SDev <- sd(mean_IAC) 
 
 #From each column mean substracting all data mean and dividing by standard deviation
-column_sd=(mean_IAC-mean(mean_IAC))/SDev
+column_sd <- (mean_IAC-mean(mean_IAC))/SDev
 
 #Ploting each column result
 plot(column_sd) 
@@ -375,8 +377,8 @@ Scatter plot of each sample (column) standard deviation from mean
 visually highlights data outliers (under -3 limit).
 
 ```{r include=FALSE, eval=FALSE}
-limit = -3
-outliers=dimnames(beta)[[2]][numbersd<limit]
+limit <- -3
+outliers <- dimnames(beta)[[2]][numbersd<limit]
 #removing outliers
 beta <- beta[,!(column_sd<limit)]
 MSet.swan <- MSet.swan[,!(colnames(MSet.swan) %in% outliers)]
@@ -388,23 +390,23 @@ Algorithm identified and removed 3 outliers: *"GSM3059462_200590490031_R08C01"
 
 ```{r include=FALSE, eval=FALSE}
 #Calculating IACs for all pairs of samples
-IAC_matrix = cor(beta, use="p")
+IAC_matrix <- cor(beta, use="p")
 
 #Histogram for outliers examinatiot
 hist(IAC_matrix)
 ```
 
 ![Second histogram.](./3.png)
-There is visible difference on the left side of the histogram. This change 
+There is a visible difference on the left side of the histogram. This change 
 indicated that we correctly removed distorting values.
 
 ```{r include=FALSE, eval=FALSE}
 #Mean for each column
-mean_IAC=apply(IAC_matrix,2,mean)
+mean_IAC <- apply(IAC_matrix,2,mean)
 #Calculating standard deviation for data
-SDev=sd(mean_IAC) 
+SDev <- sd(mean_IAC) 
 #From each column mean substracting all data mean and dividing by standard deviation
-column_sd=(mean_IAC-mean(mean_IAC))/SDev
+column_sd <- (mean_IAC-mean(mean_IAC))/SDev
 #Ploting each column result
 plot(column_sd) 
 #selecting boundary
@@ -437,7 +439,7 @@ MSet.swan_case <- MSet.swan[,(colnames(MSet.swan) %in% case_pos)]
 ```
 
 Data for quality control was separated into case (65) and control (32). Our main
- goal is to check if there exists distortions in methylation data.
+ goal is to check if distortions in methylation data exist.
  
 ```{r include=FALSE, eval=FALSE}
 #Obtaining methylation estimates for case and control data separately
@@ -455,18 +457,18 @@ hist(cor_control)
 Histogram represents pair-to-pair correlation in control methylation data.
 
 ```{r include=FALSE, eval=FALSE}
-mean_control=apply(cor_control,2,mean)
+mean_control <- apply(cor_control,2,mean)
 #Calculating standard deviation for data
-SDev=sd(mean_control) 
+SDev <- sd(mean_control) 
 #From each column mean substracting all data mean and dividing by standard deviation
-column_sd=(mean_control-mean(mean_control))/SDev
+column_sd <- (mean_control-mean(mean_control))/SDev
 #Ploting each column result
 plot(column_sd) 
 ```
 
 ![Control scatter plot](./7.png)
-We can indicate both from histogram and scatter plot,  that data is distributed 
-mostly normal and there is no need for data removal.
+We can indicate both from histogram and scatter plot that data is distributed 
+normally and there is no need for data removal.
 
 ```{r include=FALSE, eval=FALSE}
 cor_case <- cor(meth_case, use = "p")
@@ -478,11 +480,11 @@ hist(cor_case)
 Case methylation data indicates, that our data has distorted values. 
 
 ```{r include=FALSE, eval=FALSE}
-mean_case=apply(cor_case,2,mean)
+mean_case <- apply(cor_case,2,mean)
 #Calculating standard deviation for data
-SDev=sd(mean_case) 
+SDev <- sd(mean_case) 
 #From each column mean substracting all data mean and dividing by standard deviation
-column_sd=(mean_case-mean(mean_case))/SDev
+column_sd <- (mean_case-mean(mean_case))/SDev
 #Ploting each column result
 plot(column_sd)
 ```
@@ -520,11 +522,11 @@ cor_schi <- cor(meth_schi, use = "p")
 ```
 
 ```{r include=FALSE, eval=FALSE}
-mean_case=apply(meth_bipol,2,mean)
+mean_case <- apply(meth_bipol,2,mean)
 #Calculating standard deviation for data
-SDev=sd(mean_case) 
+SDev <- sd(mean_case) 
 #From each column mean substracting all data mean and dividing by standard deviation
-column_sd=(mean_case-mean(mean_case))/SDev
+column_sd <- (mean_case-mean(mean_case))/SDev
 #Ploting each column result
 plot(column_sd) 
 ```
@@ -533,11 +535,11 @@ plot(column_sd)
 Bipolar cases does not show any big fluctuations from methylation mean value.
 
 ```{r include=FALSE, eval=FALSE}
-mean_case=apply(meth_schi,2,mean)
+mean_case <- apply(meth_schi,2,mean)
 #Calculating standard deviation for data
-SDev=sd(mean_case) 
+SDev <- sd(mean_case) 
 #From each column mean substracting all data mean and dividing by standard deviation
-column_sd=(mean_case-mean(mean_case))/SDev
+column_sd <- (mean_case-mean(mean_case))/SDev
 #Ploting each column result
 plot(column_sd) 
 ```
@@ -546,7 +548,7 @@ plot(column_sd)
 Schizophrenia cases also does not show any wide variations from methylation
 mean value.
 
-This separated each case data indicated, that there is no need to remove any
+This separated each case data indicated that there is no need to remove any
 data.
 
 ```{r include=FALSE, eval=FALSE}
@@ -560,7 +562,7 @@ Estimated sample-specific quality control for methylation data with getQC,
 addQC and plotQC functions.
 
 ![QC plot](./11.png)
-PlotQC demonstrates, that in our data set bad samples does not exist.
+PlotQC demonstrates, that bad samples does not exist in our data set.
 
 ## Saving data
 
