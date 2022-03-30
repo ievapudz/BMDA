@@ -4,7 +4,6 @@ author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė"
 date: "3/11/2022"
 output: pdf_document
 bibliography: references.bib
-biblio-style: alphadin
 csl: apa-single-spaced.csl
 ---
 
@@ -80,12 +79,12 @@ knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 ```{r include=FALSE, eval=FALSE}
 BiocManager::install("minfi")
 BiocManager::install("IlluminaHumanMethylationEPICmanifest")
-library(minfi)
-library(IlluminaHumanMethylationEPICmanifest)
+BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
 ```
 
 ```{r include=FALSE, eval=FALSE}
-BiocManager::install("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
+library(minfi)
+library(IlluminaHumanMethylationEPICmanifest)
 library(IlluminaHumanMethylationEPICanno.ilm10b4.hg19)
 ```
 
@@ -205,6 +204,10 @@ GMSet <- mapToGenome(RGSet)
 RGSet_est_sex <- getSex(GMSet)
 ```
 
+```{r}
+GMSet
+```
+
 Number of females and males after estimation matched original data (25 female 
 and 75 male).
 
@@ -296,7 +299,6 @@ intermed_file_loc <- '../data/GSE112179_MSet_SWAN_clean.rds'
 ```{r include=FALSE, eval=FALSE}
 saveRDS(MSet.swan, file=intermed_file_loc)
 ```
-
 
 ## Removing methylation loci positions
 
@@ -426,7 +428,7 @@ case_pos <- list()
 
 #Separating control and case id's
 for(index in 1:length(colnames(MSet.swan))) {
-  if(MSet.swan$diagnosis[index]== "control"){
+  if(MSet.swan$diagnosis[index] == "control"){
     control_pos[[length(control_pos)+1]] <- colnames(MSet.swan)[index]
   } else {
     case_pos[[length(case_pos)+1]] <- colnames(MSet.swan)[index]
