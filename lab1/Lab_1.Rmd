@@ -2,9 +2,11 @@
 title: "First task"
 author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė"
 date: "3/11/2022"
-output: pdf_document
 bibliography: references.bib
 csl: apa-single-spaced.csl
+output: pdf_document
+header-includes:
+- \usepackage{float}
 ---
 
 # Introduction
@@ -73,7 +75,7 @@ psychosis
 # Data preparation
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE, fig.pos='!H')
 ```
 
 ```{r include=FALSE, eval=FALSE}
@@ -204,10 +206,6 @@ GMSet <- mapToGenome(RGSet)
 RGSet_est_sex <- getSex(GMSet)
 ```
 
-```{r}
-GMSet
-```
-
 Number of females and males after estimation matched original data (25 female 
 and 75 male).
 
@@ -306,9 +304,9 @@ saveRDS(MSet.swan, file=intermed_file_loc)
 MSet.swan <- dropMethylationLoci(MSet.swan, dropRS = TRUE, dropCH = TRUE)
 ```
 
-Removed 2918 methylation loci, that do not contain "CG" nucleotide 
-pair (CH probes) or are close to DNR polymorphisms. After removal data contains
-858083 positions in each sample.
+2918 methylation loci that do not contain "CG" nucleotide 
+pair (CH probes) or are close to DNR polymorphisms were removed. After the 
+removal data contained 858083 positions in each sample.
 
 ## Making three different data objects
 
@@ -335,9 +333,11 @@ anot_file <- '../data/GSE112179_anot.rds'
 saveRDS(anot, file=anot_file)
 ```
 
-Generated DNA modification score matrix, information about main matrix samples
- and information about main matrix positions and saved this data into files for
- later manipulations.
+The DNA modification score matrix was generated and was saved as well as the 
+information about main matrix samples and information about main matrix 
+positions into files for later manipulations with the data.
+
+\pagebreak
  
 ## Interarray correlation outliers elimination
 
@@ -352,10 +352,19 @@ hist(IAC_matrix, main = "Histogram of pair-to-pair inter-array correlation",
      xlab = "Inter-array correlations")
 ```
 
-![First correlation outliers elimination histogram.](./1.png)
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=75mm]{./1.png}
+    \includegraphics[width=75mm]{./2.png}
+    \caption{
+    The correlation histogram (left) and scatter plot (right) to detect the 
+    outliers for elimination.
+    }
+  \end{center}
+\end{figure}
 
-Histogram identifies that our dataset contains values which distort the 
-overall distribution.
+The histogram (Figure 1) identifies that our dataset contains values which 
+distort the overall distribution.
 For further investigation, standard deviation from mean in each sample was 
 calculated.
 
@@ -377,10 +386,8 @@ plot(column_sd, main = "Scatter plot of each sample standard deviation from mean
 abline(h=-3)
 ```
 
-![Outlier identification in present data set.](./2.png)
-
-Scatter plot of each sample (column) standard deviation from mean
-visually highlights data outliers (under -3 limit).
+Scatter plot of each sample (column) (Figure 1) standard deviation from mean
+visually highlights the data outliers (under -3 limit of deviation).
 
 ```{r include=FALSE, eval=FALSE}
 limit <- -3
@@ -403,10 +410,19 @@ hist(IAC_matrix, ,  main = "Histogram of pair-to-pair inter-array correlation (S
      xlab = "Inter-array correlations")
 ```
 
-![Second correlation outliers elimination histogram.](./3.png)
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=75mm]{./3.png}
+    \includegraphics[width=75mm]{./4.png}
+    \caption{
+      The correlation histogram (left) and scatter plot (right) of all dataset 
+      after the elimination of outliers.
+    }
+  \end{center}
+\end{figure}
 
-There is a visible difference on the left side of the histogram. This change 
-indicated that we correctly removed distorting values.
+There is a visible difference on the left side of the histogram (Figure 2). This 
+change indicated that we correctly removed distorting values.
 
 ```{r include=FALSE, eval=FALSE}
 #Mean for each column
@@ -422,9 +438,9 @@ plot(column_sd, main = "Scatter plot of each sample standard deviation from
 abline(h=-3)
 ```
 
-![Outlier identification in recalculated data set.](./4.png)
+No outliers were left in the recalculated scatter plot (Figure 2).
 
-No outliers are left in recalculated scatter plot.
+\newpage
 
 ## Quality control
 
@@ -448,8 +464,9 @@ MSet.swan_control <- MSet.swan[,(colnames(MSet.swan) %in% control_pos)]
 MSet.swan_case <- MSet.swan[,(colnames(MSet.swan) %in% case_pos)]
 ```
 
-Data for quality control was separated into case (65) and control (32). Our main
- goal is to check if distortions in methylation data exist.
+Data for quality control was separated into case (65 samples) and control 
+(32 samples). Our main goal is to check if distortions in the methylation data 
+exist.
  
 ```{r include=FALSE, eval=FALSE}
 #Obtaining methylation estimates for case and control data separately
@@ -464,9 +481,19 @@ hist(cor_control, main = "Histogram of pair-to-pair inter-array correlation in
      control samples", xlab = "Inter-array correlations")
 ```
 
-![Control samples pair-to-pair correlation histogram](./5.png)
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=75mm]{./5.png}
+    \includegraphics[width=75mm]{./7.png}
+    \caption{
+      The pair-to-pair correlation histogram (left) and scatter plot (right) for 
+      control samples.
+    }
+  \end{center}
+\end{figure}
 
-Histogram represents pair-to-pair correlation in control methylation data.
+The histogram (Figure 3) represents a pair-to-pair correlation in control 
+methylation data.
 
 ```{r include=FALSE, eval=FALSE}
 mean_control <- apply(cor_control,2,mean)
@@ -479,10 +506,8 @@ plot(column_sd, main = "Scatter plot of each sample standard deviation from mean
      in control samples", xlab = "Sample", ylab = "Deviation")  
 ```
 
-![Control samples scatter plot](./7.png)
-
-We can indicate both from histogram and scatter plot that data is distributed 
-normally and there is no need for data removal.
+We can indicate both from histogram and scatter plot (Figure 3) that 
+data is distributed normally and there is no need for data removal.
 
 ```{r include=FALSE, eval=FALSE}
 cor_case <- cor(meth_case, use = "p")
@@ -490,9 +515,20 @@ hist(cor_case, main = "Histogram of pair-to-pair inter-array correlation in
      case samples", xlab = "Inter-array correlations")
 ```
 
-![Case samples pair-to-pair correlation histogram](./6.png)
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=75mm]{./6.png}
+    \includegraphics[width=75mm]{./8.png}
+    \caption{
+      The pair-to-pair correlation histogram (left) and scatter plot (right) of 
+      all case samples.
+    }
+  \end{center}
+\end{figure}
 
-Case methylation data indicates, that our data has distorted values. 
+Sequentially, it was decided to check the distribution of case methylation data.
+The scatter plot (Figure 4) of all case samples indicates, that our data has 
+distorted values in respect of all case samples mean. 
 
 ```{r include=FALSE, eval=FALSE}
 mean_case <- apply(cor_case,2,mean)
@@ -505,11 +541,10 @@ plot(column_sd, main = "Scatter plot of each sample standard deviation from mean
      in case samples", xlab = "Sample", ylab = "Deviation") 
 ```
 
-![Case samples scatter plot](./8.png)
-
-Scatter plot demonstrates two outliers in standard deviation from methylation
+The scatter plot (Figure 4) demonstrates two outliers in standard deviation from 
+methylation
 mean. For further analysis we separated case data into "bipolar" and 
- "schizophrenia" cases.
+"schizophrenia" cases.
 
 ```{r include=FALSE, eval=FALSE}
 case_bipolar <- list()
@@ -549,9 +584,17 @@ plot(column_sd, main = "Scatter plot of each sample standard deviation from mean
      in case of bipolar disorder samples", xlab = "Sample", ylab = "Deviation") 
 ```
 
-![Bipolar samples scatter plot](./9.png)
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=90mm]{./9.png}
+    \caption{
+      The scatter plot of the bipolar samples.
+    }
+  \end{center}
+\end{figure}
 
-Bipolar cases does not show any big fluctuations from methylation mean value.
+The scatter plot (Figure 5) with bipolar cases does not show any big 
+fluctuations from the mean methylation value of bipolar disorder case samples.
 
 ```{r include=FALSE, eval=FALSE}
 mean_case <- apply(meth_schi,2,mean)
@@ -564,10 +607,17 @@ plot(column_sd, main = "Scatter plot of each sample standard deviation from mean
      in case of schizophrenia samples", xlab = "Sample", ylab = "Deviation")
 ```
 
-![Schizophrenia samples scatterplot](./10.png)
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=90mm]{./10.png}
+    \caption{
+      The scatterplot of the schizophrenia case samples.
+    }
+  \end{center}
+\end{figure}
 
-Schizophrenia cases also does not show any wide variations from methylation
-mean value.
+The scatter plot (Figure 6) of schizophrenia cases also does not show any wide 
+variations from the mean methylation value.
 
 This separated each case data indicated that there is no need to remove any
 data.
@@ -579,12 +629,20 @@ addQC(MSet.swan, qc)
 plotQC(qc)
 ```
 
-Estimated sample-specific quality control for methylation data with getQC, 
-addQC and plotQC functions.
+Additionally, the sample-specific quality control for methylation data with 
+getQC, addQC, and plotQC functions was estimated.
 
-![Quality control plot](./11.png)
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=90mm]{./11.png}
+    \caption{
+      The plot of quality control with getQC, addQC, and plotQC functions.
+    }
+  \end{center}
+\end{figure}
 
-PlotQC demonstrates, that bad samples does not exist in our data set.
+PlotQC plot (Figure 7) demonstrates that bad samples do not exist in our data 
+set.
 
 ## Saving data
 
@@ -592,7 +650,7 @@ PlotQC demonstrates, that bad samples does not exist in our data set.
 saveRDS(MSet.swan, file='GSE112179_clear.rds')
 ```
 
-Saved data after all manipulations into *GSE112179_clear.rds* file.
+Data was saved into *GSE112179_clear.rds* file after the processing.
 
 # References {-}
 
