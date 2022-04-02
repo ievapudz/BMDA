@@ -655,15 +655,17 @@ densityPlot(beta, sampGroups=groups, main = "Density of methylation intensity
             by different diagnosis groups"))
 ```
 
-Comparison of methylation in density plot (Figure 8) indicates high data quality
+Comparison of methylation in density plots (Figure 8) indicates high data quality
 because no notable deviations are visible from the rest of the samples. Also 
 significant alterations between different diagnosis are not present.
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=90mm]{./12.png}
+    \includegraphics[width=75mm]{./12.png}
+    \includegraphics[width=75mm]{./13.png}
     \caption{
-      The density plot of methylation intensity.
+      The density plot of methylation intensity of each sample(left) and 
+      density plot of all samples positions mean methylation intensity (right).
     }
   \end{center}
 \end{figure}
