@@ -19,7 +19,7 @@ Our samples were taken from the prefrontal cortex isolated neurons from patients
 with schizophrenia and bipolar disorder.
 
 The study analysed data from individuals diagnosed with schizophrenia, bipolar
-disorder and controls (29, 26 and 27 individuals respectively).
+disorder, and controls (29, 26 and 27 individuals respectively).
 In the analysis, study controlled for age, sex, post-mortem interval, genetic 
 ancestry (determined by genotyping the same individuals).
 
@@ -398,8 +398,13 @@ MSet.swan <- MSet.swan[,!(colnames(MSet.swan) %in% outliers)]
 #Selecting IDs of outliers
 ```
 
-Algorithm identified and removed 3 outliers: *"GSM3059462_200590490031_R08C01"  
-"GSM3059520_200357150067_R08C01" "GSM3059454_200590490031_R01C01"*. 
+Algorithm identified and removed 3 outliers: 
+
+- GSM3059462_200590490031_R08C01 - a control sample of 53-year-old male
+- GSM3059520_200357150067_R08C01 - a sample of a 56-year-old male with bipolar 
+  disorder
+- GSM3059454_200590490031_R01C01 - a sample of a 77-year-old female with 
+  schizophrenia
 
 ```{r include=FALSE, eval=FALSE}
 #Calculating IACs for all pairs of samples
@@ -421,8 +426,9 @@ hist(IAC_matrix, ,  main = "Histogram of pair-to-pair inter-array correlation (S
   \end{center}
 \end{figure}
 
-There is a visible difference on the left side of the histogram (Figure 2). This 
-change indicated that we correctly removed distorting values.
+There is a visible difference on the left side of the histogram (Figure 2) 
+compared to the histogram before the removal of outliers (Figure 1). This 
+change indicated that the distorting values were removed correctly.
 
 ```{r include=FALSE, eval=FALSE}
 #Mean for each column
@@ -515,6 +521,8 @@ hist(cor_case, main = "Histogram of pair-to-pair inter-array correlation in
      case samples", xlab = "Inter-array correlations")
 ```
 
+Sequentially, it was decided to check the distribution of case methylation data.
+
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=75mm]{./6.png}
@@ -526,9 +534,10 @@ hist(cor_case, main = "Histogram of pair-to-pair inter-array correlation in
   \end{center}
 \end{figure}
 
-Sequentially, it was decided to check the distribution of case methylation data.
 The scatter plot (Figure 4) of all case samples indicates, that our data has 
-distorted values in respect of all case samples mean. 
+distorted values in respect of all case samples mean. It demonstrates two 
+outliers in standard deviation from methylation mean. For further analysis we 
+separated case data into "bipolar" and "schizophrenia" cases.
 
 ```{r include=FALSE, eval=FALSE}
 mean_case <- apply(cor_case,2,mean)
@@ -540,11 +549,6 @@ column_sd <- (mean_case-mean(mean_case))/SDev
 plot(column_sd, main = "Scatter plot of each sample standard deviation from mean
      in case samples", xlab = "Sample", ylab = "Deviation") 
 ```
-
-The scatter plot (Figure 4) demonstrates two outliers in standard deviation from 
-methylation
-mean. For further analysis we separated case data into "bipolar" and 
-"schizophrenia" cases.
 
 ```{r include=FALSE, eval=FALSE}
 case_bipolar <- list()
@@ -619,8 +623,8 @@ plot(column_sd, main = "Scatter plot of each sample standard deviation from mean
 The scatter plot (Figure 6) of schizophrenia cases also does not show any wide 
 variations from the mean methylation value.
 
-This separated each case data indicated that there is no need to remove any
-data.
+These separated data cases indicated that there is no need to remove any 
+samples.
 
 ```{r include=FALSE, eval=FALSE}
 
@@ -652,7 +656,7 @@ densityPlot(beta, sampGroups=groups, main = "Density of methylation intensity
 ```
 
 Comparison of methylation in density plot (Figure 8) indicates high data quality
-because no large deviations are visible from the rest of samples. Also 
+because no notable deviations are visible from the rest of the samples. Also 
 significant alterations between different diagnosis are not present.
 
 \begin{figure}[!h]
