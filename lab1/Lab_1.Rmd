@@ -649,10 +649,20 @@ PlotQC plot (Figure 7) demonstrates that bad samples do not exist in our data
 set.
 
 ```{r include=FALSE, eval=FALSE}
-
+#Simple density plot
 groups <- MSet.swan$diagnosis
 densityPlot(beta, sampGroups=groups, main = "Density of methylation intensity
             by different diagnosis groups"))
+
+#Density plot of mean values
+means_bipol <- rowMeans(getBeta(MSet.swan_bipol))
+means_schi <- rowMeans(getBeta(MSet.swan_schi))
+means_control <- rowMeans(getBeta(MSet.swan_control))
+mean_values <- matrix(c(means_bipol, means_schi, means_control), ncol = 3)
+colnames(mean_values) <- c("bipolar", "Schizophrenia", "control")
+groups <- c("bipolar", "schizophrenia", "control")
+densityPlot(mean_values, sampGroups=groups, main = "Density of methylation intensity
+            by different diagnosis groups (position means)" )
 ```
 
 Comparison of methylation in density plots (Figure 8) indicates high data quality
