@@ -644,6 +644,26 @@ getQC, addQC, and plotQC functions was estimated.
 PlotQC plot (Figure 7) demonstrates that bad samples do not exist in our data 
 set.
 
+```{r include=FALSE, eval=FALSE}
+
+groups <- MSet.swan$diagnosis
+densityPlot(beta, sampGroups=groups, main = "Density of methylation intensity
+            by different diagnosis groups"))
+```
+
+Comparison of methylation in density plot (Figure 8) indicates high data quality
+because no large deviations are visible from the rest of samples. Also 
+significant alterations between different diagnosis are not present.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=90mm]{./12.png}
+    \caption{
+      The density plot of methylation intensity.
+    }
+  \end{center}
+\end{figure}
+
 ## Saving data
 
 ```{r include=FALSE, eval=FALSE}
