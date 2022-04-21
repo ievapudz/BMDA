@@ -391,7 +391,7 @@ visually highlights the data outliers (under -3 limit of deviation).
 
 ```{r include=FALSE, eval=FALSE}
 limit <- -3
-outliers <- dimnames(beta)[[2]][numbersd<limit]
+outliers <- dimnames(beta)[[2]][column_sd<limit]
 #removing outliers
 beta <- beta[,!(column_sd<limit)]
 MSet.swan <- MSet.swan[,!(colnames(MSet.swan) %in% outliers)]
@@ -450,7 +450,7 @@ No outliers were left in the recalculated scatter plot (Figure 2).
 
 ## Quality control
 
-After all data manipulations, our set has 97 samples with 861001 positions.
+After all data manipulations, our set has 97 samples with 858083 positions.
 
 ```{r include=FALSE, eval=FALSE}
 control_pos <- list()
