@@ -1,0 +1,38 @@
+#--- intro ---------------------------------------------------------------------
+
+Užduotys aprašytos žemiau.
+Kaip ir anksčiau - kiekvienai užduočiai atsakyti reikėtų trumpo aprašymo, rezultatų (pvz paveikslėlio forma) ir jų interpretacijos.
+Rezultatus rekomenduoju apjungti į bendrą ataskaitą (pridėti prie praeitos duomenų paruošimo ataskaitos, vietoje to jog kurti naują).
+Atliekant šią užduotį naudokites turime donorų "meta informacija" (rūkantis / nerūkantis, serga neserga, amžius, lytis, sentrix ID, ir t.t.)
+
+#--- klasterizavimas -----------------------------------------------------------
+
+1. Atlikti Hierarchinį klasterizavimą mėginiams savo duomenyse.
+   - hclust() funkcija R. Galite paskaityti help(hclust).
+   - Pasirinktie atstumo matą. Aš rekomenduočiau koreliacinį atstumą (1 - cor()), bet galite pasirinkti ir kitus.
+   - Pasirinkite grupių sujungimo (linkate) metodą. Aš rekomenduočiau "complete" arba "ward", bet pasirinkite pagal save ir pagrįskite.
+   - Atvaizduokite rezultatus naudodami plotDendroAndColors() funkciją (iš WGCNA paketo). Mėginių meta-informacija turėtų būti atvaizduota spalvomis po dendrograma. Paskaitykite help().
+   - Mėginių informacijos pavertimui į spalvas galite naudoti numbers2colors() arba labels2colors() funkcijomis esančiomis WGCNA pakete.
+   - Aprašykite rezultatus ir tendencijas; kokia informacija apie mėginius daro didžiausią įtaką klasterizavimui, kiek klasterių išskirtumėte, ar viduje atskirų klasterių matomi smulkesni susiskirstymai, ir t.t. ir pan.
+   - Šiame žingsnyje taip pat galite aptikti papildomų išskirčių - mėginių kurie patenka į savo atskirą klasterį ir yra nepanašūs į likusiuosius. Jeigu taip bus - galite jas pašalinti.
+
+2. Atvaizduokite klasterius "heatmap" pavidalu.
+   - R turi standartinę heatmap() funkcija. Bet norint papildomų taškų pasiieškokite papildomų paketų, kurie leidžia sukurti daug išsamesnius/gražesnius/interaktyvius heatmap'us.
+   - Jums NEIŠEIS atsivaizduoti visų eilučių (modifikacijos pozicijų genome), todėl pasirinkite tik poaibį.
+   - Dažnas pasirinkimas - top N labiausiai variabilių pozicijų (N pasirinkite patys). Bet žinoma pagalvokite ir išbandykite kitokius eilučių atrinkimo būdus, kurie jums pasirodys įdomūs. Gali būti pvz visos eilutės susijusios su tam tikrai genais, ir t.t. ir pan.
+   - Heatmap viduje modifikacijos įverčius rekomenduoju standartizuoti, tai, kad kiek viena tirta pozicija (eilutė) turėtų modifikacijos vidurkį 0, ir standartinį nuokrypį 1. Tokiu būdu heatmap atvaizduos dinamiką tarp mėginių, o ne bendrą vidutinio modifikacijos lygio skirtumą tarp pozicijų. Pamatyti skirtumui pabandykite atvaizduoti prieš ir po standartizavimo.
+   - Kaip ir prieš tai - būtų gerai jei mėginių meta informacija būtų atvaizduota po heatmap dendrograma kaip spalvos (jeigu tą leis jūsų pasirinkta heatmap implementacija) arba įrašyta tekstu į mėginių pavadinimus.
+   - Aprašykite ir interpretuokite rezultatus.
+   - Heatmap paveikslėlio pavyzdys: https://www.biorxiv.org/content/biorxiv/early/2015/11/25/032185/F1.large.jpg
+
+3. Palyginkite tikrus ir nuspėtus amžius bei senėjimo "pagreitėjimą".
+   - Naudodamiesi BioConductor methylClock paketu visiems savo mėginiams gaukite įvairių DNR-modifikacijos "laikrodžių" amžiaus spėjimus savo mėginiams.
+   - Koks buvo laikrodžių tikslumas, kuris laikrodis davė tiksliausius amžiaus spėjimus, kuris mažiausiai tikslius.
+   - Patyrinėkite kaip nuspėti amžiai skiriasi tarp kokių nors mėginių grupių. Pvz - ar rūkančiųjų "biologinis" amžius vidutiniškai didesnis už nerūkančiųjų, ir pan.
+
+
+#--- idėjos papildomiems taškams gauti -----------------------------------------
+
+- Išbandykite kitus/naujesnius klasterizavimo metodus, pvz "t-SNE".
+- Padarykite papildomų savo sugalvotų analizių (nebūtinai profesionaliai). Pvz 1) heatmap pavaizduokite kaip atrodo laikrodžių naudojamų pozicijų DNR modifikacija, mėginius išdėstant nuo jauniausio iki seniausio. Pvz 2) pritaikykite klasterizavimą pozicijos o ne mėginiams, pvz suklasterizuojant CpG salas; pažiųrint ar yra CpG salų "grupių" DNR modifikacija koreliuoja.
+
