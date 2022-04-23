@@ -1,4 +1,11 @@
+lab1/.RDataTmp
+lab2/.RDataTmp
+./data/
+./lab0/.RData
+./lab0/.Rhistory
+./lab1/.RData
+./lab1/.Rhistory
+.Rhistory
+lab0/.RData
+lab1/.RData
 data/
-lab*/.Rdata
-lab*/.Rhistory
-.Rproj.user

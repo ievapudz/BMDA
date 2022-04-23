@@ -20,7 +20,7 @@ Atliekant šią užduotį naudokites turime donorų "meta informacija" (rūkanti
    - R turi standartinę heatmap() funkcija. Bet norint papildomų taškų pasiieškokite papildomų paketų, kurie leidžia sukurti daug išsamesnius/gražesnius/interaktyvius heatmap'us.
    - Jums NEIŠEIS atsivaizduoti visų eilučių (modifikacijos pozicijų genome), todėl pasirinkite tik poaibį.
    - Dažnas pasirinkimas - top N labiausiai variabilių pozicijų (N pasirinkite patys). Bet žinoma pagalvokite ir išbandykite kitokius eilučių atrinkimo būdus, kurie jums pasirodys įdomūs. Gali būti pvz visos eilutės susijusios su tam tikrai genais, ir t.t. ir pan.
-   - Heatmap viduje modifikacijos įverčius rekomenduoju standartizuoti, tai, kad kiek viena tirta pozicija (eilutė) turėtų modifikacijos vidurkį 0, ir standartinį nuokrypį 1. Tokiu būdu heatmap atvaizduos dinamiką tarp mėginių, o ne bendrą vidutinio modifikacijos lygio skirtumą tarp pozicijų. Pamatyti skirtumui pabandykite atvaizduoti prieš ir po standartizavimo.
+   - Heatmap viduje modifikacijos įverčius rekomenduoju standartizuoti, tai, kad kiekviena tirta pozicija (eilutė) turėtų modifikacijos vidurkį 0, ir standartinį nuokrypį 1. Tokiu būdu heatmap atvaizduos dinamiką tarp mėginių, o ne bendrą vidutinio modifikacijos lygio skirtumą tarp pozicijų. Pamatyti skirtumui pabandykite atvaizduoti prieš ir po standartizavimo.
    - Kaip ir prieš tai - būtų gerai jei mėginių meta informacija būtų atvaizduota po heatmap dendrograma kaip spalvos (jeigu tą leis jūsų pasirinkta heatmap implementacija) arba įrašyta tekstu į mėginių pavadinimus.
    - Aprašykite ir interpretuokite rezultatus.
    - Heatmap paveikslėlio pavyzdys: https://www.biorxiv.org/content/biorxiv/early/2015/11/25/032185/F1.large.jpg
