@@ -699,9 +699,9 @@ install.packages('WGCNA')
 
 ```{r include=FALSE, eval=FALSE}
 # Loading needed packages
-library(WGCNA)
-library(RColorBrewer)
 library(knitr)
+library(RColorBrewer)
+library(WGCNA)
 ```
 
 For the second task it was required to perform data clustering.
@@ -761,11 +761,29 @@ dist_m[lower.tri(dist_m)] <- t(dist_m)[lower.tri(dist_m)]
 ```
 
 ```{r include=FALSE, eval=FALSE}
+# Constructing more explanatory sample names
+dendrogram_names <- c()
+for(i in 1:length(sample_annot@colData$id)) {
+  sample_name <- paste(sample_annot@colData$diagnosis[i],
+    sample_annot@colData$sex[i],
+    sample_annot@colData$age[i],
+    sample_annot@colData$race[i],
+    sample_annot@colData$pmi[i],
+    sep='_')
+  dendrogram_names <- append(dendrogram_names, sample_name)
+}
+```
+
+
+```{r include=FALSE, eval=FALSE}
 # Saving sample names for cluster plotting
-rownames(dist_m) <- colnames(beta)
-colnames(dist_m) <- colnames(beta)
+#rownames(dist_m) <- colnames(beta)
+#colnames(dist_m) <- colnames(beta)
 #rownames(dist_m) <- sample_annot@colData$diagnosis
 #colnames(dist_m) <- sample_annot@colData$diagnosis
+
+rownames(dist_m) <- dendrogram_names
+colnames(dist_m) <- dendrogram_names
 dist_m
 ```
 
@@ -780,8 +798,9 @@ clustered <- hclust(as.dist(dist_m), method="ward.D")
 
 ```{r include=FALSE, eval=FALSE}
 # Plotting dendrogram
-dyn_clustered <- cutreeDynamic(dendro=clustered,  method='tree')
-table(dyn_clustered)
+
+#dyn_clustered <- cutreeDynamic(dendro=clustered, method='tree')
+#table(dyn_clustered)
 #colors <- labels2colors(dyn_clustered, colorSeq=c('#666666','#333333'))
 
 colors <- c()
