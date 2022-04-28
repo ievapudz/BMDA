@@ -777,14 +777,10 @@ for(i in 1:length(sample_annot@colData$id)) {
 
 ```{r include=FALSE, eval=FALSE}
 # Saving sample names for cluster plotting
-#rownames(dist_m) <- colnames(beta)
-#colnames(dist_m) <- colnames(beta)
-#rownames(dist_m) <- sample_annot@colData$diagnosis
-#colnames(dist_m) <- sample_annot@colData$diagnosis
 
 rownames(dist_m) <- dendrogram_names
 colnames(dist_m) <- dendrogram_names
-dist_m
+
 ```
 
 Data clustering was performed using `hclust` function with `ward.d` linkage
@@ -803,25 +799,102 @@ clustered <- hclust(as.dist(dist_m), method="ward.D")
 #table(dyn_clustered)
 #colors <- labels2colors(dyn_clustered, colorSeq=c('#666666','#333333'))
 
-colors <- c()
+colors_cases <- c()
 for(i in 1:length(sample_annot@colData$diagnosis)) {
   if(sample_annot@colData$diagnosis[i] == 'control') {
     # control - light gray
-    colors <- append(colors, '#E0EEEE')
+    colors_cases <- append(colors_cases, '#E0EEEE')
   }
   if(sample_annot@colData$diagnosis[i] == 'bipolar') {
     # bipolar - medium gray
-    colors <- append(colors, '#C1CDCD')
+    colors_cases <- append(colors_cases, '#C1CDCD')
   }
   if(sample_annot@colData$diagnosis[i] == 'schizophrenia') {
     # schizophrenia - dark gray
-    colors <- append(colors, '#838B8B')
+    colors_cases <- append(colors_cases, '#838B8B')
   }
 }
 
-plotDendroAndColors(clustered, colors, 
+colors_sex <- c()
+for(i in 1:length(sample_annot@colData$sex)) {
+  if(sample_annot@colData$sex[i] == 'female') {
+    # female - red
+    colors_sex <- append(colors_sex, '#FF6A6A')
+  }
+  if(sample_annot@colData$sex[i] == 'male') {
+    # male - blue
+    colors_sex <- append(colors_sex, '#838B8B')
+  }
+}
+
+colors_age <- c()
+for(i in 1:length(sample_annot@colData$age)) {
+  if(sample_annot@colData$age[i] < 41) {
+    # age group - 23-40
+    colors_age <- append(colors_age, '#D1EEEE')
+  }
+  if(sample_annot@colData$age[i] >= 41 && sample_annot@colData$age[i] < 59) {
+    # age group - 41-58
+    colors_age <- append(colors_age, '#B4CDCD')
+  }
+  if(sample_annot@colData$age[i] >= 60) {
+    # age group - 60-77
+    colors_age <- append(colors_age, '#7A8B8B')
+  }
+}
+
+colors_race <- c()
+for(i in 1:length(sample_annot@colData$race)) {
+  if(!is.na(sample_annot@colData$race[i])){
+    if(sample_annot@colData$race[i] == 'white') {
+      colors_race <- append(colors_race, '#FF6A6A')
+    }
+    if(sample_annot@colData$race[i] == 'hispanic') {
+      colors_race <- append(colors_race, '#CD5555')
+    }
+    if(sample_annot@colData$race[i] == 'black') {
+      colors_race <- append(colors_race, '#8B3A3A')
+    }
+  } else {
+    colors_race <- append(colors_race, '#FFFFFF')
+  }
+}
+
+colors_pmi <- c()
+for(i in 1:length(sample_annot@colData$pmi)) {
+  if(!is.na(sample_annot@colData$pmi[i])){
+    if(sample_annot@colData$pmi[i] < 11) {
+      colors_pmi <- append(colors_pmi, '#CD5C5C')
+    }
+    if(sample_annot@colData$pmi[i] >= 11 && sample_annot@colData$pmi[i] < 18) {
+      colors_pmi <- append(colors_pmi, '#FF6A6A')
+    }
+    if(sample_annot@colData$pmi[i] >= 18 && sample_annot@colData$pmi[i] < 25) {
+      colors_pmi <- append(colors_pmi, '#EE6363')
+    }
+    if(sample_annot@colData$pmi[i] >= 25 && sample_annot@colData$pmi[i] < 32) {
+      colors_pmi <- append(colors_pmi, '#CD5555')
+    }
+    if(sample_annot@colData$pmi[i] >= 32) {
+      colors_pmi <- append(colors_pmi, '#8B3A3A')
+    }
+  } else {
+    colors_pmi <- append(colors_pmi, '#FFFFFF')
+  }
+}
+length(colors_pmi)
+
+colors_m <- cbind(colors_sex, colors_cases, colors_race, colors_age, colors_pmi)
+colors_m
+
+plotDendroAndColors(clustered, colors_m, 
                     main="Dendrogram of samples' clustering",
-                    groupLabels=c(''))
+                    groupLabels=c('sex', 'case', 'race', 'age', 'PMI'),
+                    colorHeightBase=0.05,
+                    cex.dendroLabels=0.75,
+                    cex.colorLabels=1,
+                    cex.lab=0.75,
+                    cex.main=1)
 ```
 \begin{figure}[!h]
   \begin{center}
@@ -834,7 +907,30 @@ plotDendroAndColors(clustered, colors,
 \end{figure}
 
 The dendrogram (Figure 9) shows three distinguished groups after clusterisation.
-The groups are denoted by colours: dark, medium, and light gray. 
+It is worth noting that NA values are marked as white color (such examples can
+be observed in race and post-mortal interval colouring)
+
+Clusters were analysed with the respect of sex, case, race, age, and post-mortal
+interval groups. The main two clusters were distinguished based on sex. Within
+these two main clusters, samples were clustered into small case groups.
+The case groups are denoted by colours: dark, medium, and light greenish gray. 
+
+The majority of samples had race 'white' (marked as the lightest pink colour).
+Race 'hispanic' is marked with a medium pink colour, and race 'black' is 
+marked with the darkest pink colour. Due to such imbalance, clusterisation 
+analysis in regards of 'race' feature cannot give any strong conclusions.
+
+There are 3 age intervals that are noted with colours from lightest to darkest
+greenish gray: 23-40, 41-58, 59-77. The biggest cluster of the first age group
+can be observed within female samples. This cluster is composed of bipolar and
+schizophrenia case samples. Another more significant cluster can be observed
+within males of the middle age group. This cluster is composed of all cases, 
+however the majority of cases are schizophrenic. The last age group is scattered
+in the whole range of the dendogram (in all clusters of the tree).
+
+The post-mortem interval colouring (from youngest to oldest brightness in colour
+decreases) shows that most of the samples were collected within 18 time units 
+after death. 
 
 ```{r include=FALSE, eval=FALSE}
 # Collecting sample indeces for cluster analysis
