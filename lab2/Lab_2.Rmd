@@ -828,7 +828,6 @@ cluster_3_indeces <- clustered$order[53:97]
 sample_annot <- readRDS(file='../data/GSE112179_clear.rds')
 ```
 
-
 ```{r include=FALSE, eval=FALSE}
 sample_annot@colData$diagnosis[cluster_1_indeces]
 sample_annot@colData$diagnosis[cluster_2_indeces]
