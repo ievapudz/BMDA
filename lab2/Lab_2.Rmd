@@ -709,6 +709,7 @@ For the second task it was required to perform data clustering.
 ```{r include=FALSE, eval=FALSE}
 # Loading prepared data for further analysis
 beta <- readRDS(file='../data/GSE112179_beta_matrix.rds')
+sample_annot <- readRDS(file='../data/GSE112179_clear.rds')
 ```
 
 Removing left-over samples from beta matrix
@@ -823,10 +824,6 @@ cluster_2_indeces <- clustered$order[25:53]
 cluster_3_indeces <- clustered$order[53:97]
 ```
 
-```{r include=FALSE, eval=FALSE}
-# Loading prepared data for further analysis
-sample_annot <- readRDS(file='../data/GSE112179_clear.rds')
-```
 
 ```{r include=FALSE, eval=FALSE}
 sample_annot@colData$diagnosis[cluster_1_indeces]
