@@ -795,10 +795,6 @@ clustered <- hclust(as.dist(dist_m), method="ward.D")
 ```{r include=FALSE, eval=FALSE}
 # Plotting dendrogram
 
-#dyn_clustered <- cutreeDynamic(dendro=clustered, method='tree')
-#table(dyn_clustered)
-#colors <- labels2colors(dyn_clustered, colorSeq=c('#666666','#333333'))
-
 colors_cases <- c()
 for(i in 1:length(sample_annot@colData$diagnosis)) {
   if(sample_annot@colData$diagnosis[i] == 'control') {
@@ -936,7 +932,7 @@ after death.
 # Collecting sample indeces for cluster analysis
 cluster_1_indeces <- clustered$order[1:24]
 cluster_2_indeces <- clustered$order[25:53]
-cluster_3_indeces <- clustered$order[53:97]
+cluster_3_indeces <- clustered$order[54:97]
 ```
 
 
@@ -972,17 +968,57 @@ cluster_3_schizo <- sum(sample_annot@colData$diagnosis[cluster_3_indeces] ==
                    "schizophrenia")
 ```
 
-```{r include=FALSE, eval=FALSE}
-cluster_tab <- matrix(c(dg_control, dg_bipolar, dg_schizo, 
-                        sum(dg_control, dg_bipolar, dg_schizo),
-                        mg_control, mg_bipolar, mg_schizo, 
-                        sum(mg_control, mg_bipolar, mg_schizo),
-                        lg_control, lg_bipolar, lg_schizo, 
-                        sum(lg_control, lg_bipolar, lg_schizo)), ncol=4, 
-                        byrow=TRUE)
-colnames(cluster_tab) <- c('Control','Bipolar','Schizophrenia', 'Overall')
-rownames(cluster_tab) <- c('Dark gray','Medium gray','Light gray')
-cluster_tab <- as.table(cluster_tab)
+
+```{r}
+variances <- c()
+for(i in 1:length(beta[,1])) {
+  variances <- append(variances, var(beta[i,]))
+}
+
+length(variances)
+```
+
+```{r}
+saveRDS(variances, file='../data/GSE112179_beta_variances.rgcs')
+```
+
+```{r}
+ordered <- order(-variances)
+N <- 100
+top_N_positions <- ordered[1:N]
+
+top_N_beta <- cbind(beta[top_N_positions,cluster_1_indeces], 
+                    beta[top_N_positions,cluster_2_indeces],
+                    beta[top_N_positions,cluster_3_indeces])
+
+heatmap(top_N_beta)
+```
+
+
+```{r}
+top_N_beta_z <- top_N_beta
+
+for(i in 1:length(top_N_beta[,1])) {
+  top_N_beta_z[i,] <- (top_N_beta[i,]-mean(top_N_beta[i,]))/sd(top_N_beta[i,])
+}
+
+heatmap(top_N_beta_z)
+```
+
+```{r}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("methylclockData")
+BiocManager::install("methylclock")
+```
+
+```{r}
+library(methylclockData)
+library("methylclock")
+```
+```{r}
+age <- DNAmAge(beta)
 ```
 
 The first group is overall composed of 24 samples. This 
