@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  30 APR 2022 17:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  30 APR 2022 20:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -324,8 +324,7 @@ f
 File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count285
 \l__pdf_internal_box=\box54
-)
-No file Lab_2.aux.
+) (./Lab_2.aux)
 \openout1 = `Lab_2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 94.
@@ -371,6 +370,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 94.
 LaTeX Info: Redefining \pageref on input line 94.
 LaTeX Info: Redefining \nameref on input line 94.
+(./Lab_2.out) (./Lab_2.out)
 \@outlinefile=\write3
 \openout3 = `Lab_2.out'.
 
@@ -458,22 +458,22 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 172.
 [2] [3]
-<./1.png, id=50, 531.1845pt x 317.38576pt>
+<./1.png, id=121, 531.1845pt x 317.38576pt>
 File: ./1.png Graphic file (type png)
 <use ./1.png>
 Package pdftex.def Info: ./1.png  used on input line 306.
 (pdftex.def)             Requested size: 213.39401pt x 127.50414pt.
-<./2.png, id=52, 539.616pt x 320.99925pt>
+<./2.png, id=123, 539.616pt x 320.99925pt>
 File: ./2.png Graphic file (type png)
 <use ./2.png>
 Package pdftex.def Info: ./2.png  used on input line 307.
 (pdftex.def)             Requested size: 213.39711pt x 126.9427pt.
-<./3.png, id=53, 532.99126pt x 317.38576pt>
+<./3.png, id=124, 532.99126pt x 317.38576pt>
 File: ./3.png Graphic file (type png)
 <use ./3.png>
 Package pdftex.def Info: ./3.png  used on input line 340.
 (pdftex.def)             Requested size: 213.39604pt x 127.07312pt.
-<./4.png, id=54, 549.252pt x 325.81725pt>
+<./4.png, id=125, 549.252pt x 325.81725pt>
 File: ./4.png Graphic file (type png)
 <use ./4.png>
 Package pdftex.def Info: ./4.png  used on input line 341.
@@ -489,27 +489,27 @@ l.355 \newpage
                                                   \__shipout_drop_firstpage_...
 l.355 \newpage
                <./1.png> <./2.png> <./3.png> <./4.png>]
-<./5.png, id=67, 525.162pt x 317.38576pt>
+<./5.png, id=137, 525.162pt x 317.38576pt>
 File: ./5.png Graphic file (type png)
 <use ./5.png>
 Package pdftex.def Info: ./5.png  used on input line 369.
 (pdftex.def)             Requested size: 213.3946pt x 128.96669pt.
-<./7.png, id=68, 539.616pt x 317.38576pt>
+<./7.png, id=138, 539.616pt x 317.38576pt>
 File: ./7.png Graphic file (type png)
 <use ./7.png>
 Package pdftex.def Info: ./7.png  used on input line 370.
 (pdftex.def)             Requested size: 213.39711pt x 125.5137pt.
-<./6.png, id=69, 533.5935pt x 320.397pt>
+<./6.png, id=139, 533.5935pt x 320.397pt>
 File: ./6.png Graphic file (type png)
 <use ./6.png>
 Package pdftex.def Info: ./6.png  used on input line 389.
 (pdftex.def)             Requested size: 213.40105pt x 128.13696pt.
-<./8.png, id=70, 539.01375pt x 317.38576pt>
+<./8.png, id=140, 539.01375pt x 317.38576pt>
 File: ./8.png Graphic file (type png)
 <use ./8.png>
 Package pdftex.def Info: ./8.png  used on input line 390.
 (pdftex.def)             Requested size: 213.39746pt x 125.65414pt.
-<./9.png, id=71, 536.60475pt x 314.3745pt>
+<./9.png, id=141, 536.60475pt x 314.3745pt>
 File: ./9.png Graphic file (type png)
 <use ./9.png>
 Package pdftex.def Info: ./9.png  used on input line 406.
@@ -517,7 +517,7 @@ Package pdftex.def Info: ./9.png  used on input line 406.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./10.png, id=72, 540.21825pt x 314.3745pt>
+<./10.png, id=142, 540.21825pt x 314.3745pt>
 File: ./10.png Graphic file (type png)
 <use ./10.png>
 Package pdftex.def Info: ./10.png  used on input line 419.
@@ -525,7 +525,7 @@ Package pdftex.def Info: ./10.png  used on input line 419.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./11.png, id=73, 599.23875pt x 311.36325pt>
+<./11.png, id=143, 599.23875pt x 311.36325pt>
 File: ./11.png Graphic file (type png)
 <use ./11.png>
 Package pdftex.def Info: ./11.png  used on input line 437.
@@ -544,12 +544,12 @@ l.451
                                                   \__shipout_drop_firstpage_...
 l.451 
        <./5.png> <./7.png> <./6.png> <./8.png>]
-<./12.png, id=86, 560.0925pt x 371.58826pt>
+<./12.png, id=155, 560.0925pt x 371.58826pt>
 File: ./12.png Graphic file (type png)
 <use ./12.png>
 Package pdftex.def Info: ./12.png  used on input line 454.
 (pdftex.def)             Requested size: 213.39287pt x 141.57355pt.
-<./13.png, id=87, 560.69475pt x 366.168pt>
+<./13.png, id=156, 560.69475pt x 366.168pt>
 File: ./13.png Graphic file (type png)
 <use ./13.png>
 Package pdftex.def Info: ./13.png  used on input line 455.
@@ -581,7 +581,7 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 4
 (/Users/ieva/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<./14.png, id=99, 1397.22pt x 865.2325pt>
+<./14.png, id=169, 1397.22pt x 865.2325pt>
 File: ./14.png Graphic file (type png)
 <use ./14.png>
 Package pdftex.def Info: ./14.png  used on input line 486.
@@ -595,23 +595,60 @@ has been already used, duplicate ignored
                                                   \__shipout_drop_firstpage_...
 l.535 
        <./12.png> <./13.png>]
+<./Horvath.png, id=180, 1204.5pt x 1204.5pt>
+File: ./Horvath.png Graphic file (type png)
+<use ./Horvath.png>
+Package pdftex.def Info: ./Horvath.png  used on input line 567.
+(pdftex.def)             Requested size: 42.67642pt x 42.67642pt.
+<./Hannum.png, id=181, 1204.5pt x 1204.5pt>
+File: ./Hannum.png Graphic file (type png)
+<use ./Hannum.png>
+Package pdftex.def Info: ./Hannum.png  used on input line 568.
+(pdftex.def)             Requested size: 42.67642pt x 42.67642pt.
 
-! Package inputenc Error: Unicode character ́ (U+0301)
-(inputenc)                not set up for use with LaTeX.
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-See the inputenc package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.558 CpGs is set to compute each clock (Pelegı́
-                                                  -Sisó et al., 2021). The 
+[8pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) 
+has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.584 I
+       t was decided to run ANOVA tests for each methylation clock applied to <
+./14.png>] [9pdfTeX warning (ext4): destination with the same identifier (name{
+figure.10}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.636 \end{document}
+                     <./Horvath.png> <./Hannum.png>] (./Lab_2.aux)
+Package rerunfilecheck Info: File `Lab_2.out' has not changed.
+(rerunfilecheck)             Checksum: 4CFC10703BD282A796BD3A628742D862;3854.
+ ) 
 Here is how much of TeX's memory you used:
- 10288 strings out of 480539
- 149517 string characters out of 5902059
- 455930 words of memory out of 5000000
- 27705 multiletter control sequences out of 15000+600000
- 450667 words of font info for 67 fonts, out of 8000000 for 9000
+ 10371 strings out of 480539
+ 150771 string characters out of 5902059
+ 457183 words of memory out of 5000000
+ 27761 multiletter control sequences out of 15000+600000
+ 451084 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 60i,7n,66p,239b,329s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,7n,66p,430b,329s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/Users/ieva/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users
+/ieva/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/ieva/
+Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/ieva/Library/Ti
+nyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/ieva/Library/TinyTeX/texm
+f-dist/fonts/enc/dvips/lm/lm-mathsy.enc}</Users/ieva/Library/TinyTeX/texmf-dist
+/fonts/type1/public/lm/lmbx12.pfb></Users/ieva/Library/TinyTeX/texmf-dist/fonts
+/type1/public/lm/lmmi10.pfb></Users/ieva/Library/TinyTeX/texmf-dist/fonts/type1
+/public/lm/lmmi7.pfb></Users/ieva/Library/TinyTeX/texmf-dist/fonts/type1/public
+/lm/lmr10.pfb></Users/ieva/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr
+12.pfb></Users/ieva/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb>
+</Users/ieva/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/
+ieva/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/ieva/L
+ibrary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/ieva/Library
+/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on Lab_2.pdf (9 pages, 1182684 bytes).
+PDF statistics:
+ 283 PDF objects out of 1000 (max. 8388607)
+ 214 compressed objects within 3 object streams
+ 67 named destinations out of 1000 (max. 500000)
+ 249 words of extra memory for PDF output out of 10000 (max. 10000000)
 
-!  ==> Fatal error occurred, no output PDF file produced!
