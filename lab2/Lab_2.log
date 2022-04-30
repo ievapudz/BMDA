@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  30 APR 2022 20:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  30 APR 2022 21:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -594,40 +594,47 @@ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.535 
-       <./12.png> <./13.png>]
-<./Horvath.png, id=180, 1204.5pt x 1204.5pt>
+       <./12.png> <./13.png>] [8pdfTeX warning (ext4): destination with the sam
+e identifier (name{figure.9}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.575 
+       <./14.png>]
+<./Horvath.png, id=188, 1204.5pt x 1204.5pt>
 File: ./Horvath.png Graphic file (type png)
 <use ./Horvath.png>
-Package pdftex.def Info: ./Horvath.png  used on input line 567.
-(pdftex.def)             Requested size: 42.67642pt x 42.67642pt.
-<./Hannum.png, id=181, 1204.5pt x 1204.5pt>
+Package pdftex.def Info: ./Horvath.png  used on input line 585.
+(pdftex.def)             Requested size: 213.38211pt x 213.38211pt.
+<./Hannum.png, id=189, 1204.5pt x 1204.5pt>
 File: ./Hannum.png Graphic file (type png)
 <use ./Hannum.png>
-Package pdftex.def Info: ./Hannum.png  used on input line 568.
-(pdftex.def)             Requested size: 42.67642pt x 42.67642pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[8pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) 
-has been already used, duplicate ignored
+Package pdftex.def Info: ./Hannum.png  used on input line 586.
+(pdftex.def)             Requested size: 213.38211pt x 213.38211pt.
+<./Levine.png, id=190, 1204.5pt x 1204.5pt>
+File: ./Levine.png Graphic file (type png)
+<use ./Levine.png>
+Package pdftex.def Info: ./Levine.png  used on input line 587.
+(pdftex.def)             Requested size: 213.38211pt x 213.38211pt.
+<./PedBE.png, id=191, 1204.5pt x 1204.5pt>
+File: ./PedBE.png Graphic file (type png)
+<use ./PedBE.png>
+Package pdftex.def Info: ./PedBE.png  used on input line 588.
+(pdftex.def)             Requested size: 213.38211pt x 213.38211pt.
+[9pdfTeX warning (ext4): destination with the same identifier (name{figure.10})
+ has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.584 I
+l.608 I
        t was decided to run ANOVA tests for each methylation clock applied to <
-./14.png>] [9pdfTeX warning (ext4): destination with the same identifier (name{
-figure.10}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.636 \end{document}
-                     <./Horvath.png> <./Hannum.png>] (./Lab_2.aux)
+./Horvath.png> <./Hannum.png> <./Levine.png> <./PedBE.png>] [10] (./Lab_2.aux)
 Package rerunfilecheck Info: File `Lab_2.out' has not changed.
 (rerunfilecheck)             Checksum: 4CFC10703BD282A796BD3A628742D862;3854.
  ) 
 Here is how much of TeX's memory you used:
- 10371 strings out of 480539
- 150771 string characters out of 5902059
- 457183 words of memory out of 5000000
- 27761 multiletter control sequences out of 15000+600000
+ 10386 strings out of 480539
+ 150997 string characters out of 5902059
+ 457187 words of memory out of 5000000
+ 27773 multiletter control sequences out of 15000+600000
  451084 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,7n,66p,430b,329s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -645,10 +652,10 @@ f-dist/fonts/enc/dvips/lm/lm-mathsy.enc}</Users/ieva/Library/TinyTeX/texmf-dist
 ieva/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/ieva/L
 ibrary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/ieva/Library
 /TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Lab_2.pdf (9 pages, 1182684 bytes).
+Output written on Lab_2.pdf (10 pages, 1364915 bytes).
 PDF statistics:
- 283 PDF objects out of 1000 (max. 8388607)
- 214 compressed objects within 3 object streams
- 67 named destinations out of 1000 (max. 500000)
- 249 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 291 PDF objects out of 1000 (max. 8388607)
+ 217 compressed objects within 3 object streams
+ 68 named destinations out of 1000 (max. 500000)
+ 259 words of extra memory for PDF output out of 10000 (max. 10000000)
 

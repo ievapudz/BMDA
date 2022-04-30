@@ -1051,12 +1051,30 @@ library(methylclockData)
 library(methylclock)
 ```
 
-Firstly, it was checked, which methylation clocks can be computed for the given data set if the threshold is set to be 80 percent (as default) of required CpGs to compute each clock.
+Firstly, it was checked, which methylation clocks can be computed for the given 
+data set if the threshold is set to be 80 percent (as default) of required CpGs 
+to compute each clock.
 
 It was checked with `checkClocks` and `DNAmAge` functions that the only clock 
 which could not be computed for the given data set was Bayesian Neural Network 
 (BNN) [@alfonso2020bayesian] (`DNAmAge` without age acceleration 
 wrote NAs in the output).
+
+Finally, four methylation clocks were chosen for further workflow: Horwath,
+Hannum, Levine, and PedBE. Generally, these clocks were chosen because they 
+were computed for the given data set and they predict chronological DNAm age in 
+years. Horvath's clock was trained on samples from various tissues, thus it
+is a universal choice for any kind of samples. Hannum's clock was trained
+on blood samples, nonetheless the tissue type does not match neural one, which
+was taken to collect our data set, blood is often taken as an indicator of
+the state of the whole organism. The same considerations can be applied to 
+support the choice of Levine's clock. 
+
+Horvath's skin and blood clock was removed due to its incompatibility with the
+tissue type of our data set and its poor performance (\(R^2=0.51\)). On the
+contrary PdeBE clock was kept, since it explained the most of variability
+(\(R^2=0.75\)) in the data set when compared to other clocks, nonetheless the 
+clock was trained on buccal epithelial swabs from patients 0-20 years old.
 
 ```{r include=FALSE, eval=FALSE}
 missing <- checkClocks(beta)
@@ -1088,16 +1106,27 @@ plotDNAmAge(pred_vs_real$PedBE, sample_annot@colData$age,
             tit="PedBE method")
 ```
 
+```{r include=FALSE, eval=FALSE}
+plotDNAmAge(pred_vs_real$skinHorvath, sample_annot@colData$age, 
+            tit="SkinHorvath's method")
+```
+
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=15mm]{./Horvath.png}
-    \includegraphics[width=15mm]{./Hannum.png}
+    \includegraphics[width=75mm]{./Horvath.png}
+    \includegraphics[width=75mm]{./Hannum.png}
+    \includegraphics[width=75mm]{./Levine.png}
+    \includegraphics[width=75mm]{./PedBE.png}
     \caption{
     Correlation between biological age predicted by methylation clocks and the 
     chronological age
     }
   \end{center}
 \end{figure}
+
+To conclude analysis of the predicted and chronological age correlation, the 
+best clocks were Hovarth's and PdeBE, which had \(R^2\) values equal to 0.74 and
+0.75 respectively.
 
 ## Checking how predicted ages differ between experimental groups
 
@@ -1137,11 +1166,17 @@ aov_PedBE <- aov(pred_vs_real$ageAcc.PedBE ~ diagnoses)
 summary(aov_PedBE)
 ```
 
-None of the ANOVA tests had p value lower than \(\alpha\), therefore there are 
-no differences in biological age between control, bipolar, and schizophrenic
-sample groups.
+\(p\) values of each test:
+\begin{itemize}
+  \item{Horvath 0.437}
+  \item{Hannum 0.338}
+  \item{Levine 0.599}
+  \item{PedBE 0.617}
+\end{itemize}
 
-EXTRA (try the flow with Euclidean distance)
+None of the ANOVA tests had \(p\) value lower than \(\alpha\), therefore there 
+are no differences in predicted biological age between control, bipolar, and 
+schizophrenic sample groups.
 
 # References {-}
 
