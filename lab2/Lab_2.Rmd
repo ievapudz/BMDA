@@ -75,6 +75,7 @@ psychosis
 # Data preparation
 
 ```{r setup, include=FALSE}
+install.packages("knitr")
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE, fig.pos='!H')
 ```
 
@@ -702,6 +703,7 @@ install.packages('WGCNA')
 library(knitr)
 library(RColorBrewer)
 library(WGCNA)
+library(ggplot2)
 ```
 
 For the second task it was required to perform data clustering.
@@ -909,7 +911,23 @@ be observed in race and post-mortal interval colouring)
 Clusters were analysed with the respect of sex, case, race, age, and post-mortal
 interval groups. The main two clusters were distinguished based on sex. Within
 these two main clusters, samples were clustered into small case groups.
-The case groups are denoted by colours: dark, medium, and light greenish gray. 
+The case groups are denoted by colours: dark, medium, and light greenish gray.
+
+The first group is overall composed of 24 samples. This 
+collection contains 15 samples of bipolar cases, 6 samples of schizophrenia,
+and 3 samples of control.
+
+Second and third groups are separated from the first group.
+
+The second group is made of 29 samples, of which 8 are control, 8 are bipolar, 
+and 13 are schizophrenia cases.
+
+The third group has got 44 samples: 21 belong to control, 9 to bipolar, and 
+15 to schizophrenia cases.
+
+Regarding these clustering results, it could be stated that within each
+of the clusters there is one dominant case. In the first cluster it is 
+bipolar, in the third - control, and in the second - schizophrenia.
 
 The majority of samples had race 'white' (marked as the lightest pink colour).
 Race 'hispanic' is marked with a medium pink colour, and race 'black' is 
@@ -968,8 +986,14 @@ cluster_3_schizo <- sum(sample_annot@colData$diagnosis[cluster_3_indeces] ==
                    "schizophrenia")
 ```
 
+# Heatmap plotting
 
-```{r}
+The second part of the second task was to provide heatmaps for the most varying
+positions in the data set. The variability of each position 
+was measured by calculating its variance within the samples.
+
+```{r include=FALSE, eval=FALSE}
+# Calculation of variance (long lasting calculation)
 variances <- c()
 for(i in 1:length(beta[,1])) {
   variances <- append(variances, var(beta[i,]))
@@ -978,11 +1002,13 @@ for(i in 1:length(beta[,1])) {
 length(variances)
 ```
 
-```{r}
+```{r include=FALSE, eval=FALSE}
+# Saving calculations
 saveRDS(variances, file='../data/GSE112179_beta_variances.rgcs')
 ```
 
-```{r}
+```{r include=FALSE, eval=FALSE}
+# Picking top N positions to plot in the heatmap
 ordered <- order(-variances)
 N <- 100
 top_N_positions <- ordered[1:N]
@@ -995,7 +1021,8 @@ heatmap(top_N_beta)
 ```
 
 
-```{r}
+```{r include=FALSE, eval=FALSE}
+# Standardizing the values of positions
 top_N_beta_z <- top_N_beta
 
 for(i in 1:length(top_N_beta[,1])) {
@@ -1005,7 +1032,15 @@ for(i in 1:length(top_N_beta[,1])) {
 heatmap(top_N_beta_z)
 ```
 
-```{r}
+# Clocks of DNA modification
+
+The third part of the second task requires to predict age of patients from which
+the samples were taken and compare predictions with the real data. Furthermore,
+the next step for the analysis is to check, whether there is a significant 
+difference of predicted age within each experimental group.
+
+```{r include=FALSE, eval=FALSE}
+# Installing required packages
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
@@ -1013,29 +1048,70 @@ BiocManager::install("methylclockData")
 BiocManager::install("methylclock")
 ```
 
-```{r}
+```{r include=FALSE, eval=FALSE}
 library(methylclockData)
-library("methylclock")
-```
-```{r}
-age <- DNAmAge(beta)
+library(methylclock)
 ```
 
-The first group is overall composed of 24 samples. This 
-collection contains 15 samples of bipolar cases, 6 samples of schizophrenia,
-and 3 samples of control.
+```{r include=FALSE, eval=FALSE}
+cpgs_missing <- checkClocks(beta)
+predicted_age <- DNAmAge(beta)
 
-Second and third groups are separated from the first group.
+pred_vs_real <- DNAmAge(beta, age=sample_annot@colData$age)
+pred_vs_real
+```
 
-The second group is made of 29 samples, of which 8 are control, 8 are bipolar, 
-and 13 are schizophrenia cases.
+```{r include=FALSE, eval=FALSE}
+plotDNAmAge(pred_vs_real$Horvath, sample_annot@colData$age)
+```
 
-The third group has got 44 samples: 21 belong to control, 9 to bipolar, and 
-15 to schizophrenia cases.
+```{r include=FALSE, eval=FALSE}
+plotDNAmAge(pred_vs_real$Hannum, sample_annot@colData$age, 
+            tit="Hannum's method")
+```
 
-Regarding these clustering results, it could be stated that within each
-of the clusters there is one dominant case. In the first cluster it is 
-bipolar, in the third - control, and in the second - schizophrenia.
+```{r include=FALSE, eval=FALSE}
+plotDNAmAge(pred_vs_real$Levine, sample_annot@colData$age, 
+            tit="Levine's method")
+```
+
+```{r include=FALSE, eval=FALSE}
+plotDNAmAge(pred_vs_real$PedBE, sample_annot@colData$age, 
+            tit="PedBE method")
+```
+## Checking how predicted ages differ between experimental groups
+
+The experimental groups of our research are control, bipolar, and 
+schizophrenia, therefore, predicted age values will be analysed with regards
+of this sample grouping.
+
+It was decided to run ANOVA tests for each methylation clock applied to
+our data set. 
+
+- Data: difference between DNA methylation age and chronological age.
+- Test: ANOVA.
+- Hipotheses:
+\[H_0: \mu_1=\mu_2=\mu_3\]
+\[H_1: \exists i,j\in\{1,2,3\}: i\neq j, \mu_i \neq \mu_j\]
+
+- Significance level: \(\alpha=0.1\).
+- \(p\) value \(> \alpha \rightarrow H_0\)
+  not rejected.
+
+```{r include=FALSE, eval=FALSE}
+diagnoses <- sample_annot@colData$diagnosis
+
+diagnoses
+
+aov_Horvath <- aov(pred_vs_real$ageAcc.Horvath ~ diagnoses)
+summary(aov_Horvath)
+
+aov_Hannum <- aov(pred_vs_real$ageAcc.Hannum ~ diagnoses)
+summary(aov_Hannum)
+
+# To be continued
+```
+
 
 EXTRA (try the flow with Euclidean distance)
 
