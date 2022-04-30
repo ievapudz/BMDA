@@ -74,8 +74,7 @@ psychosis
 
 # Data preparation
 
-```{r setup, include=FALSE}
-install.packages("knitr")
+```{r include=FALSE, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE, fig.pos='!H')
 ```
 
@@ -1053,32 +1052,84 @@ library(methylclockData)
 library(methylclock)
 ```
 
+Firstly, it was checked, which methylation clocks can be computed and which 
+cannot for the given data set if the threshold of 80% of required CpGs is set
+to compute each clock [@pelegi2021methylclock]. The threshold can be changed, 
+however, the default one (80%) was used in this analysis. 
+
+\begin{center}
+  \begin{tabular}{|l|r|}
+      Clock & Missing CpGs (\%) \\
+      \hline 
+      Horvath & 5.1  \\
+      Hannum & 11.3 \\
+      Levine & 0.2 \\
+      SkinHorvath & 0.0  \\
+      PedBE & 0.0  \\
+      WU & 3.6  \\
+      TL & 0.0  \\
+      BLUP & 0.5  \\
+      EN & 0.0  \\
+      \caption{
+        Table of missing CpG positions for each clock
+      }
+  \end{tabular}
+\end{center}
+
+It was checked with `checkClocks` and `DNAmAge` functions that the only clock 
+which could not be computed for the given data set was Bayesian Neural Network 
+(BNN) [@alfonso2020bayesian] (`DNAmAge` without age acceleration 
+wrote NAs in the output).
+
 ```{r include=FALSE, eval=FALSE}
-cpgs_missing <- checkClocks(beta)
+missing <- checkClocks(beta)
+missing
 predicted_age <- DNAmAge(beta)
+predicted_age
 
 pred_vs_real <- DNAmAge(beta, age=sample_annot@colData$age)
 pred_vs_real
 ```
 
 ```{r include=FALSE, eval=FALSE}
-plotDNAmAge(pred_vs_real$Horvath, sample_annot@colData$age)
+png("Horvath.png", width=4, height=4, units="in", res=300)
+plotDNAmAge(pred_vs_real$Horvath, sample_annot@colData$age,
+            tit="Horvath's method")
+dev.off()
 ```
 
 ```{r include=FALSE, eval=FALSE}
+png("Hannum.png", width=4, height=4, units="in", res=300)
 plotDNAmAge(pred_vs_real$Hannum, sample_annot@colData$age, 
             tit="Hannum's method")
+dev.off()
 ```
 
 ```{r include=FALSE, eval=FALSE}
+png("Levine.png", width=4, height=4, units="in", res=300)
 plotDNAmAge(pred_vs_real$Levine, sample_annot@colData$age, 
             tit="Levine's method")
+dev.off()
 ```
 
 ```{r include=FALSE, eval=FALSE}
+png("PedBE.png", width=4, height=4, units="in", res=300)
 plotDNAmAge(pred_vs_real$PedBE, sample_annot@colData$age, 
             tit="PedBE method")
+dev.off()
 ```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=15mm]{./Horvath.png}
+    \includegraphics[width=15mm]{./Hannum.png}
+    \caption{
+    Correlation between biological age predicted by methylation clocks and the 
+    chronological age
+    }
+  \end{center}
+\end{figure}
+
 ## Checking how predicted ages differ between experimental groups
 
 The experimental groups of our research are control, bipolar, and 
@@ -1095,6 +1146,7 @@ our data set.
 \[H_1: \exists i,j\in\{1,2,3\}: i\neq j, \mu_i \neq \mu_j\]
 
 - Significance level: \(\alpha=0.1\).
+
 - \(p\) value \(> \alpha \rightarrow H_0\)
   not rejected.
 
@@ -1109,9 +1161,16 @@ summary(aov_Horvath)
 aov_Hannum <- aov(pred_vs_real$ageAcc.Hannum ~ diagnoses)
 summary(aov_Hannum)
 
-# To be continued
+aov_Levine <- aov(pred_vs_real$ageAcc.Levine ~ diagnoses)
+summary(aov_Levine)
+
+aov_PedBE <- aov(pred_vs_real$ageAcc.PedBE ~ diagnoses)
+summary(aov_PedBE)
 ```
 
+None of the ANOVA tests had p value lower than \(\alpha\), therefore there are 
+no differences in biological age between control, bipolar, and schizophrenic
+sample groups.
 
 EXTRA (try the flow with Euclidean distance)
 
