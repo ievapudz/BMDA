@@ -694,7 +694,7 @@ Data was saved into *GSE112179_clear.rds* file after the processing.
 # Packages needed
 BiocManager::install('GO.db')
 BiocManager::install('impute')
-install.packages('WGCNA')
+BiocManager::install("WGCNA")
 ```
 
 ```{r include=FALSE, eval=FALSE}
@@ -882,7 +882,6 @@ for(i in 1:length(sample_annot@colData$pmi)) {
 length(colors_pmi)
 
 colors_m <- cbind(colors_sex, colors_cases, colors_race, colors_age, colors_pmi)
-colors_m
 
 plotDendroAndColors(clustered, colors_m, 
                     main="Dendrogram of samples' clustering",
@@ -1005,6 +1004,10 @@ length(variances)
 saveRDS(variances, file='../data/GSE112179_beta_variances.rgcs')
 ```
 
+```{r include=FALSE, eval=FALSE}
+variances <- readRDS(file='../data/GSE112179_beta_variances.rgcs')
+```
+
 Resources were not effective to reflect all modification positions in heatmap. 
 Therefore, top 100 positions were selected with highest variances to picture
 data in heatmap.
@@ -1019,6 +1022,9 @@ top_N_positions <- ordered[1:N]
 top_N_beta <- cbind(beta[top_N_positions,cluster_1_indeces], 
                     beta[top_N_positions,cluster_2_indeces],
                     beta[top_N_positions,cluster_3_indeces])
+
+rownames(top_N_beta) <- dendrogram_names
+colnames(top_N_beta) <- dendrogram_names
 
 heatmap.2(top_N_beta, scale = "none", col = bluered(100), 
           trace = "none")
