@@ -1015,6 +1015,9 @@ data in heatmap.
 ```{r include=FALSE, eval=FALSE}
 # Picking top N positions to plot in the heatmap
 library(gplots)
+
+colnames(beta) <- dendrogram_names
+
 ordered <- order(-variances)
 N <- 100
 top_N_positions <- ordered[1:N]
