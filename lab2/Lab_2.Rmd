@@ -1005,8 +1005,13 @@ length(variances)
 saveRDS(variances, file='../data/GSE112179_beta_variances.rgcs')
 ```
 
+Resources were not effective to reflect all modification positions in heatmap. 
+Therefore, top 100 positions were selected with highest variances to picture
+data in heatmap.
+
 ```{r include=FALSE, eval=FALSE}
 # Picking top N positions to plot in the heatmap
+library(gplots)
 ordered <- order(-variances)
 N <- 100
 top_N_positions <- ordered[1:N]
@@ -1015,9 +1020,12 @@ top_N_beta <- cbind(beta[top_N_positions,cluster_1_indeces],
                     beta[top_N_positions,cluster_2_indeces],
                     beta[top_N_positions,cluster_3_indeces])
 
-heatmap(top_N_beta)
+heatmap.2(top_N_beta, scale = "none", col = bluered(100), 
+          trace = "none")
 ```
 
+For comparison, selected data was standardized so that positions would have 
+modification mean 0 and standard deviation 1.
 
 ```{r include=FALSE, eval=FALSE}
 # Standardizing the values of positions
@@ -1027,8 +1035,36 @@ for(i in 1:length(top_N_beta[,1])) {
   top_N_beta_z[i,] <- (top_N_beta[i,]-mean(top_N_beta[i,]))/sd(top_N_beta[i,])
 }
 
-heatmap(top_N_beta_z)
+heatmap.2(top_N_beta_z, scale = "none", col = bluered(100), 
+          trace = "none")
 ```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./Not_standartized.png}
+    \caption{
+      The heatmap of top 100 most variable modification positions with not 
+      standardized data.
+    }
+  \end{center}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./Standartized.png}
+    \caption{
+      The heatmap of top 100 most variable modification positions
+      with standardized data.
+    }
+  \end{center}
+\end{figure}
+
+Generated heatmaps indicate that no significant data clustering is visible
+in our data set. It can be seen that the values were more evenly 
+distributed after the standardization of the data, but this information did
+not reveal any important data areas, which would be important to investigate.
+
+Several areas show more significant similarities as replicas are compared.
 
 # Clocks of DNA modification
 
