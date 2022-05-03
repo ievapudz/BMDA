@@ -1048,8 +1048,6 @@ top_N_beta <- cbind(heatmap_beta[top_N_positions,cluster_1_indeces],
 
 lwid=c(0.2,0.5) 
 lhei=c(0.1,0.2) 
-    
-heatmap_colors <- c('#838B8B', '#FFFFFF', '#FF6A6A')
 
 heatmap.2(top_N_beta, scale = "none", col=bluered(100), 
           trace="none", 
@@ -1107,6 +1105,9 @@ Several areas show more significant similarities as replicas are compared.
 
 ## Heatmap plotting with replicas removed
 
+Due to the similarity of the replicas, they were removed from the
+dataset and recalculations of variability was performed.
+
 ```{r include=FALSE, eval=FALSE}
 library(stringr)
 
@@ -1148,6 +1149,66 @@ saveRDS(variances_no_rep, file='../data/GSE112179_beta_no_replicas_variances.rgc
 ```{r include=FALSE, eval=FALSE}
 variances_no_rep <- readRDS(file='../data/GSE112179_beta_no_replicas_variances.rgcs')
 ```
+
+```{r include=FALSE, eval=FALSE}
+# Picking top N positions to plot in the heatmap after replicas were removed
+heatmap_beta <- beta_uniq
+colnames(heatmap_beta) <- unique_samples
+
+ordered <- order(-variances_no_rep)
+N <- 100
+top_N_positions <- ordered[1:N]
+
+top_N_beta <- cbind(heatmap_beta[top_N_positions,])
+
+lwid=c(0.2,0.5) 
+lhei=c(0.1,0.2) 
+
+heatmap.2(top_N_beta, scale = "none", col=bluered(100), 
+          trace="none", 
+          lwid=lwid,
+          lhei=lhei,
+          margins=c(11,5),
+          key.title='Colour key')
+```
+
+```{r include=FALSE, eval=FALSE}
+# Standardizing the values of positions
+top_N_beta_z <- top_N_beta
+
+for(i in 1:length(top_N_beta[,1])) {
+  top_N_beta_z[i,] <- (top_N_beta[i,]-mean(top_N_beta[i,]))/sd(top_N_beta[i,])
+}
+
+heatmap.2(top_N_beta_z, scale = "none", col = bluered(100), 
+          trace="none", 
+          lwid=lwid,
+          lhei=lhei,
+          margins=c(11,5),
+          key.title='Colour key')
+```
+After the recalculations, it is not possible to draw any additional conclusions
+in the heatmap, as no additional clusters have emerged.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./rep_not_st.png}
+    \caption{
+      The heatmap of top 100 most variable modification positions with not 
+      standardized data after replicas removal.
+    }
+  \end{center}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./rep_st.png}
+    \caption{
+      The heatmap of top 100 most variable modification positions
+      with standardized data after replicas removal.
+    }
+  \end{center}
+\end{figure}
 
 \newpage
 
