@@ -713,9 +713,8 @@ beta <- readRDS(file='../data/GSE112179_beta_matrix.rds')
 sample_annot <- readRDS(file='../data/GSE112179_clear.rds')
 ```
 
-Removing left-over samples from beta matrix
-
 ```{r include=FALSE, eval=FALSE}
+# Removing left-over samples from beta matrix
 beta <- beta[, colnames(beta) != "GSM3059462_200590490031_R08C01"]
 beta <- beta[, colnames(beta) != "GSM3059520_200357150067_R08C01"]
 beta <- beta[, colnames(beta) != "GSM3059454_200590490031_R01C01"]
@@ -724,10 +723,9 @@ beta <- beta[, colnames(beta) != "GSM3059454_200590490031_R01C01"]
 dim(beta)
 ```
 
-Calculation of distance matrix. `dist` function could not be used due to 'vector
-memory exhausted (limit reached?)' error message.
-
 ```{r include=FALSE, eval=FALSE}
+# Calculation of distance matrix. `dist` function could not be used due to 
+# 'vector memory exhausted (limit reached?)' error message.
 
 num_samples <- 97
 num_positions <- 858083
@@ -799,16 +797,16 @@ clustered <- hclust(as.dist(dist_m), method="ward.D")
 colors_cases <- c()
 for(i in 1:length(sample_annot@colData$diagnosis)) {
   if(sample_annot@colData$diagnosis[i] == 'control') {
-    # control - light gray
-    colors_cases <- append(colors_cases, '#E0EEEE')
+    # control - pink
+    colors_cases <- append(colors_cases, '#FFB6B6')
   }
   if(sample_annot@colData$diagnosis[i] == 'bipolar') {
-    # bipolar - medium gray
-    colors_cases <- append(colors_cases, '#C1CDCD')
+    # bipolar - blue
+    colors_cases <- append(colors_cases, '#0000FF')
   }
   if(sample_annot@colData$diagnosis[i] == 'schizophrenia') {
-    # schizophrenia - dark gray
-    colors_cases <- append(colors_cases, '#838B8B')
+    # schizophrenia - red
+    colors_cases <- append(colors_cases, '#FF0000')
   }
 }
 
@@ -816,27 +814,27 @@ colors_sex <- c()
 for(i in 1:length(sample_annot@colData$sex)) {
   if(sample_annot@colData$sex[i] == 'female') {
     # female - red
-    colors_sex <- append(colors_sex, '#FF6A6A')
+    colors_sex <- append(colors_sex, '#FF0000')
   }
   if(sample_annot@colData$sex[i] == 'male') {
     # male - blue
-    colors_sex <- append(colors_sex, '#838B8B')
+    colors_sex <- append(colors_sex, '#0000FF')
   }
 }
 
 colors_age <- c()
 for(i in 1:length(sample_annot@colData$age)) {
   if(sample_annot@colData$age[i] < 41) {
-    # age group - 23-40
-    colors_age <- append(colors_age, '#D1EEEE')
+    # age group - 23-40 - red
+    colors_age <- append(colors_age, '#FF0000')
   }
   if(sample_annot@colData$age[i] >= 41 && sample_annot@colData$age[i] < 59) {
-    # age group - 41-58
-    colors_age <- append(colors_age, '#B4CDCD')
+    # age group - 41-58 - purple
+    colors_age <- append(colors_age, '#7D7DFF')
   }
-  if(sample_annot@colData$age[i] >= 60) {
-    # age group - 60-77
-    colors_age <- append(colors_age, '#7A8B8B')
+  if(sample_annot@colData$age[i] >= 59) {
+    # age group - 60-77 - blue
+    colors_age <- append(colors_age, '#0000FF')
   }
 }
 
@@ -844,13 +842,16 @@ colors_race <- c()
 for(i in 1:length(sample_annot@colData$race)) {
   if(!is.na(sample_annot@colData$race[i])){
     if(sample_annot@colData$race[i] == 'white') {
-      colors_race <- append(colors_race, '#FF6A6A')
+      # white race - red
+      colors_race <- append(colors_race, '#FF0000')
     }
     if(sample_annot@colData$race[i] == 'hispanic') {
-      colors_race <- append(colors_race, '#CD5555')
+      # hispanic race - purple
+      colors_race <- append(colors_race, '#7D7DFF')
     }
     if(sample_annot@colData$race[i] == 'black') {
-      colors_race <- append(colors_race, '#8B3A3A')
+      # black race - blue
+      colors_race <- append(colors_race, '#0000FF')
     }
   } else {
     colors_race <- append(colors_race, '#FFFFFF')
@@ -861,19 +862,24 @@ colors_pmi <- c()
 for(i in 1:length(sample_annot@colData$pmi)) {
   if(!is.na(sample_annot@colData$pmi[i])){
     if(sample_annot@colData$pmi[i] < 11) {
-      colors_pmi <- append(colors_pmi, '#CD5C5C')
+      # red
+      colors_pmi <- append(colors_pmi, '#FF0000')
     }
     if(sample_annot@colData$pmi[i] >= 11 && sample_annot@colData$pmi[i] < 18) {
-      colors_pmi <- append(colors_pmi, '#FF6A6A')
+      # pink
+      colors_pmi <- append(colors_pmi, '#FFB6B6')
     }
     if(sample_annot@colData$pmi[i] >= 18 && sample_annot@colData$pmi[i] < 25) {
-      colors_pmi <- append(colors_pmi, '#EE6363')
+      # purple
+      colors_pmi <- append(colors_pmi, '#7D7DFF')
     }
     if(sample_annot@colData$pmi[i] >= 25 && sample_annot@colData$pmi[i] < 32) {
-      colors_pmi <- append(colors_pmi, '#CD5555')
+      # dark purple
+      colors_pmi <- append(colors_pmi, '#5858FF')
     }
     if(sample_annot@colData$pmi[i] >= 32) {
-      colors_pmi <- append(colors_pmi, '#8B3A3A')
+      # blue
+      colors_pmi <- append(colors_pmi, '#0000FF')
     }
   } else {
     colors_pmi <- append(colors_pmi, '#FFFFFF')
@@ -909,7 +915,8 @@ be observed in race and post-mortal interval colouring)
 Clusters were analysed with the respect of sex, case, race, age, and post-mortal
 interval groups. The main two clusters were distinguished based on sex. Within
 these two main clusters, samples were clustered into small case groups.
-The case groups are denoted by colours: dark, medium, and light greenish gray.
+The case groups are denoted by colours: pink (control), blue (bipolar), and red
+(schizophrenia).
 
 The first group is overall composed of 24 samples. This 
 collection contains 15 samples of bipolar cases, 6 samples of schizophrenia,
@@ -927,21 +934,21 @@ Regarding these clustering results, it could be stated that within each
 of the clusters there is one dominant case. In the first cluster it is 
 bipolar, in the third - control, and in the second - schizophrenia.
 
-The majority of samples had race 'white' (marked as the lightest pink colour).
-Race 'hispanic' is marked with a medium pink colour, and race 'black' is 
-marked with the darkest pink colour. Due to such imbalance, clusterisation 
+The majority of samples had race 'white' (marked red).
+Race 'hispanic' is marked with a purple colour, and race 'black' is 
+marked with blue colour. Due to such imbalance, clusterisation 
 analysis in regards of 'race' feature cannot give any strong conclusions.
 
-There are 3 age intervals that are noted with colours from lightest to darkest
-greenish gray: 23-40, 41-58, 59-77. The biggest cluster of the first age group
+There are 3 age intervals that are noted with colours from red to blue: 
+23-40, 41-58, 59-77. The biggest cluster of the first age group
 can be observed within female samples. This cluster is composed of bipolar and
 schizophrenia case samples. Another more significant cluster can be observed
 within males of the middle age group. This cluster is composed of all cases, 
 however the majority of cases are schizophrenic. The last age group is scattered
 in the whole range of the dendogram (in all clusters of the tree).
 
-The post-mortem interval colouring (from youngest to oldest brightness in colour
-decreases) shows that most of the samples were collected within 18 time units 
+The post-mortem interval colouring (from youngest to oldest colour changes from 
+red to blue) shows that most of the samples were collected within 18 time units 
 after death. 
 
 ```{r include=FALSE, eval=FALSE}
@@ -1026,11 +1033,17 @@ top_N_beta <- cbind(beta[top_N_positions,cluster_1_indeces],
                     beta[top_N_positions,cluster_2_indeces],
                     beta[top_N_positions,cluster_3_indeces])
 
-rownames(top_N_beta) <- dendrogram_names
-colnames(top_N_beta) <- dendrogram_names
+lwid=c(0.2,0.5) 
+lhei=c(0.1,0.2) 
+    
+heatmap_colors <- c('#838B8B', '#FFFFFF', '#FF6A6A')
 
-heatmap.2(top_N_beta, scale = "none", col = bluered(100), 
-          trace = "none")
+heatmap.2(top_N_beta, scale = "none", col=bluered(100), 
+          trace="none", 
+          lwid=lwid,
+          lhei=lhei,
+          margins=c(11,5),
+          key.title='Colour key')
 ```
 
 For comparison, selected data was standardized so that positions would have 
@@ -1045,7 +1058,11 @@ for(i in 1:length(top_N_beta[,1])) {
 }
 
 heatmap.2(top_N_beta_z, scale = "none", col = bluered(100), 
-          trace = "none")
+          trace="none", 
+          lwid=lwid,
+          lhei=lhei,
+          margins=c(11,5),
+          key.title='Colour key')
 ```
 
 \begin{figure}[!h]
