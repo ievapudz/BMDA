@@ -753,6 +753,16 @@ for(i in 1:num_samples) {
 ```
 
 ```{r include=FALSE, eval=FALSE}
+# Saving calculations
+dist_m_file <- '../data/GSE112179_dist_matrix.rgcs'
+saveRDS(dist_m, file=dist_m_file)
+```
+
+```{r include=FALSE, eval=FALSE}
+dist_m <- readRDS(file=dist_m_file)
+```
+
+```{r include=FALSE, eval=FALSE}
 # Making matrix symmetric
 dist_m[lower.tri(dist_m)] <- t(dist_m)[lower.tri(dist_m)]
 ```
@@ -777,7 +787,6 @@ for(i in 1:length(sample_annot@colData$id)) {
 
 rownames(dist_m) <- dendrogram_names
 colnames(dist_m) <- dendrogram_names
-
 ```
 
 For the second task it was required to perform data clustering, which was 
@@ -1095,6 +1104,50 @@ distributed after the standardization of the data, but this information did
 not reveal any important data areas, which would be important to investigate.
 
 Several areas show more significant similarities as replicas are compared.
+
+## Heatmap plotting with replicas removed
+
+```{r include=FALSE, eval=FALSE}
+library(stringr)
+
+unique_samples <- c()
+beta_uniq <- beta
+length(colnames(beta_uniq))
+colnames(beta_uniq) <- dendrogram_names
+basenames_to_remove <- c()
+
+for(i in 1:length(colnames(beta))) {
+  print(paste(i, sample_name))
+  sample_name <- dendrogram_names[i]
+  if(!(sample_name %in% unique_samples)) {
+    unique_samples <- append(unique_samples, sample_name)
+  } else {
+    basenames_to_remove <- append(basenames_to_remove, colnames(beta)[i])
+  }
+}
+
+beta_uniq <- beta[, !colnames(beta) %in% basenames_to_remove]
+```
+
+```{r include=FALSE, eval=FALSE}
+# Calculation of variance (long lasting calculation)
+variances_no_rep <- c()
+for(i in 1:length(beta_uniq[,1])) {
+  print(i)
+  variances_no_rep <- append(variances_no_rep, var(beta_uniq[i,]))
+}
+
+length(variances_no_rep)
+```
+
+```{r include=FALSE, eval=FALSE}
+# Saving calculations
+saveRDS(variances_no_rep, file='../data/GSE112179_beta_no_replicas_variances.rgcs')
+```
+
+```{r include=FALSE, eval=FALSE}
+variances_no_rep <- readRDS(file='../data/GSE112179_beta_no_replicas_variances.rgcs')
+```
 
 \newpage
 
