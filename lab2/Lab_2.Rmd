@@ -705,8 +705,6 @@ library(WGCNA)
 library(ggplot2)
 ```
 
-For the second task it was required to perform data clustering.
-
 ```{r include=FALSE, eval=FALSE}
 # Loading prepared data for further analysis
 beta <- readRDS(file='../data/GSE112179_beta_matrix.rds')
@@ -782,9 +780,10 @@ colnames(dist_m) <- dendrogram_names
 
 ```
 
-Data clustering was performed using `hclust` function with `ward.d` linkage
+For the second task it was required to perform data clustering, which was 
+performed using `hclust` function with `ward.d` linkage
 method. This method takes into account variance of the clusters, thus it is 
-said that it is the most eligible method for quantitative data sets.
+considered to be the most eligible method for quantitative data sets.
 
 ```{r include=FALSE, eval=FALSE}
 # Performing clusterisation 
@@ -913,26 +912,30 @@ It is worth noting that NA values are marked as white color (such examples can
 be observed in race and post-mortal interval colouring)
 
 Clusters were analysed with the respect of sex, case, race, age, and post-mortal
-interval groups. The main two clusters were distinguished based on sex. Within
+interval features. The main two clusters were distinguished based on sex. Within
 these two main clusters, samples were clustered into small case groups.
 The case groups are denoted by colours: pink (control), blue (bipolar), and red
 (schizophrenia).
 
-The first group is overall composed of 24 samples. This 
-collection contains 15 samples of bipolar cases, 6 samples of schizophrenia,
-and 3 samples of control.
+The first (female) cluster is composed of 24 samples. This collection contains 
+15 samples of bipolar, 6 samples of schizophrenia, and 3 samples of control 
+cases.
 
-Second and third groups are separated from the first group.
+Second and third groups are found within male cluster separated from the first 
+group. It is made of 29 samples, of which 8 are control, 8 are bipolar, and 13 
+are schizophrenia cases.
 
-The second group is made of 29 samples, of which 8 are control, 8 are bipolar, 
-and 13 are schizophrenia cases.
+Meanwhile, the third group has got 44 samples: 21 belong to control, 9 to 
+bipolar, and 15 to schizophrenia cases.
 
-The third group has got 44 samples: 21 belong to control, 9 to bipolar, and 
-15 to schizophrenia cases.
-
-Regarding these clustering results, it could be stated that within each
-of the clusters there is one dominant case. In the first cluster it is 
-bipolar, in the third - control, and in the second - schizophrenia.
+Regarding these clustering results, it could be stated that besides the feature
+of sex, there are no significant clusters for further investigation. If we 
+compared numbers of each case within each cluster, we could state that the 
+biggest portion of the first cluster is bipolar (15/24), of the second - 
+schizophrenia (13/29), and the third - control samples (21/44), however only the
+bipolar cases in the first cluster make up more than a half of the cluster 
+samples. Presumably, if more samples were included in the analysis, more 
+confident statements could be made regarding clustering of methylation data.
 
 The majority of samples had race 'white' (marked red).
 Race 'hispanic' is marked with a purple colour, and race 'black' is 
@@ -1023,15 +1026,16 @@ data in heatmap.
 # Picking top N positions to plot in the heatmap
 library(gplots)
 
-colnames(beta) <- dendrogram_names
+heatmap_beta <- beta
+colnames(heatmap_beta) <- dendrogram_names
 
 ordered <- order(-variances)
 N <- 100
 top_N_positions <- ordered[1:N]
 
-top_N_beta <- cbind(beta[top_N_positions,cluster_1_indeces], 
-                    beta[top_N_positions,cluster_2_indeces],
-                    beta[top_N_positions,cluster_3_indeces])
+top_N_beta <- cbind(heatmap_beta[top_N_positions,cluster_1_indeces], 
+                    heatmap_beta[top_N_positions,cluster_2_indeces],
+                    heatmap_beta[top_N_positions,cluster_3_indeces])
 
 lwid=c(0.2,0.5) 
 lhei=c(0.1,0.2) 
@@ -1092,6 +1096,8 @@ not reveal any important data areas, which would be important to investigate.
 
 Several areas show more significant similarities as replicas are compared.
 
+\newpage
+
 # Clocks of DNA modification
 
 The third part of the second task requires to predict age of patients from which
@@ -1120,23 +1126,25 @@ to compute each clock.
 It was checked with `checkClocks` and `DNAmAge` functions that the only clock 
 which could not be computed for the given data set was Bayesian Neural Network 
 (BNN) [@alfonso2020bayesian] (`DNAmAge` without age acceleration 
-wrote NAs in the output).
+provided NAs in the output for each sample).
 
 Finally, four methylation clocks were chosen for further workflow: Horwath,
 Hannum, Levine, and PedBE. Generally, these clocks were chosen because they 
 were computed for the given data set and they predict chronological DNAm age in 
 years. Horvath's clock was trained on samples from various tissues, thus it
 is a universal choice for any kind of samples. Hannum's clock was trained
-on blood samples, nonetheless the tissue type does not match neural one, which
+on blood samples. Nonetheless the tissue type does not match neural one, which
 was taken to collect our data set, blood is often taken as an indicator of
-the state of the whole organism. The same considerations can be applied to 
-support the choice of Levine's clock. 
+the state of the whole organism, thus it was decided to include this clock in
+the workflow. The same considerations can be applied to support the choice of 
+Levine's clock. 
 
 Horvath's skin and blood clock was removed due to its incompatibility with the
 tissue type of our data set and its poor performance (\(R^2=0.51\)). On the
 contrary PdeBE clock was kept, since it explained the most of variability
 (\(R^2=0.75\)) in the data set when compared to other clocks, nonetheless the 
-clock was trained on buccal epithelial swabs from patients 0-20 years old.
+clock was trained on buccal epithelial swabs from patients 0-20 years old
+(Figure 12).
 
 ```{r include=FALSE, eval=FALSE}
 missing <- checkClocks(beta)
@@ -1181,25 +1189,28 @@ plotDNAmAge(pred_vs_real$skinHorvath, sample_annot@colData$age,
     \includegraphics[width=75mm]{./PedBE.png}
     \caption{
     Correlation between biological age predicted by methylation clocks and the 
-    chronological age
+    chronological age.
     }
   \end{center}
 \end{figure}
 
 To conclude analysis of the predicted and chronological age correlation, the 
 best clocks were Hovarth's and PdeBE, which had \(R^2\) values equal to 0.74 and
-0.75 respectively.
+0.75 respectively. The clock that had the worst accuracy was Levine's method 
+that had \(R^2=0.25\), which means that only 25% of the variability observed in 
+the target variable (chronological age) is explained by this model.
 
 ## Checking how predicted ages differ between experimental groups
 
-The experimental groups of our research are control, bipolar, and 
-schizophrenia, therefore, predicted age values will be analysed with regards
-of this sample grouping.
+The experimental groups (groups of interest) of our research are control, 
+bipolar, and schizophrenia. Therefore, predicted age values will be analysed 
+with regards of this kind of grouping of samples.
 
 It was decided to run ANOVA tests for each methylation clock applied to
-our data set. 
+our data set. The null hypothesis was set to be that there is no difference 
+between predicted biological age means of each case sample group.
 
-- Data: difference between DNA methylation age and chronological age.
+- Data: predicted DNA methylation age.
 - Test: ANOVA.
 - Hipotheses:
 \[H_0: \mu_1=\mu_2=\mu_3\]
@@ -1213,32 +1224,25 @@ our data set.
 ```{r include=FALSE, eval=FALSE}
 diagnoses <- sample_annot@colData$diagnosis
 
-diagnoses
-
-aov_Horvath <- aov(pred_vs_real$ageAcc.Horvath ~ diagnoses)
+aov_Horvath <- aov(predicted_age$Horvath ~ diagnoses)
 summary(aov_Horvath)
 
-aov_Hannum <- aov(pred_vs_real$ageAcc.Hannum ~ diagnoses)
+aov_Hannum <- aov(predicted_age$Hannum ~ diagnoses)
 summary(aov_Hannum)
 
-aov_Levine <- aov(pred_vs_real$ageAcc.Levine ~ diagnoses)
+aov_Levine <- aov(predicted_age$Levine ~ diagnoses)
 summary(aov_Levine)
 
-aov_PedBE <- aov(pred_vs_real$ageAcc.PedBE ~ diagnoses)
+aov_PedBE <- aov(predicted_age$PedBE ~ diagnoses)
 summary(aov_PedBE)
 ```
 
-\(p\) values of each test:
-\begin{itemize}
-  \item{Horvath 0.437}
-  \item{Hannum 0.338}
-  \item{Levine 0.599}
-  \item{PedBE 0.617}
-\end{itemize}
+\(p\) values of each test: Horvath's 0.806, Hannum's 0.966, Levine's 0.994, 
+PedBE 0.648.
 
 None of the ANOVA tests had \(p\) value lower than \(\alpha\), therefore there 
-are no differences in predicted biological age between control, bipolar, and 
-schizophrenic sample groups.
+are no differences in predicted biological age means between control, bipolar, 
+and schizophrenic sample groups.
 
 # References {-}
 
