@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  4 MAY 2022 08:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  4 MAY 2022 08:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -690,7 +690,7 @@ Package rerunfilecheck Info: File `Lab_2.out' has not changed.
 Here is how much of TeX's memory you used:
  10425 strings out of 480539
  151748 string characters out of 5902059
- 457253 words of memory out of 5000000
+ 457252 words of memory out of 5000000
  27799 multiletter control sequences out of 15000+600000
  451084 words of font info for 68 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
@@ -709,7 +709,7 @@ f-dist/fonts/enc/dvips/lm/lm-mathsy.enc}</Users/ieva/Library/TinyTeX/texmf-dist
 ieva/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/ieva/L
 ibrary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/ieva/Library
 /TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Lab_2.pdf (13 pages, 3048475 bytes).
+Output written on Lab_2.pdf (13 pages, 3048767 bytes).
 PDF statistics:
  323 PDF objects out of 1000 (max. 8388607)
  238 compressed objects within 3 object streams
