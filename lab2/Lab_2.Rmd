@@ -910,7 +910,7 @@ plotDendroAndColors(clustered, colors_m,
   \begin{center}
     \includegraphics[width=150mm]{./14.png}
     \caption{
-      The dendogram that shows three clusters after the hierarchical clustering
+      The dendrogram that shows three clusters after the hierarchical clustering
       using 1-cor() distance metric and Ward linkage method.
     }
   \end{center}
@@ -918,13 +918,11 @@ plotDendroAndColors(clustered, colors_m,
 
 The dendrogram (Figure 9) shows three distinguished groups after clusterisation.
 It is worth noting that NA values are marked as white color (such examples can
-be observed in race and post-mortal interval colouring)
+be observed in race and post-mortem interval (PMI) colouring)
 
-Clusters were analysed with the respect of sex, case, race, age, and post-mortal
-interval features. The main two clusters were distinguished based on sex. Within
-these two main clusters, samples were clustered into small case groups.
-The case groups are denoted by colours: pink (control), blue (bipolar), and red
-(schizophrenia).
+Clusters were analysed with the respect of sex, case, race, age, and PMI
+features. The main two clusters were distinguished based on sex. Within
+these two main clusters, samples were grouped into three smaller clusters.
 
 The first (female) cluster is composed of 24 samples. This collection contains 
 15 samples of bipolar, 6 samples of schizophrenia, and 3 samples of control 
@@ -934,7 +932,7 @@ Second and third groups are found within male cluster separated from the first
 group. It is made of 29 samples, of which 8 are control, 8 are bipolar, and 13 
 are schizophrenia cases.
 
-Meanwhile, the third group has got 44 samples: 21 belong to control, 9 to 
+Meanwhile, the third group has got 44 samples: 21 belong to control, 8 to 
 bipolar, and 15 to schizophrenia cases.
 
 Regarding these clustering results, it could be stated that besides the feature
@@ -948,7 +946,7 @@ confident statements could be made regarding clustering of methylation data.
 
 The majority of samples had race 'white' (marked red).
 Race 'hispanic' is marked with a purple colour, and race 'black' is 
-marked with blue colour. Due to such imbalance, clusterisation 
+marked with blue colour. Due to the visible imbalance, clusterisation 
 analysis in regards of 'race' feature cannot give any strong conclusions.
 
 There are 3 age intervals that are noted with colours from red to blue: 
@@ -956,12 +954,12 @@ There are 3 age intervals that are noted with colours from red to blue:
 can be observed within female samples. This cluster is composed of bipolar and
 schizophrenia case samples. Another more significant cluster can be observed
 within males of the middle age group. This cluster is composed of all cases, 
-however the majority of cases are schizophrenic. The last age group is scattered
-in the whole range of the dendogram (in all clusters of the tree).
+however the majority of cases are schizophrenic. The samples of the last age 
+group can be found in all three clusters of the dendrogram.
 
 The post-mortem interval colouring (from youngest to oldest colour changes from 
 red to blue) shows that most of the samples were collected within 18 time units 
-after death. 
+after death (red, pink, and purple colors). 
 
 ```{r include=FALSE, eval=FALSE}
 # Collecting sample indeces for cluster analysis
@@ -1245,11 +1243,12 @@ provided NAs in the output for each sample).
 Finally, four methylation clocks were chosen for further workflow: Horwath,
 Hannum, Levine, and PedBE. Generally, these clocks were chosen because they 
 were computed for the given data set and they predict chronological DNAm age in 
-years. Horvath's clock was trained on samples from various tissues, thus it
+years. Horvath's clock was trained on samples from 
+various tissues, thus it
 is a universal choice for any kind of samples. Hannum's clock was trained
-on blood samples. Nonetheless the tissue type does not match neural one, which
-was taken to collect our data set, blood is often taken as an indicator of
-the state of the whole organism, thus it was decided to include this clock in
+on blood samples. Nonetheless the tissue type does not match the neural one, 
+from which our data set samples were taken, blood is often taken as an indicator 
+of the state of the whole organism, thus it was decided to include this clock in
 the workflow. The same considerations can be applied to support the choice of 
 Levine's clock. 
 
@@ -1359,4 +1358,3 @@ are no differences in predicted biological age means between control, bipolar,
 and schizophrenic sample groups.
 
 # References {-}
-
