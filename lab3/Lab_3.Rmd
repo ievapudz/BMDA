@@ -1598,13 +1598,17 @@ chr7_position_idx
 chr7_position_ps <- t_test_sex_ps[chr7_position_idx]
 ```
 
+```{r chr7_pos_idx_save, include=FALSE, eval=FALSE}
+saveRDS(chr7_position_idx, file='../data/GSE112179_chr7_position_idx.rgcs')
+```
+
 ```{r manhattan_plot_install, include=FALSE, eval=FALSE}
 BiocManager::install("GWASTools")
 ```
 ```{r manhattan_plot, include=FALSE, eval=FALSE}
 library(GWASTools)
 par(oma=c(1, 1, 1, 1))
-manhattanPlot(chr7_position_ps, c(rep(7,length(chr7_position_ps))), 
+manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))), 
               col=c(rep("dark blue", length(chr7_position_ps))),
               main='Manhattan plot of positions in chromosome 7')
 ```
@@ -1617,6 +1621,49 @@ manhattanPlot(chr7_position_ps, c(rep(7,length(chr7_position_ps))),
     }
   \end{center}
 \end{figure}
+
+## Volcano plot
+
+It was required to draw volcano plots for each chromosome's effect sizes and 
+p-values. Since collection of beta matrix's indeces of positions that belong to 
+a particular chromosome is a time-consuming process, it was decided to plot one
+volcano plot for the 7th chromosome at first, and if there is enough time left,
+repeat the flow for other chromosomes
+
+```{r volcano_plot_install, include=FALSE, eval=FALSE}
+BiocManager::install("a4Base")
+```
+
+```{r chr7_sex_effect_sizes, include=FALSE, eval=FALSE}
+# effect_size = (mean1 - mean2) / stdev
+chr7_male_mean
+```
+
+```{r volcano_plot, include=FALSE, eval=FALSE}
+library("a4Base")
+male_beta_idx <- which(sexes == 'male')
+female_beta_idx <- which(sexes == 'female')
+male_beta_idx
+female_beta_idx
+
+# Methylation values of the male samples for 7th chromosome positions
+mean(beta[chr7_position_idx,male_beta_idx])
+
+# Methylation values of the female samples for 7th chromosome positions
+mean(beta[chr7_position_idx,female_beta_idx])
+
+effect_size <- abs(mean(beta[chr7_position_idx,male_beta_idx]) - mean(beta[chr7_position_idx,female_beta_idx]))
+effect_size
+effect_size/sd(beta[chr7_position_idx,])
+
+#volcanoPlot()
+
+# Should volcano plot be one that contains all chromosomes within it?
+# Or should there be a volcano plot for each chromosome?
+
+# How effect size needs to calculated? There should be an effect size for each 
+# position?
+```
 
 ```{r hypothesis_testing_diagnoses, include=FALSE, eval=FALSE}
 # Tests will be performed for each row (position) in the data set
