@@ -1482,7 +1482,7 @@ based on sex. Tests were run for each position in the data set.
 - Significance level: \(\alpha=0.05\).
 
 ```{r t_test_sex_ps_analysis, include=FALSE, eval=FALSE}
-sum(t_test_sex_ps < 0.05)
+sum(t_test_sex_ps <= 0.05)
 ```
 
 ```{r t_test_sex_ps_hist, include=FALSE, eval=FALSE}
@@ -1522,15 +1522,22 @@ colnames(t_test_sex_ps_top_5_methyl_profiles) <- sexes
 colnames(t_test_sex_ps_top_5_methyl_profiles)[colnames(t_test_sex_ps_top_5_methyl_profiles) == 'male'] <- 0
 # female - 1
 colnames(t_test_sex_ps_top_5_methyl_profiles)[colnames(t_test_sex_ps_top_5_methyl_profiles) == 'female'] <- 1
-colnames(t_test_sex_ps_top_5_methyl_profiles)
+rownames(t_test_sex_ps_top_5_methyl_profiles)
 ```
 
-```{r t_test_sex_ps_top_5_plot, fig.height=20, fig.width=20}
+Five positions that had the lowest p-values were: cg04462931, cg15183843, 
+cg03572700, cg15228509, cg00399683. Their methylation profiles are presented
+in Figure 16. In all of these positions methylation values in female group
+were higher. 
+
+```{r t_test_sex_ps_top_5_plot, fig.height=3, fig.width=3, include=FALSE, eval=FALSE}
 for(i in 1:5) {
+  part_title <- paste('(', rownames(t_test_sex_ps_top_5_methyl_profiles)[i], 
+                      ') methylation profile', sep='')
   plot(colnames(t_test_sex_ps_top_5_methyl_profiles), 
      (t_test_sex_ps_top_5_methyl_profiles)[i,], xaxt='n', 
      xlim=c(-0.5, 1.5), ylim=c(0,1),
-     main=paste('Position', i, 'methylation profile'),
+     main=paste('Position', i, part_title),
      xlab='sample group',
      ylab='methylation values')
   axis(side=1, at=seq(0, 1, by=1), labels=c('male', 'female'))
@@ -1568,5 +1575,27 @@ length(aov_diagnoses_ps)
 ```{r aov_diagnoses_ps_save, include=FALSE, eval=FALSE}
 saveRDS(aov_diagnoses_ps, file='../data/GSE112179_aov_diagnoses_ps.rgcs')
 ```
+
+## Correction of p-values
+
+```{r include=FALSE, eval=FALSE}
+library(stats)
+```
+
+### P-values from t-test for groups of sex
+
+```{r t_test_ps_correction,  include=FALSE, eval=FALSE}
+t_test_sex_ps_fdr <- p.adjust(t_test_sex_ps, "fdr")
+sum(t_test_sex_ps_fdr <= 0.05)
+
+t_test_sex_ps_bonf <- p.adjust(t_test_sex_ps, "bonferroni")
+sum(t_test_sex_ps_bonf <= 0.05)
+```
+
+Number of statistically significant p-values (lower than \(\alpha=0.05\)):
+
+- without correction: 76369
+- with FDR correction: 21783
+- with Bonferroni correction: 15237
 
 # References {-}
