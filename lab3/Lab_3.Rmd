@@ -1392,6 +1392,9 @@ beta <- beta[, colnames(beta) != "GSM3059454_200590490031_R01C01"]
 dim(beta)
 
 sample_annot <- readRDS(file='../data/GSE112179_clear.rds')
+
+# Loading position annotation data
+pos_annot <- readRDS(file='../data/GSE112179_anot.rds')
 ```
 
 ```{r extracting_groups, include=FALSE, eval=FALSE}
@@ -1528,7 +1531,7 @@ rownames(t_test_sex_ps_top_5_methyl_profiles)
 Five positions that had the lowest p-values were: cg04462931, cg15183843, 
 cg03572700, cg15228509, cg00399683. Their methylation profiles are presented
 in Figure 16. In all of these positions methylation values in female group
-were higher. 
+were higher.
 
 ```{r t_test_sex_ps_top_5_plot, fig.height=3, fig.width=3, include=FALSE, eval=FALSE}
 for(i in 1:5) {
@@ -1553,6 +1556,64 @@ for(i in 1:5) {
     \includegraphics[width=75mm]{./t_test_sex_methyl_prof_5.png}
     \caption{
     Methylation profiles of positions with top 5 smallest p-values
+    }
+  \end{center}
+\end{figure}
+
+```{r include=FALSE, eval=FALSE}
+rownames(t_test_sex_ps_top_5_methyl_profiles)
+
+for(i in 1:5) {
+  print(pos_annot[rownames(pos_annot) == 
+              rownames(t_test_sex_ps_top_5_methyl_profiles)[i],]$chr)
+}
+```
+
+These positions belong to chromosome 7 (cg04462931 and cg00399683), Y 
+(cg15183843),
+X (cg03572700), and 1 (cg15228509).
+
+## Manhattan plot
+
+Since there were two positions from chromosome 7, it was decided to draw a
+Manhattan plot (Figure 17) with p-values of positions from this chromosome.
+
+```{r collecting_chr7_pos, include=FALSE, eval=FALSE}
+# Number of all positions in our data set from chromosome 7
+length(rownames(pos_annot[pos_annot$chr == 'chr7',]))
+chr7_position_names <- rownames(pos_annot[pos_annot$chr == 'chr7',])
+
+# Long calculations
+chr7_position_idx <- c()
+for(i in 1:length(chr7_position_names)) {
+  chr7_position_idx <- append(chr7_position_idx, 
+                              which(rownames(beta) == chr7_position_names[i]))
+}
+
+# Names of positions 
+chr7_position_names
+# Indeces are used to get position's p-value from t_test_sex_ps vector
+chr7_position_idx
+# p-values of each position
+chr7_position_ps <- t_test_sex_ps[chr7_position_idx]
+```
+
+```{r manhattan_plot_install, include=FALSE, eval=FALSE}
+BiocManager::install("GWASTools")
+```
+```{r manhattan_plot, include=FALSE, eval=FALSE}
+library(GWASTools)
+par(oma=c(1, 1, 1, 1))
+manhattanPlot(chr7_position_ps, c(rep(7,length(chr7_position_ps))), 
+              col=c(rep("dark blue", length(chr7_position_ps))),
+              main='Manhattan plot of positions in chromosome 7')
+```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./chr7_Manhattan_plot.png}
+    \caption{
+     Manhattan plot for positions of chromosome 7
     }
   \end{center}
 \end{figure}
