@@ -1666,24 +1666,7 @@ effect_size/sd(beta[chr7_position_idx,])
 # position?
 ```
 
-```{r hypothesis_testing_diagnoses, include=FALSE, eval=FALSE}
-# Tests will be performed for each row (position) in the data set
-position_num <- length(beta[,1])
 
-aov_diagnoses_ps <- c()
-for(i in 1:position_num) {
-  print(i)
-  aov_diagnoses_ps <- append(aov_diagnoses_ps, 
-                             unlist(summary(aov(beta[i,] ~ diagnoses)))[9])
-}
-
-length(aov_diagnoses_ps)
-
-```
-
-```{r aov_diagnoses_ps_save, include=FALSE, eval=FALSE}
-saveRDS(aov_diagnoses_ps, file='../data/GSE112179_aov_diagnoses_ps.rgcs')
-```
 
 ## Correction of p-values
 
