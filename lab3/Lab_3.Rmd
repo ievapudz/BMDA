@@ -1400,8 +1400,9 @@ pos_annot <- readRDS(file='../data/GSE112179_anot.rds')
 ```{r extracting_groups, include=FALSE, eval=FALSE}
 sexes <- sample_annot@colData$sex
 diagnoses <- sample_annot@colData$diagnosis
+ages <- sample_annot@colData$age
 
-races <- sample_annot@colData$race
+#races <- sample_annot@colData$race
 ```
 
 ## Normality testing
@@ -1705,5 +1706,24 @@ Number of statistically significant p-values (lower than \(\alpha=0.05\)):
 - without correction: 76369
 - with FDR correction: 21783
 - with Bonferroni correction: 15237
+
+## Hypothesis testing for groups of age
+
+```{r hypothesis_testing_age, include=FALSE, eval=FALSE}
+# Tests will be performed for each row (position) in the data set
+position_num <- length(beta[,1])
+
+aov_age_ps <- c()
+for(i in 1:3) {
+  print(i)
+  mod0 <- lm(beta[i,] ~ sexes + diagnoses)
+  mod1 <- lm(beta[i,] ~ ages + sexes + diagnoses)
+  res <- anova(mod0, mod1)
+  aov_age_ps <- append(aov_age_ps, unlist(res)['Pr(>F)2'])
+}
+
+length(aov_age_ps)
+aov_age_ps[1]
+```
 
 # References {-}
