@@ -1726,4 +1726,32 @@ length(aov_age_ps)
 aov_age_ps[1]
 ```
 
+
+## Gene Ontology Enrichment analysis after FDR correction
+```{r go, include=FALSE, eval=FALSE}
+foreground <- c()
+background <- c()
+indexes <- c()
+
+#Selecting indexes of data after FDR correction
+for(i in 1:position_num) {
+  if(t_test_sex_ps_fdr[i] <= 0.05){
+    indexes <- append(indexes, i)
+  }
+}
+
+#Data correction for GOrilla input
+foreground <- c(noquote(unique(gsub(";", " ",pos_annot$UCSC_RefGene_Name[indexes]))))
+foreground <- unique(unlist(strsplit(foreground, " ")))
+background <- c(noquote(unique(gsub(";", " ",pos_annot$UCSC_RefGene_Name))))
+background <- unique(unlist(strsplit(background, " ")))
+
+lapply(foreground, write, "foreground.txt", append=TRUE, ncolumns=1)
+lapply(background, write, "background.txt", append=TRUE, ncolumns=1)
+```
+
+After all gene name manipulations there were selected 10686 foreground positions
+and 27304 background positions.
+
+Go result is crazy (see GO.png). So... to be continued...
 # References {-}
