@@ -1795,8 +1795,56 @@ for(i in 1:5) {
 }
 ```
 
+```{r chr7_age, include=FALSE, eval=FALSE}
+chr7_position_idx <- readRDS(file='GSE112179_chr7_position_idx.rds')
+
+# Names of positions 
+chr7_position_names
+# Indeces are used to get position's p-value from t_test_sex_ps vector
+chr7_position_idx
+# p-values of each position
+chr7_position_ps <- aov_age_ps[chr7_position_idx]
+
+library(GWASTools)
+par(oma=c(1, 1, 1, 1))
+manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))), 
+              col=c(rep("dark blue", length(chr7_position_ps))),
+              main='Manhattan plot of positions in chromosome 7')
+```
+
+```{r volcano_ages, include=FALSE, eval=FALSE}
+lower_47_idx <- which(ages < 47)
+higher_47_idx <- which(ages >= 47)
+
+effect_sizes <- rowMeans(beta[,lower_47_idx]) - 
+  rowMeans(beta[,higher_47_idx])
+effect_sizes
+
+effect_sizes_p_values <- data.frame(x=effect_sizes, y=-log10(aov_age_ps))
 
 
+volcano_plot <- ggplot(effect_sizes_p_values, aes_(x=effect_sizes_p_values$x, 
+                                                   y=effect_sizes_p_values$y)) + geom_point() + 
+  geom_pointdensity() +
+  scale_color_viridis() +
+  xlab('effect size') + ylab('-log10 p-value') + 
+  labs(title = 'Volcano plot for all chromosomes')
+
+volcano_plot
+
+volcano_plot_r <- plot(effect_sizes, -log10(aov_age_ps), xlab='effect size',
+                       ylab='-log10 p-value', 
+                       main='Volcano plot for all chromosomes',
+                       col=c(rep("dark blue", length(effect_sizes))))
+abline(h=-log10(0.05), col="red")
+
+for(i in 1:5) {
+  text(x=effect_sizes[aov_age_ps_top_5_idx[i]], 
+       y=-log10(aov_age_ps[aov_age_ps_top_5_idx[i]])+1, 
+       rownames(beta)[aov_age_ps_top_5_idx[i]])
+}
+```
+Nežinau ar volcano veikia, nes taip ir nepakrovė
 
 ## Gene Ontology Enrichment analysis after FDR correction
 ```{r go, include=FALSE, eval=FALSE}
