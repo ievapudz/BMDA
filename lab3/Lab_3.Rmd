@@ -1723,6 +1723,42 @@ Number of statistically significant p-values (lower than \(\alpha=0.05\)):
 - with FDR correction: 21783
 - with Bonferroni correction: 15237
 
+## Gene Ontology Enrichment analysis after FDR correction
+
+```{r go, include=FALSE, eval=FALSE}
+foreground <- c()
+background <- c()
+indexes <- c()
+
+#Selecting indexes of data after FDR correction
+for(i in 1:position_num) {
+  if(t_test_sex_ps_fdr[i] <= 0.05){
+    indexes <- append(indexes, i)
+  }
+}
+
+#Data correction for GOrilla input
+foreground <- c(noquote(unique(gsub(";", " ",pos_annot$UCSC_RefGene_Name[indexes]))))
+foreground <- unique(unlist(strsplit(foreground, " ")))
+background <- c(noquote(unique(gsub(";", " ",pos_annot$UCSC_RefGene_Name))))
+background <- unique(unlist(strsplit(background, " ")))
+
+lapply(foreground, write, "foreground.txt", append=TRUE, ncolumns=1)
+lapply(background, write, "background.txt", append=TRUE, ncolumns=1)
+```
+
+After all gene name manipulations there were selected 10686 foreground genes
+with FDR correction and unique names and 27304 background genes with unique
+names.
+
+For gene ontology enrichmet analysis on statistically significant positions
+we used GOrilla tool. In terms of processes, the highest enrichment is found
+in a few main process categories: regulation of metabolic process, developmental
+process and positive regulations of biological processes. (Need more) In component part,
+the highest enrichment is found in cellular components such as nucleus, axon 
+and neuron parts, synaptic membrane. These results reflect associations with 
+the isolated neurons from prefrontal cortex samples. 
+
 ## Hypothesis testing for groups of age
 
 ```{r hypothesis_testing_age, include=FALSE, eval=FALSE}
@@ -1742,6 +1778,19 @@ aov_age_ps[1]
 saveRDS(aov_age_ps, file='GSE112179_aov_age_ps.rgcs')
 ```
 
+The second hypothesis testing was performed to compare sample groups collected 
+based on age in groups (of sexes and diagnoses). 
+Tests were run for each position in the data set.
+
+- Data: methylation values of the position.
+- Test: ANOVA
+- Hipotheses:
+\[H_0: \mu_{i, sda}=\mu_{i, sd},\ where\ i\ -\ index\ of\ position,\ sda\ -\
+sexes,\ ages\ and\ diagnoses,\ sd - sexes\ and\ diagnoses.\]
+\[H_1: \mu_{i, sda}\neq\mu_{i, sd}\]
+
+- Significance level: \(\alpha=0.05\).
+
 ```{r age_histogram, include=FALSE, eval=FALSE}
 
 aov_age_ps <- readRDS(file='GSE112179_aov_age_ps.rgcs')
@@ -1760,6 +1809,22 @@ hist(aov_age_ps,
 abline(v=0.05,col="red")
 text(x=0.1, y=35000, 'Alpha = 0.05')
 ```
+
+The histogram of p-values (Figure 19) extracted from performed ANOVA test showed 
+that there are more than 100000 positions that have got statistically 
+significant differences in methylation values between groups with age and
+without age. Precisely, there were 171830 positions that had p-value 
+lower than \(\alpha\).
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./aov_age_hist.png}
+    \caption{
+    The histogram of p-values of ANOVA test that compared sample sex and diagnosis
+    groups with and without age group.
+    }
+  \end{center}
+\end{figure}
 
 ```{r 5_top_idx, include=FALSE, eval=FALSE}
 aov_age_ps_top_5_idx <- order(aov_age_ps)[1:5]
@@ -1795,6 +1860,35 @@ for(i in 1:5) {
 }
 ```
 
+Five positions that had the lowest p-values were: cg27026819, cg02426178, 
+cg06220235, cg18514820, cg05191364 Their methylation profiles are presented
+in Figure 16. In all of these positions methylation values in female group
+were higher.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=75mm]{./pos_1.png}
+    \includegraphics[width=75mm]{./pos_2.png}
+    \includegraphics[width=75mm]{./pos_3.png}
+    \includegraphics[width=75mm]{./pos_4.png}
+    \includegraphics[width=75mm]{./pos_5.png}
+    \caption{
+    Methylation profiles of positions with top 5 smallest p-values in 
+    hypothesis testing for groups of age.
+    }
+  \end{center}
+\end{figure}
+
+These positions belong to chromosome 6 (cg27026819 and cg05191364), 19 
+(cg02426178), 16 (cg06220235), and 10 (cg18514820).
+
+## Manhattan plot
+
+Because the Manhattan plot in sex-based hypothesis testing was uset on
+7 chromosome, for the more detailed comparison, in the age-based test 
+we also plotted Manhattan plot (Figure 17) with p-values of positions 
+this chromosome.
+
 ```{r chr7_age, include=FALSE, eval=FALSE}
 chr7_position_idx <- readRDS(file='GSE112179_chr7_position_idx.rds')
 
@@ -1811,6 +1905,21 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
               col=c(rep("dark blue", length(chr7_position_ps))),
               main='Manhattan plot of positions in chromosome 7')
 ```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./manhatan.png}
+    \caption{
+     Manhattan plot for positions of chromosome 7 in hypothesis testing 
+     for groups of age.
+    }
+  \end{center}
+\end{figure}
+
+## Volcano plot
+
+As Manhattan plot, Volcano plot was repeated on 7th crhomosome for further
+comparison.
 
 ```{r volcano_ages, include=FALSE, eval=FALSE}
 lower_47_idx <- which(ages < 47)
@@ -1844,33 +1953,31 @@ for(i in 1:5) {
        rownames(beta)[aov_age_ps_top_5_idx[i]])
 }
 ```
-Nežinau ar volcano veikia, nes taip ir nepakrovė
 
-## Gene Ontology Enrichment analysis after FDR correction
-```{r go, include=FALSE, eval=FALSE}
-foreground <- c()
-background <- c()
-indexes <- c()
+The volcano plot shows 4 outliers that are downregulated in samples with age
+younger than 47 years old and 1 outlier in samples with age older than 47 years old.
+Effect sizes of the top 5 most significant methylation values are: 
 
-#Selecting indexes of data after FDR correction
-for(i in 1:position_num) {
-  if(t_test_sex_ps_fdr[i] <= 0.05){
-    indexes <- append(indexes, i)
-  }
-}
+\begin{center}
+  \begin{tabular}{ | c | c c c c c | }
+    \hline
+    Position & cg04462931 & cg15183843 & cg03572700 & cg15228509 & cg00399683 \\
+    Effect size & -0.4456074 & -0.5868304 & -0.4042064 & -0.3516014 & -0.3066998 \\
+    P-value & 8.155034e-114 & 5.494131e-106 & 5.754572e-101 & 6.004097e-98 & 2.974341e-93 \\
+    \hline
+  \end{tabular}
+\end{center}
 
-#Data correction for GOrilla input
-foreground <- c(noquote(unique(gsub(";", " ",pos_annot$UCSC_RefGene_Name[indexes]))))
-foreground <- unique(unlist(strsplit(foreground, " ")))
-background <- c(noquote(unique(gsub(";", " ",pos_annot$UCSC_RefGene_Name))))
-background <- unique(unlist(strsplit(background, " ")))
 
-lapply(foreground, write, "foreground.txt", append=TRUE, ncolumns=1)
-lapply(background, write, "background.txt", append=TRUE, ncolumns=1)
-```
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./t_test_sex_volcano_plot_r.png}
+    \caption{
+     Volcano plot of all positions effect sizes and p-values of ANOVA test for data 
+     grouped to people younger than 47 years and older than 47. 
+    }
+  \end{center}
+\end{figure}
 
-After all gene name manipulations there were selected 10686 foreground genes
-and 27304 background genes.
 
-Go result is crazy (see GO.png). So... to be continued...
 # References {-}
