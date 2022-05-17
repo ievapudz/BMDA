@@ -1747,17 +1747,53 @@ lapply(foreground, write, "foreground.txt", append=TRUE, ncolumns=1)
 lapply(background, write, "background.txt", append=TRUE, ncolumns=1)
 ```
 
-After all gene name manipulations there were selected 10686 foreground genes
-with FDR correction and unique names and 27304 background genes with unique
-names.
+After all genes names manipulations there were selected 10686 foreground genes
+with FDR correction and 27304 background genes.
 
 For gene ontology enrichmet analysis on statistically significant positions
-we used GOrilla tool. In terms of processes, the highest enrichment is found
+we used GOrilla tool. 
+
+In terms of processes(Figure 19), the highest enrichment is found
 in a few main process categories: regulation of metabolic process, developmental
-process and positive regulations of biological processes. (Need more) In component part,
+process and positive regulations of biological processes. (Need more)
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./go_process_part.png}
+    \caption{
+    Processes with the highest enrichment according to foreground and background 
+    genes in GOrilla tool.
+    }
+  \end{center}
+\end{figure}
+
+In components part (Figure 20),
 the highest enrichment is found in cellular components such as nucleus, axon 
 and neuron parts, synaptic membrane. These results reflect associations with 
 the isolated neurons from prefrontal cortex samples. 
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./go_component_part.png}
+    \caption{
+    Components with the highest enrichment according to foreground and background 
+    genes in GOrilla tool.
+    }
+  \end{center}
+\end{figure}
+
+Highest enrichment in functions (Figure 21) is found in binding and catalytic 
+activity. (But why tho?)
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./go_function_part.png}
+    \caption{
+    Functions with the highest enrichment according to foreground and background 
+    genes in GOrilla tool.
+    }
+  \end{center}
+\end{figure}
 
 ## Hypothesis testing for groups of age
 
@@ -1779,7 +1815,7 @@ saveRDS(aov_age_ps, file='GSE112179_aov_age_ps.rgcs')
 ```
 
 The second hypothesis testing was performed to compare sample groups collected 
-based on age in groups (of sexes and diagnoses). 
+based on age (groups of sexes and diagnoses). 
 Tests were run for each position in the data set.
 
 - Data: methylation values of the position.
@@ -1810,7 +1846,7 @@ abline(v=0.05,col="red")
 text(x=0.1, y=35000, 'Alpha = 0.05')
 ```
 
-The histogram of p-values (Figure 19) extracted from performed ANOVA test showed 
+The histogram of p-values (Figure 22) extracted from performed ANOVA test showed 
 that there are more than 100000 positions that have got statistically 
 significant differences in methylation values between groups with age and
 without age. Precisely, there were 171830 positions that had p-value 
@@ -1862,7 +1898,7 @@ for(i in 1:5) {
 
 Five positions that had the lowest p-values were: cg27026819, cg02426178, 
 cg06220235, cg18514820, cg05191364 Their methylation profiles are presented
-in Figure 16. In all of these positions methylation values in female group
+in Figure 23. In all of these positions methylation values in female group
 were higher.
 
 \begin{figure}[!h]
@@ -1884,9 +1920,9 @@ These positions belong to chromosome 6 (cg27026819 and cg05191364), 19
 
 ## Manhattan plot
 
-Because the Manhattan plot in sex-based hypothesis testing was uset on
+Because the Manhattan plot in sex-based hypothesis testing was used on
 7 chromosome, for the more detailed comparison, in the age-based test 
-we also plotted Manhattan plot (Figure 17) with p-values of positions 
+we also plotted Manhattan plot (Figure 24) with p-values of positions in 
 this chromosome.
 
 ```{r chr7_age, include=FALSE, eval=FALSE}
@@ -1954,16 +1990,16 @@ for(i in 1:5) {
 }
 ```
 
-The volcano plot shows 4 outliers that are downregulated in samples with age
-younger than 47 years old and 1 outlier in samples with age older than 47 years old.
+The volcano plot (Figure 25) shows 4 outliers that are downregulated in samples with age
+younger than 47 years old and 1 outlier in samples with age older than 47.
 Effect sizes of the top 5 most significant methylation values are: 
 
 \begin{center}
   \begin{tabular}{ | c | c c c c c | }
     \hline
-    Position & cg04462931 & cg15183843 & cg03572700 & cg15228509 & cg00399683 \\
-    Effect size & -0.4456074 & -0.5868304 & -0.4042064 & -0.3516014 & -0.3066998 \\
-    P-value & 8.155034e-114 & 5.494131e-106 & 5.754572e-101 & 6.004097e-98 & 2.974341e-93 \\
+    Position & cg27026819  & cg02426178 & cg06220235 & cg18514820  & cg05191364  \\
+    Effect size & -0.05352193 & 0.05711899  & -0.03063718 & -0.03572649  & -0.04990001  \\
+    P-value & 5.756907e-29 & 1.751467e-27 & 1.158018e-25 & 2.889758e-25 & 1.185194e-24 \\
     \hline
   \end{tabular}
 \end{center}
@@ -1971,10 +2007,10 @@ Effect sizes of the top 5 most significant methylation values are:
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=150mm]{./t_test_sex_volcano_plot_r.png}
+    \includegraphics[width=150mm]{./volcano_age_fixed.png}
     \caption{
      Volcano plot of all positions effect sizes and p-values of ANOVA test for data 
-     grouped to people younger than 47 years and older than 47. 
+     grouped to people younger than 47 years and older than 47 years. 
     }
   \end{center}
 \end{figure}
