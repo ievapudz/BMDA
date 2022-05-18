@@ -1,7 +1,7 @@
 ---
 title: "Third task"
 author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė"
-date: "5/6/2022"
+date: "5/18/2022"
 bibliography: references.bib
 csl: apa-single-spaced.csl
 output: pdf_document
@@ -1752,7 +1752,7 @@ with FDR correction and 27304 background genes.
 For gene ontology enrichment analysis we used GOrilla tool on statistically 
 significant positions. 
 
-In components part (Figure 20),
+In components part (Figure 19),
 the highest enrichment is found in cellular components such as nucleus, 
 cytoplasm, Golgi apparatus, and, notably, neuron parts (axon, neuronal cell 
 body, dendrites, dendritic spines, synaptic membrane). These results reflect 
@@ -1768,7 +1768,7 @@ associations with samples of the isolated neurons from the prefrontal cortex.
   \end{center}
 \end{figure}
 
-In terms of processes (Figure 19), the highest enrichment is found
+In terms of processes (Figure 20), the highest enrichment is found
 in a few main categories: regulation of metabolic processes, developmental
 processes, and positive regulations of biological processes. The high values
 highlighted in the diagram for regulation of neurogenesis
@@ -1799,7 +1799,7 @@ transmission of signals.
 
 The mechanisms that participate in the process of
 signalling are ion (sodium, potassium, chloride, and calcium) binding, which is
-apparent in the GOrilla output (Figure 22). Additionally, there is a nucleotide
+apparent in the GOrilla output (Figure 21). Additionally, there is a nucleotide
 binding seen in the scheme, which eventually leads to binding ATP function. 
 Recent studies [@inoue2022role] investigate the 
 role of ATP receptors in pain signaling. Furthermore, there are also literature 
