@@ -1753,20 +1753,6 @@ with FDR correction and 27304 background genes.
 For gene ontology enrichment analysis on statistically significant positions
 we used GOrilla tool. 
 
-In terms of processes(Figure 19), the highest enrichment is found
-in a few main process categories: regulation of metabolic process, developmental
-process and positive regulations of biological processes. (Need more)
-
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[width=150mm]{./go_process_part.png}
-    \caption{
-    Processes with the highest enrichment according to foreground and background 
-    genes in GOrilla tool.
-    }
-  \end{center}
-\end{figure}
-
 In components part (Figure 20),
 the highest enrichment is found in cellular components such as nucleus, axon 
 and neuron parts, synaptic membrane. These results reflect associations with 
@@ -1777,6 +1763,31 @@ the isolated neurons from prefrontal cortex samples.
     \includegraphics[width=150mm]{./go_component_part.png}
     \caption{
     Components with the highest enrichment according to foreground and background 
+    genes in GOrilla tool.
+    }
+  \end{center}
+\end{figure}
+
+In terms of processes (Figure 19), the highest enrichment is found
+in a few main categories: regulation of metabolic processes, developmental
+processes and positive regulations of biological processes. The high values
+highlighted in the diagram for regulation of neurogenesis
+are one of the main indicators of data quality as they relate to the above mentioned
+components. In metabolic processes it would be interesting to make
+further investigation on regulation of kinase activity, transferase activity and 
+phosphate metabolic processes as there are only separate studies and traces of
+real possible intersections. Also fascinating outcomes were found examining
+prenatal errors of morphogenesis in patients with schizophrenia and bipolar
+disorder. It was 
+discovered, that patients have significantly higher rates of incorrect
+morphogenesis compared to healthy patients, so it indicates correlation with
+developmental processes.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./go_process_part_II.png}
+    \caption{
+    Processes with the highest enrichment according to foreground and background 
     genes in GOrilla tool.
     }
   \end{center}
@@ -1977,7 +1988,7 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
 
 ## Volcano plot
 
-As Manhattan plot, Volcano plot was repeated on 7th crhomosome for further
+As Manhattan plot, Volcano plot was repeated on 7th chromosome for further
 comparison.
 
 ```{r volcano_ages, include=FALSE, eval=FALSE}
