@@ -1372,9 +1372,9 @@ and schizophrenic sample groups.
 
 ## Grouping data
 
-For the third task it was required to perform hypothesis testing for each 
-position for samples grouped in several different ways. In our case, we decided 
-to define these groups based on: sex, race, and diagnosis type.
+It was decided to perform hypothesis testing for each 
+position for samples grouped in a couple of different ways. In our case, we 
+decided to define these groups based on sex and age.
 
 ```{r loading_data_3rd, include=FALSE, eval=FALSE}
 # Loading prepared data for further analysis
@@ -1398,8 +1398,6 @@ pos_annot <- readRDS(file='../data/GSE112179_anot.rds')
 sexes <- sample_annot@colData$sex
 diagnoses <- sample_annot@colData$diagnosis
 ages <- sample_annot@colData$age
-
-#races <- sample_annot@colData$race
 ```
 
 ## Normality testing
@@ -1443,7 +1441,7 @@ rm(shapiro_ps)
 
 Since there were more positions (554715 - up to 65% of all positions) that had 
 p-value of Shapiro normality test 
-higher than \(\alpha = 0.05\), therefore it could be stated that the
+higher than \(\alpha = 0.05\), it could be stated that the
 majority of positions had normal data distribution, thus t-test was chosen for
 further hypothesis testing.
 
@@ -1623,11 +1621,8 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
 
 ## Volcano plot
 
-It was required to draw volcano plots for each chromosome's effect sizes and 
-p-values. Since collection of beta matrix's indeces of positions that belong to 
-a particular chromosome is a time-consuming process, it was decided to plot one
-volcano plot for the 7th chromosome at first, and if there is enough time left,
-repeat the flow for other chromosomes
+The volcano plot was drawn for chromosome 7th due to the same reason it was 
+chosen to for the Manhattan plot.
 
 ```{r volcano_plot_install, include=FALSE, eval=FALSE}
 #BiocManager::install("a4Base")
@@ -1636,11 +1631,6 @@ repeat the flow for other chromosomes
 
 ```{r volcano_plot, include=FALSE, eval=FALSE}
 library("a4Base")
-#library(ggplot2)
-#library(ggpointdensity)
-#library(viridis)
-#library(dplyr)
-#library(ggrepel)
 
 male_beta_idx <- which(sexes == 'male')
 female_beta_idx <- which(sexes == 'female')
@@ -1676,20 +1666,28 @@ for(i in 1:5) {
 
 The volcano plot shows several outliers that are downregulated in male samples
 with respect of female samples and are statistically significant. Effect 
-sizes of the top 5 most significant methylation values are: 
+sizes of the top 5 most significant methylation values are given in the 
+Table 1.
 
-\begin{center}
-  \begin{tabular}{ | c | c c c c c | }
-    \hline
-    Position & cg04462931 & cg15183843 & cg03572700 & cg15228509 & cg00399683 \\
-    Effect size & -0.4456074 & -0.5868304 & -0.4042064 & -0.3516014 & -0.3066998 \\
-    P-value & 8.155034e-114 & 5.494131e-106 & 5.754572e-101 & 6.004097e-98 & 2.974341e-93 \\
-    \hline
-  \end{tabular}
-\end{center}
+\begin{table}[h!]
+    \begin{center}
+		\caption{Effect sizes and p-values of the top 5 most significant positions
+		of the sex-based test}
+		\vspace{0.2cm}
+    \begin{tabular}{ | c | c c c c c | }
+      \hline
+        Position & cg04462931 & cg15183843 & cg03572700 & cg15228509 & cg00399683 \\
+        Effect size & -0.4456074 & -0.5868304 & -0.4042064 & -0.3516014 & -0.3066998 \\
+        P-value & 8.155034e-114 & 5.494131e-106 & 5.754572e-101 & 6.004097e-98 & 2.974341e-93 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \label{table:ttestEffectP}
+\end{table}
 
-Since values are negative they all are represented in the upper left part of the
-volcano plot.
+Since effect size values are all negative (all downregulated in male samples) 
+they all are represented in the upper left part of the volcano plot. They appear
+in the upper part of the plot due to small p-values.
 
 \begin{figure}[!h]
   \begin{center}
@@ -1738,7 +1736,8 @@ for(i in 1:position_num) {
 }
 
 #Data correction for GOrilla input
-foreground <- c(noquote(unique(gsub(";", " ",pos_annot$UCSC_RefGene_Name[indexes]))))
+foreground <- c(noquote(unique(gsub(";", " ",
+                                    pos_annot$UCSC_RefGene_Name[indexes]))))
 foreground <- unique(unlist(strsplit(foreground, " ")))
 background <- c(noquote(unique(gsub(";", " ",pos_annot$UCSC_RefGene_Name))))
 background <- unique(unlist(strsplit(background, " ")))
@@ -1747,40 +1746,41 @@ lapply(foreground, write, "foreground.txt", append=TRUE, ncolumns=1)
 lapply(background, write, "background.txt", append=TRUE, ncolumns=1)
 ```
 
-After all genes names manipulations there were selected 10686 foreground genes
+After all genes names manipulations, there were selected 10686 foreground genes
 with FDR correction and 27304 background genes.
 
-For gene ontology enrichment analysis on statistically significant positions
-we used GOrilla tool. 
+For gene ontology enrichment analysis we used GOrilla tool on statistically 
+significant positions. 
 
 In components part (Figure 20),
-the highest enrichment is found in cellular components such as nucleus, axon 
-and neuron parts, synaptic membrane. These results reflect associations with 
-the isolated neurons from prefrontal cortex samples. 
+the highest enrichment is found in cellular components such as nucleus, 
+cytoplasm, Golgi apparatus, and, notably, neuron parts (axon, neuronal cell 
+body, dendrites, dendritic spines, synaptic membrane). These results reflect 
+associations with samples of the isolated neurons from the prefrontal cortex. 
 
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=150mm]{./go_component_part.png}
     \caption{
-    Components with the highest enrichment according to foreground and background 
-    genes in GOrilla tool.
+    Components with the highest enrichment according to foreground and 
+    background genes in GOrilla tool
     }
   \end{center}
 \end{figure}
 
 In terms of processes (Figure 19), the highest enrichment is found
 in a few main categories: regulation of metabolic processes, developmental
-processes and positive regulations of biological processes. The high values
+processes, and positive regulations of biological processes. The high values
 highlighted in the diagram for regulation of neurogenesis
-are one of the main indicators of data quality as they relate to the above mentioned
-components. In metabolic processes it would be interesting to make
-further investigation on regulation of kinase activity, transferase activity and 
-phosphate metabolic processes as there are only separate studies and traces of
-real possible intersections. Also fascinating outcomes were found examining
+are one of the main indicators of data quality as they relate to the components
+mentioned above. In metabolic processes it would be interesting to make
+further investigation on regulation of kinase activity, transferase activity, 
+and phosphate metabolic processes as there are only separate studies and traces 
+of real possible intersections. Also, fascinating outcomes were found examining
 prenatal errors of morphogenesis in patients with schizophrenia and bipolar
 disorder. It was 
 discovered, that patients have significantly higher rates of incorrect
-morphogenesis compared to healthy patients, so it indicates correlation with
+morphogenesis compared to healthy patients, thus it indicates correlation with
 developmental processes.
 
 \begin{figure}[!h]
@@ -1799,12 +1799,12 @@ transmission of signals.
 
 The mechanisms that participate in the process of
 signalling are ion (sodium, potassium, chloride, and calcium) binding, which is
-apparent in the GO output (Figure 22). Additionally, there is a nucleotide
-binding seen in the scheme, which eventually leads to binding ATP function
-(not included in the figure). Recent studies [@inoue2022role] investigate the 
+apparent in the GOrilla output (Figure 22). Additionally, there is a nucleotide
+binding seen in the scheme, which eventually leads to binding ATP function. 
+Recent studies [@inoue2022role] investigate the 
 role of ATP receptors in pain signaling. Furthermore, there are also literature 
 resources [@li2019role] that analyse relations between the chronic pain and 
-dopaminergic pathways. To extend this current research it would be interesting
+dopaminergic pathways. To extend this current research, it would be interesting
 to explore, whether the cases of schizophrenia or bipolar disorder have got 
 impact on pain signalling. Regarding to the published literature 
 [@engels2014clinical, @stubbs2015prevalence], these psychiatric disorders do
@@ -1890,8 +1890,8 @@ lower than \(\alpha\).
   \begin{center}
     \includegraphics[width=150mm]{./aov_age_hist.png}
     \caption{
-    The histogram of p-values of ANOVA test that compared sample sex and diagnosis
-    groups with and without age group
+    The histogram of p-values of ANOVA test that compared sample sex and 
+    diagnosis groups with and without age group
     }
   \end{center}
 \end{figure}
@@ -1954,9 +1954,9 @@ These positions belong to chromosomes 6 (cg27026819 and cg05191364), 19
 
 ## Manhattan plot
 
-Because the Manhattan plot in sex-based hypothesis testing was used on
-7 chromosome, for the more detailed comparison, in the age-based test 
-we also plotted Manhattan plot (Figure 24) with p-values of positions in 
+Because the Manhattan plot in sex-based hypothesis testing was drawn for 
+positions in 7th chromosome, for more detailed comparison, Manhattan plot was 
+also created for the age-based test (Figure 24) with p-values of positions in 
 this chromosome.
 
 ```{r chr7_age, include=FALSE, eval=FALSE}
@@ -1988,8 +1988,8 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
 
 ## Volcano plot
 
-As Manhattan plot, Volcano plot was repeated on 7th chromosome for further
-comparison.
+As Manhattan plot, the volcano plot of age-based test was also plotted for 7th 
+chromosome for further comparison.
 
 ```{r volcano_ages, include=FALSE, eval=FALSE}
 lower_47_idx <- which(ages < 47)
@@ -2003,7 +2003,8 @@ effect_sizes_p_values <- data.frame(x=effect_sizes, y=-log10(aov_age_ps))
 
 
 volcano_plot <- ggplot(effect_sizes_p_values, aes_(x=effect_sizes_p_values$x, 
-                                                   y=effect_sizes_p_values$y)) + geom_point() + 
+                                                   y=effect_sizes_p_values$y)) + 
+  geom_point() + 
   geom_pointdensity() +
   scale_color_viridis() +
   xlab('effect size') + ylab('-log10 p-value') + 
@@ -2024,27 +2025,33 @@ for(i in 1:5) {
 }
 ```
 
-The volcano plot (Figure 25) shows 4 outliers that are downregulated in samples with age
-younger than 47 years old and 1 outlier in samples with age older than 47.
-Effect sizes of the top 5 most significant methylation values are: 
+The volcano plot (Figure 25) shows 4 outliers that are downregulated in samples 
+with age younger than 47 years old and 1 outlier in samples with age older than 
+47. Effect sizes of the top 5 most significant methylation values are given in
+Table 2.
 
-\begin{center}
-  \begin{tabular}{ | c | c c c c c | }
-    \hline
-    Position & cg27026819  & cg02426178 & cg06220235 & cg18514820  & cg05191364  \\
-    Effect size & -0.05352193 & 0.05711899  & -0.03063718 & -0.03572649  & -0.04990001  \\
-    P-value & 5.756907e-29 & 1.751467e-27 & 1.158018e-25 & 2.889758e-25 & 1.185194e-24 \\
-    \hline
-  \end{tabular}
-\end{center}
-
+\begin{table}[h!]
+    \begin{center}
+		\caption{Effect sizes and p-values of the top 5 most significant positions 
+		of the age-based test}
+		\vspace{0.2cm}
+    \begin{tabular}{ | c | c c c c c | }
+      \hline
+        Position & cg27026819  & cg02426178 & cg06220235 & cg18514820  & cg05191364  \\
+        Effect size & -0.05352193 & 0.05711899  & -0.03063718 & -0.03572649  & -0.04990001  \\
+        P-value & 5.756907e-29 & 1.751467e-27 & 1.158018e-25 & 2.889758e-25 & 1.185194e-24 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \label{table:anovaEffectP}
+\end{table}
 
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=150mm]{./volcano_age_fixed.png}
     \caption{
-     Volcano plot of all positions effect sizes and p-values of ANOVA test for data 
-     grouped to people younger than 47 years and older than 47 years 
+     Volcano plot of all positions effect sizes and p-values of ANOVA test for 
+     data grouped to people younger than 47 years and older than 47 years 
     }
   \end{center}
 \end{figure}
