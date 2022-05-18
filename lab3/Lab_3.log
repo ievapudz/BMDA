@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  18 MAY 2022 20:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  18 MAY 2022 21:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -762,24 +762,29 @@ Package pdftex.def Info: ./go_component_part.png  used on input line 875.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./go_process_part_II.png, id=310, 684.156pt x 522.15076pt>
+<./go_process_part.png, id=310, 840.13875pt x 539.01375pt>
+File: ./go_process_part.png Graphic file (type png)
+<use ./go_process_part.png>
+Package pdftex.def Info: ./go_process_part.png  used on input line 900.
+(pdftex.def)             Requested size: 213.39287pt x 136.90796pt.
+<./go_process_part_II.png, id=311, 684.156pt x 522.15076pt>
 File: ./go_process_part_II.png Graphic file (type png)
 <use ./go_process_part_II.png>
-Package pdftex.def Info: ./go_process_part_II.png  used on input line 900.
-(pdftex.def)             Requested size: 426.80305pt x 325.7379pt.
+Package pdftex.def Info: ./go_process_part_II.png  used on input line 901.
+(pdftex.def)             Requested size: 213.39108pt x 162.86098pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./go_function_part.png, id=311, 681.54625pt x 865.2325pt>
+<./go_function_part.png, id=312, 681.54625pt x 865.2325pt>
 File: ./go_function_part.png Graphic file (type png)
 <use ./go_function_part.png>
-Package pdftex.def Info: ./go_function_part.png  used on input line 935.
+Package pdftex.def Info: ./go_function_part.png  used on input line 936.
 (pdftex.def)             Requested size: 213.39865pt x 270.91258pt.
-<./go_function_part_catalytic.png, id=312, 729.72626pt x 821.0675pt>
+<./go_function_part_catalytic.png, id=313, 729.72626pt x 821.0675pt>
 File: ./go_function_part_catalytic.png Graphic file (type png)
 <use ./go_function_part_catalytic.png>
 Package pdftex.def Info: ./go_function_part_catalytic.png  used on input line 9
-36.
+37.
 (pdftex.def)             Requested size: 213.39674pt x 240.10803pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -788,63 +793,63 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.954   D
+l.955   D
          ata: methylation values of the position.]
-Overfull \hbox (27.61179pt too wide) detected at line 960
+Overfull \hbox (27.61179pt too wide) detected at line 961
 \OML/lmm/m/it/10 H[] \OT1/lmr/m/n/10 : \OML/lmm/m/it/10 ^^V[] \OT1/lmr/m/n/10 =
  \OML/lmm/m/it/10 ^^V[];  where i  \OMS/lmsy/m/n/10 ^^@  \OML/lmm/m/it/10 index
  of position;  sda  \OMS/lmsy/m/n/10 ^^@  \OML/lmm/m/it/10 sexes;  ages and dia
 gnoses;  sd \OMS/lmsy/m/n/10 ^^@ \OML/lmm/m/it/10 sexes and diagnoses:
  []
 
-<./aov_age_hist.png, id=322, 1134.48843pt x 517.935pt>
-File: ./aov_age_hist.png Graphic file (type png)
-<use ./aov_age_hist.png>
-Package pdftex.def Info: ./aov_age_hist.png  used on input line 974.
-(pdftex.def)             Requested size: 426.78236pt x 194.84157pt.
+<./anova_age.png, id=323, 993.7125pt x 592.46344pt>
+File: ./anova_age.png Graphic file (type png)
+<use ./anova_age.png>
+Package pdftex.def Info: ./anova_age.png  used on input line 975.
+(pdftex.def)             Requested size: 426.78767pt x 254.45598pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./pos_1.png, id=323, 551.81157pt x 517.935pt>
+<./pos_1.png, id=324, 551.81157pt x 517.935pt>
 File: ./pos_1.png Graphic file (type png)
 <use ./pos_1.png>
-Package pdftex.def Info: ./pos_1.png  used on input line 989.
+Package pdftex.def Info: ./pos_1.png  used on input line 990.
 (pdftex.def)             Requested size: 213.39536pt x 200.29468pt.
-<./pos_2.png, id=324, 551.81157pt x 517.935pt>
+<./pos_2.png, id=325, 551.81157pt x 517.935pt>
 File: ./pos_2.png Graphic file (type png)
 <use ./pos_2.png>
-Package pdftex.def Info: ./pos_2.png  used on input line 990.
+Package pdftex.def Info: ./pos_2.png  used on input line 991.
 (pdftex.def)             Requested size: 213.39536pt x 200.29468pt.
-<./pos_3.png, id=325, 551.81157pt x 517.935pt>
+<./pos_3.png, id=326, 551.81157pt x 517.935pt>
 File: ./pos_3.png Graphic file (type png)
 <use ./pos_3.png>
-Package pdftex.def Info: ./pos_3.png  used on input line 991.
+Package pdftex.def Info: ./pos_3.png  used on input line 992.
 (pdftex.def)             Requested size: 213.39536pt x 200.29468pt.
-<./pos_4.png, id=326, 551.81157pt x 517.935pt>
+<./pos_4.png, id=327, 551.81157pt x 517.935pt>
 File: ./pos_4.png Graphic file (type png)
 <use ./pos_4.png>
-Package pdftex.def Info: ./pos_4.png  used on input line 992.
+Package pdftex.def Info: ./pos_4.png  used on input line 993.
 (pdftex.def)             Requested size: 213.39536pt x 200.29468pt.
-<./pos_5.png, id=327, 551.81157pt x 517.935pt>
+<./pos_5.png, id=328, 551.81157pt x 517.935pt>
 File: ./pos_5.png Graphic file (type png)
 <use ./pos_5.png>
-Package pdftex.def Info: ./pos_5.png  used on input line 993.
+Package pdftex.def Info: ./pos_5.png  used on input line 994.
 (pdftex.def)             Requested size: 213.39536pt x 200.29468pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./manhatan.png, id=328, 551.81157pt x 372.64218pt>
+<./manhatan.png, id=329, 551.81157pt x 372.64218pt>
 File: ./manhatan.png Graphic file (type png)
 <use ./manhatan.png>
-Package pdftex.def Info: ./manhatan.png  used on input line 1014.
+Package pdftex.def Info: ./manhatan.png  used on input line 1015.
 (pdftex.def)             Requested size: 426.80756pt x 288.22609pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./volcano_age_fixed.png, id=329, 903.375pt x 752.8125pt>
+<./volcano_age_fixed.png, id=330, 903.375pt x 752.8125pt>
 File: ./volcano_age_fixed.png Graphic file (type png)
 <use ./volcano_age_fixed.png>
-Package pdftex.def Info: ./volcano_age_fixed.png  used on input line 1051.
+Package pdftex.def Info: ./volcano_age_fixed.png  used on input line 1052.
 (pdftex.def)             Requested size: 426.79181pt x 355.65984pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -853,74 +858,74 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1075 \leavevmode
+l.1076 \leavevmode
                   \vadjust pre{\hypertarget{ref-fortin485512analysis}{}}%] [17]
 [18pdfTeX warning (ext4): destination with the same identifier (name{figure.16}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
+l.1122 \end{document}
                       <./t_test_sex_methyl_prof_1.png> <./t_test_sex_methyl_pro
 f_2.png> <./t_test_sex_methyl_prof_3.png> <./t_test_sex_methyl_prof_4.png> <./t
 _test_sex_methyl_prof_5.png>] [19pdfTeX warning (ext4): destination with the sa
 me identifier (name{figure.17}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
+l.1122 \end{document}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.18}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
+l.1122 \end{document}
                       <./chr7_Manhattan_plot.png> <./t_test_sex_volcano_plot_r.
 png>] [20pdfTeX warning (ext4): destination with the same identifier (name{figu
 re.19}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
+l.1122 \end{document}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.20}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
-                      <./go_component_part.png> <./go_process_part_II.png>] [21
-pdfTeX warning (ext4): destination with the same identifier (name{figure.21}) h
-as been already used, duplicate ignored
+l.1122 \end{document}
+                      <./go_component_part.png> <./go_process_part.png> <./go_p
+rocess_part_II.png>] [21pdfTeX warning (ext4): destination with the same identi
+fier (name{figure.21}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
+l.1122 \end{document}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.22}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
+l.1122 \end{document}
                       <./go_function_part.png> <./go_function_part_catalytic.pn
-g> <./aov_age_hist.png>] [22pdfTeX warning (ext4): destination with the same id
-entifier (name{figure.23}) has been already used, duplicate ignored
+g> <./anova_age.png>] [22pdfTeX warning (ext4): destination with the same ident
+ifier (name{figure.23}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
+l.1122 \end{document}
                       <./pos_1.png> <./pos_2.png> <./pos_3.png> <./pos_4.png> <
 ./pos_5.png>] [23pdfTeX warning (ext4): destination with the same identifier (n
 ame{figure.24}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
+l.1122 \end{document}
                       <./manhatan.png>] [24pdfTeX warning (ext4): destination w
 ith the same identifier (name{figure.25}) has been already used, duplicate igno
 red
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1115 \end{document}
+l.1122 \end{document}
                       <./volcano_age_fixed.png>] (./Lab_3.aux)
 Package rerunfilecheck Info: File `Lab_3.out' has not changed.
 (rerunfilecheck)             Checksum: BCC324F24216E85196B1494FDE0685E2;6207.
  ) 
 Here is how much of TeX's memory you used:
- 10647 strings out of 480539
- 156639 string characters out of 5902059
- 463087 words of memory out of 5000000
- 27947 multiletter control sequences out of 15000+600000
+ 10655 strings out of 480539
+ 156812 string characters out of 5902059
+ 463215 words of memory out of 5000000
+ 27953 multiletter control sequences out of 15000+600000
  454079 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,8n,66p,430b,383s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -939,10 +944,10 @@ s/ieva/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/ieva/L
 ibrary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/ieva/Library
 /TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/ieva/Library/TinyT
 eX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Lab_3.pdf (24 pages, 6268947 bytes).
+Output written on Lab_3.pdf (24 pages, 6724125 bytes).
 PDF statistics:
- 502 PDF objects out of 1000 (max. 8388607)
- 363 compressed objects within 4 object streams
- 130 named destinations out of 1000 (max. 500000)
- 483 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 507 PDF objects out of 1000 (max. 8388607)
+ 366 compressed objects within 4 object streams
+ 131 named destinations out of 1000 (max. 500000)
+ 488 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -358,7 +358,7 @@ hist(IAC_matrix, main = "Histogram of pair-to-pair inter-array correlation",
     \includegraphics[width=75mm]{./2.png}
     \caption{
     The correlation histogram (left) and scatter plot (right) to detect the 
-    outliers for elimination.
+    outliers for elimination
     }
   \end{center}
 \end{figure}
@@ -421,7 +421,7 @@ hist(IAC_matrix, ,  main = "Histogram of pair-to-pair inter-array correlation (S
     \includegraphics[width=75mm]{./4.png}
     \caption{
       The correlation histogram (left) and scatter plot (right) of all dataset 
-      after the elimination of outliers.
+      after the elimination of outliers
     }
   \end{center}
 \end{figure}
@@ -493,7 +493,7 @@ hist(cor_control, main = "Histogram of pair-to-pair inter-array correlation in
     \includegraphics[width=75mm]{./7.png}
     \caption{
       The pair-to-pair correlation histogram (left) and scatter plot (right) for 
-      control samples.
+      control samples
     }
   \end{center}
 \end{figure}
@@ -529,7 +529,7 @@ Sequentially, it was decided to check the distribution of case methylation data.
     \includegraphics[width=75mm]{./8.png}
     \caption{
       The pair-to-pair correlation histogram (left) and scatter plot (right) of 
-      all case samples.
+      all case samples
     }
   \end{center}
 \end{figure}
@@ -592,7 +592,7 @@ plot(column_sd, main = "Scatter plot of each sample standard deviation from mean
   \begin{center}
     \includegraphics[width=90mm]{./9.png}
     \caption{
-      The scatter plot of the bipolar samples.
+      The scatter plot of the bipolar samples
     }
   \end{center}
 \end{figure}
@@ -615,7 +615,7 @@ plot(column_sd, main = "Scatter plot of each sample standard deviation from mean
   \begin{center}
     \includegraphics[width=90mm]{./10.png}
     \caption{
-      The scatterplot of the schizophrenia case samples.
+      The scatterplot of the schizophrenia case samples
     }
   \end{center}
 \end{figure}
@@ -640,7 +640,7 @@ getQC, addQC, and plotQC functions was estimated.
   \begin{center}
     \includegraphics[width=90mm]{./11.png}
     \caption{
-      The plot of quality control with getQC, addQC, and plotQC functions.
+      The plot of quality control with getQC, addQC, and plotQC functions
     }
   \end{center}
 \end{figure}
@@ -675,7 +675,7 @@ significant alterations between different diagnosis are not present.
     \includegraphics[width=75mm]{./13.png}
     \caption{
       The density plot of methylation intensity of each sample(left) and 
-      density plot of all samples positions mean methylation intensity (right).
+      density plot of all samples positions mean methylation intensity (right)
     }
   \end{center}
 \end{figure}
@@ -921,7 +921,7 @@ plotDendroAndColors(clustered, colors_m,
     \includegraphics[width=150mm]{./14.png}
     \caption{
       The dendrogram that shows three clusters after the hierarchical clustering
-      using 1-cor() distance metric and Ward linkage method.
+      using 1-cor() distance metric and Ward linkage method
     }
   \end{center}
 \end{figure}
@@ -1089,7 +1089,7 @@ heatmap.2(top_N_beta_z, scale = "none", col = bluered(100),
     \includegraphics[width=150mm]{./Not_standartized.png}
     \caption{
       The heatmap of top 100 most variable modification positions with not 
-      standardized data.
+      standardized data
     }
   \end{center}
 \end{figure}
@@ -1099,7 +1099,7 @@ heatmap.2(top_N_beta_z, scale = "none", col = bluered(100),
     \includegraphics[width=150mm]{./Standartized.png}
     \caption{
       The heatmap of top 100 most variable modification positions
-      with standardized data.
+      with standardized data
     }
   \end{center}
 \end{figure}
@@ -1203,7 +1203,7 @@ in the heatmap, as no additional clusters have emerged.
     \includegraphics[width=150mm]{./rep_not_st.png}
     \caption{
       The heatmap of top 100 most variable modification positions with not 
-      standardized data after replicas removal.
+      standardized data after replicas removal
     }
   \end{center}
 \end{figure}
@@ -1213,7 +1213,7 @@ in the heatmap, as no additional clusters have emerged.
     \includegraphics[width=150mm]{./rep_st.png}
     \caption{
       The heatmap of top 100 most variable modification positions
-      with standardized data after replicas removal.
+      with standardized data after replicas removal
     }
   \end{center}
 \end{figure}
@@ -1313,7 +1313,7 @@ plotDNAmAge(pred_vs_real$skinHorvath, sample_annot@colData$age,
     \includegraphics[width=75mm]{./PedBE.png}
     \caption{
     Correlation between biological age predicted by methylation clocks and the 
-    chronological age.
+    chronological age
     }
   \end{center}
 \end{figure}
@@ -1641,15 +1641,6 @@ effect_sizes
 
 effect_sizes_p_values <- data.frame(x=effect_sizes, y=-log10(t_test_sex_ps))
 
-volcano_plot <- ggplot(effect_sizes_p_values, aes_(x=effect_sizes_p_values$x, 
-  y=effect_sizes_p_values$y)) + geom_point() + 
-  geom_pointdensity() +
-  scale_color_viridis() +
-  xlab('effect size') + ylab('-log10 p-value') + 
-  labs(title = 'Volcano plot for all chromosomes')
-
-volcano_plot
-
 volcano_plot_r <- plot(effect_sizes, -log10(t_test_sex_ps), xlab='effect size',
                        ylab='-log10 p-value', 
                        main='Volcano plot for all chromosomes',
@@ -1746,7 +1737,7 @@ lapply(foreground, write, "foreground.txt", append=TRUE, ncolumns=1)
 lapply(background, write, "background.txt", append=TRUE, ncolumns=1)
 ```
 
-After all genes names manipulations, there were selected 10686 foreground genes
+After all genes names manipulations, there were 10686 foreground genes selected
 with FDR correction and 27304 background genes.
 
 For gene ontology enrichment analysis we used GOrilla tool on statistically 
@@ -1762,8 +1753,8 @@ associations with samples of the isolated neurons from the prefrontal cortex.
   \begin{center}
     \includegraphics[width=150mm]{./go_component_part.png}
     \caption{
-    Components with the highest enrichment according to foreground and 
-    background genes in GOrilla tool
+    Components with the highest enrichment according to foreground and background 
+    genes in GOrilla tool [@gorilla]
     }
   \end{center}
 \end{figure}
@@ -1778,17 +1769,18 @@ further investigation on regulation of kinase activity, transferase activity,
 and phosphate metabolic processes as there are only separate studies and traces 
 of real possible intersections. Also, fascinating outcomes were found examining
 prenatal errors of morphogenesis in patients with schizophrenia and bipolar
-disorder. It was 
+disorder [@TRIXLER2001195]. It was 
 discovered, that patients have significantly higher rates of incorrect
 morphogenesis compared to healthy patients, thus it indicates correlation with
 developmental processes.
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=150mm]{./go_process_part_II.png}
+    \includegraphics[width=75mm]{./go_process_part.png}
+    \includegraphics[width=75mm]{./go_process_part_II.png}
     \caption{
     Processes with the highest enrichment according to foreground and background 
-    genes in GOrilla tool.
+    genes in GOrilla tool
     }
   \end{center}
 \end{figure}
@@ -1849,7 +1841,7 @@ saveRDS(aov_age_ps, file='GSE112179_aov_age_ps.rgcs')
 ```
 
 The second hypothesis testing was performed to compare sample groups collected 
-based on age (groups of sexes and diagnoses). 
+based on age (in groups of sexes and diagnoses). 
 Tests were run for each position in the data set.
 
 - Data: methylation values of the position.
@@ -1872,8 +1864,8 @@ par(oma=c(0, 0, 2, 0))
 hist(aov_age_ps, 
      xlim=c(0, 1), 
      breaks=80,
-     ylim=c(0,40000),
-     main='Histogram of anova hypothesis testing for groups of age',
+     ylim=c(0,100000),
+     main='Histogram of ANOVA hypothesis testing for groups of age',
      xlab='p-value',
      cex.main=1.5)
 abline(v=0.05,col="red")
@@ -1888,7 +1880,7 @@ lower than \(\alpha\).
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=150mm]{./aov_age_hist.png}
+    \includegraphics[width=150mm]{./anova_age.png}
     \caption{
     The histogram of p-values of ANOVA test that compared sample sex and 
     diagnosis groups with and without age group
