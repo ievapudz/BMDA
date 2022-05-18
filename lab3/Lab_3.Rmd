@@ -1374,7 +1374,7 @@ and schizophrenic sample groups.
 
 For the third task it was required to perform hypothesis testing for each 
 position for samples grouped in several different ways. In our case, we decided 
-to define these groups based on: sex, race, and diagnosis type.
+to define these groups based on: sex, age, and diagnosis type.
 
 ```{r loading_data_3rd, include=FALSE, eval=FALSE}
 # Loading prepared data for further analysis
@@ -1398,8 +1398,6 @@ pos_annot <- readRDS(file='../data/GSE112179_anot.rds')
 sexes <- sample_annot@colData$sex
 diagnoses <- sample_annot@colData$diagnosis
 ages <- sample_annot@colData$age
-
-#races <- sample_annot@colData$race
 ```
 
 ## Normality testing
@@ -1623,11 +1621,6 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
 
 ## Volcano plot
 
-It was required to draw volcano plots for each chromosome's effect sizes and 
-p-values. Since collection of beta matrix's indeces of positions that belong to 
-a particular chromosome is a time-consuming process, it was decided to plot one
-volcano plot for the 7th chromosome at first, and if there is enough time left,
-repeat the flow for other chromosomes
 
 ```{r volcano_plot_install, include=FALSE, eval=FALSE}
 #BiocManager::install("a4Base")
@@ -1636,11 +1629,11 @@ repeat the flow for other chromosomes
 
 ```{r volcano_plot, include=FALSE, eval=FALSE}
 library("a4Base")
-#library(ggplot2)
-#library(ggpointdensity)
-#library(viridis)
-#library(dplyr)
-#library(ggrepel)
+library(ggplot2)
+library(ggpointdensity)
+library(viridis)
+library(dplyr)
+library(ggrepel)
 
 male_beta_idx <- which(sexes == 'male')
 female_beta_idx <- which(sexes == 'female')
@@ -1747,7 +1740,7 @@ lapply(foreground, write, "foreground.txt", append=TRUE, ncolumns=1)
 lapply(background, write, "background.txt", append=TRUE, ncolumns=1)
 ```
 
-After all genes names manipulations there were selected 10686 foreground genes
+After all manipulations of gene names there were selected 10686 foreground genes
 with FDR correction and 27304 background genes.
 
 For gene ontology enrichment analysis on statistically significant positions
@@ -1763,7 +1756,7 @@ the isolated neurons from prefrontal cortex samples.
     \includegraphics[width=150mm]{./go_component_part.png}
     \caption{
     Components with the highest enrichment according to foreground and background 
-    genes in GOrilla tool.
+    genes in GOrilla tool [@gorilla].
     }
   \end{center}
 \end{figure}
@@ -1778,14 +1771,15 @@ further investigation on regulation of kinase activity, transferase activity and
 phosphate metabolic processes as there are only separate studies and traces of
 real possible intersections. Also fascinating outcomes were found examining
 prenatal errors of morphogenesis in patients with schizophrenia and bipolar
-disorder. It was 
+disorder [@TRIXLER2001195]. It was 
 discovered, that patients have significantly higher rates of incorrect
 morphogenesis compared to healthy patients, so it indicates correlation with
 developmental processes.
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=150mm]{./go_process_part_II.png}
+    \includegraphics[width=75mm]{./go_process_part.png}
+    \includegraphics[width=75mm]{./go_process_part_II.png}
     \caption{
     Processes with the highest enrichment according to foreground and background 
     genes in GOrilla tool.
@@ -1799,7 +1793,7 @@ transmission of signals.
 
 The mechanisms that participate in the process of
 signalling are ion (sodium, potassium, chloride, and calcium) binding, which is
-apparent in the GO output (Figure 22). Additionally, there is a nucleotide
+apparent in the GO output (Figure 21). Additionally, there is a nucleotide
 binding seen in the scheme, which eventually leads to binding ATP function
 (not included in the figure). Recent studies [@inoue2022role] investigate the 
 role of ATP receptors in pain signaling. Furthermore, there are also literature 
@@ -1849,7 +1843,7 @@ saveRDS(aov_age_ps, file='GSE112179_aov_age_ps.rgcs')
 ```
 
 The second hypothesis testing was performed to compare sample groups collected 
-based on age (groups of sexes and diagnoses). 
+based on age (in groups of sexes and diagnoses). 
 Tests were run for each position in the data set.
 
 - Data: methylation values of the position.
@@ -1872,8 +1866,8 @@ par(oma=c(0, 0, 2, 0))
 hist(aov_age_ps, 
      xlim=c(0, 1), 
      breaks=80,
-     ylim=c(0,40000),
-     main='Histogram of anova hypothesis testing for groups of age',
+     ylim=c(0,100000),
+     main='Histogram of ANOVA hypothesis testing for groups of age',
      xlab='p-value',
      cex.main=1.5)
 abline(v=0.05,col="red")
@@ -1888,7 +1882,7 @@ lower than \(\alpha\).
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=150mm]{./aov_age_hist.png}
+    \includegraphics[width=150mm]{./anova_age.png}
     \caption{
     The histogram of p-values of ANOVA test that compared sample sex and diagnosis
     groups with and without age group
