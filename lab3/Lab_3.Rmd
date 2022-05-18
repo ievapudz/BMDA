@@ -1750,7 +1750,7 @@ lapply(background, write, "background.txt", append=TRUE, ncolumns=1)
 After all genes names manipulations there were selected 10686 foreground genes
 with FDR correction and 27304 background genes.
 
-For gene ontology enrichmet analysis on statistically significant positions
+For gene ontology enrichment analysis on statistically significant positions
 we used GOrilla tool. 
 
 In terms of processes(Figure 19), the highest enrichment is found
@@ -1782,18 +1782,41 @@ the isolated neurons from prefrontal cortex samples.
   \end{center}
 \end{figure}
 
-Highest enrichment in functions (Figure 21) is found in binding and catalytic 
-activity. (But why tho?)
+Unsurprisigly, the highest enrichment among functions (Figure 21) is found in 
+binding and catalytic activity, since the main function of neural cells is 
+transmission of signals. 
+
+The mechanisms that participate in the process of
+signalling are ion (sodium, potassium, chloride, and calcium) binding, which is
+apparent in the GO output (Figure 22). Additionally, there is a nucleotide
+binding seen in the scheme, which eventually leads to binding ATP function
+(not included in the figure). Recent studies [@inoue2022role] investigate the 
+role of ATP receptors in pain signaling. Furthermore, there are also literature 
+resources [@li2019role] that analyse relations between the chronic pain and 
+dopaminergic pathways. To extend this current research it would be interesting
+to explore, whether the cases of schizophrenia or bipolar disorder have got 
+impact on pain signalling. Regarding to the published literature 
+[@engels2014clinical, @stubbs2015prevalence], these psychiatric disorders do
+include varied perception of pain, therefore it would be worthy to analyse
+variations of methylation levels in the related genes.
+
+Regarding the catalytic activity, it is known [@neve2004dopamine] that dopamine 
+receptors are mediated by G proteins. G proteins activate cylic AMP-dependent 
+protein kinase and protein phosphatase-1 inhibitor DARPP-32. Both kinase and 
+phosphatase activities are included in the GO output. The mentioned knowledge
+explains the enrichment observed in the GOrilla scheme. 
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=150mm]{./go_function_part.png}
+    \includegraphics[width=75mm]{./go_function_part.png}
+    \includegraphics[width=75mm]{./go_function_part_catalytic.png}
     \caption{
     Functions with the highest enrichment according to foreground and background 
-    genes in GOrilla tool.
+    genes in GOrilla tool
     }
   \end{center}
 \end{figure}
+
 
 ## Hypothesis testing for groups of age
 
@@ -1857,7 +1880,7 @@ lower than \(\alpha\).
     \includegraphics[width=150mm]{./aov_age_hist.png}
     \caption{
     The histogram of p-values of ANOVA test that compared sample sex and diagnosis
-    groups with and without age group.
+    groups with and without age group
     }
   \end{center}
 \end{figure}
@@ -1897,7 +1920,7 @@ for(i in 1:5) {
 ```
 
 Five positions that had the lowest p-values were: cg27026819, cg02426178, 
-cg06220235, cg18514820, cg05191364 Their methylation profiles are presented
+cg06220235, cg18514820, cg05191364. Their methylation profiles are presented
 in Figure 23. In all of these positions methylation values in female group
 were higher.
 
@@ -1910,12 +1933,12 @@ were higher.
     \includegraphics[width=75mm]{./pos_5.png}
     \caption{
     Methylation profiles of positions with top 5 smallest p-values in 
-    hypothesis testing for groups of age.
+    hypothesis testing for groups of age
     }
   \end{center}
 \end{figure}
 
-These positions belong to chromosome 6 (cg27026819 and cg05191364), 19 
+These positions belong to chromosomes 6 (cg27026819 and cg05191364), 19 
 (cg02426178), 16 (cg06220235), and 10 (cg18514820).
 
 ## Manhattan plot
@@ -1947,7 +1970,7 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
     \includegraphics[width=150mm]{./manhatan.png}
     \caption{
      Manhattan plot for positions of chromosome 7 in hypothesis testing 
-     for groups of age.
+     for groups of age
     }
   \end{center}
 \end{figure}
@@ -2010,7 +2033,7 @@ Effect sizes of the top 5 most significant methylation values are:
     \includegraphics[width=150mm]{./volcano_age_fixed.png}
     \caption{
      Volcano plot of all positions effect sizes and p-values of ANOVA test for data 
-     grouped to people younger than 47 years and older than 47 years. 
+     grouped to people younger than 47 years and older than 47 years 
     }
   \end{center}
 \end{figure}
