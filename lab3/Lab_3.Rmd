@@ -1621,9 +1621,6 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
 
 ## Volcano plot
 
-The volcano plot was drawn for chromosome 7th due to the same reason it was 
-chosen to for the Manhattan plot.
-
 ```{r volcano_plot_install, include=FALSE, eval=FALSE}
 #BiocManager::install("a4Base")
 #install.packages('ggpointdensity')
@@ -1979,9 +1976,6 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
 \end{figure}
 
 ## Volcano plot
-
-As Manhattan plot, the volcano plot of age-based test was also plotted for 7th 
-chromosome for further comparison.
 
 ```{r volcano_ages, include=FALSE, eval=FALSE}
 lower_47_idx <- which(ages < 47)
