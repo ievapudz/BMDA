@@ -1621,8 +1621,7 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
 
 ## Volcano plot
 
-The volcano plot was drawn for chromosome 7th due to the same reason it was 
-chosen to for the Manhattan plot.
+The volcano plot was drawn for all positions.
 
 ```{r volcano_plot_install, include=FALSE, eval=FALSE}
 #BiocManager::install("a4Base")
