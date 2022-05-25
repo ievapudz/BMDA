@@ -1621,8 +1621,11 @@ manhattanPlot(-log10(chr7_position_ps), c(rep(7,length(chr7_position_ps))),
 
 ## Volcano plot
 
+<<<<<<< HEAD
 The volcano plot was drawn for all positions.
 
+=======
+>>>>>>> dd702979aaa33b03458c4bfb342c057bef7e25c0
 ```{r volcano_plot_install, include=FALSE, eval=FALSE}
 #BiocManager::install("a4Base")
 #install.packages('ggpointdensity')
