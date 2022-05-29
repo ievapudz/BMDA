@@ -1,0 +1,29 @@
+Klasifikavimas
+
+Naudodamiesi savo komandos pasiruoštais duomenimis, bandykite sukurti amžiaus prediktorių.
+
+1. Naudodami kNN klasifikatorių regresijai (amžiaus spėjimui):
+   - kNN klasifikatorių implementuokite patys (negalite naudotis paruoštomis klasifikavimo funkcijomis).
+   - Tačiau galite naudoti klasifikavimo žingsniams reikalingas R funkcijas tokias kaip dist() ir pan.
+2. Pasirinkite vieną papildomą klasifikavimo metodą ir bandykite amžių spėti su juo:
+   - pavyzdžiui: SVM, random forest, ir t.t.
+   - šiam klasifikatoriui susiraskite ir panaudokite jau egzistuojančią sukurtą funkciją (turėsite rasti R biblioteką).
+   - gali būti jog klasifikatorius neveiks su daug požymių, tokiu atveju susimažinkite požymių skaičių (pvz pasirinkdami top 10,000 variabiliausių ar pan).
+3. Panaudodami abu klasifikatorius atlikite kryžminę validaciją.
+   - Pasirinkite į kiek dalių skirstysite savo duomenis kryžminiai validacijai (pvz 10)
+   - Gaukite klasifikatorių paklaidos įverčius abiems naudotiems metodams.
+   - Palyginkite klasifikatorių tikslumą.
+
+Idėjos papildomiems taškams:
+- Atlikite savo duomenų PCA analizę.
+- Savo suprogramuotą klasifikatorių įgyvendinkite kaip R funkciją.
+- Klasifikavimui atlikti galite pabandyti panaudoti įvairių triukų
+  pvz.: vietoje to, kad naudoti visas genomines pozicijas, naudoti tik kažkiek variabiliausių.
+        k-NN atveju naudoti "protingesnį" būdą atstumams tarp mėginių skaičiuoti.
+        euklidinio klasifikatoriaus atveju susikurti daugiau nei vieną šabloną vienai klasei.
+        atlikti papildomą genominių pozicijų atrinkimą pagal tai ar jos skiriasi tarp klasių ar ne.
+        PASTABA: visus šiuos "triukus" reikia atlikti kryžminės validacijos viduje.
+                 t.y. Jūs negalite atsirinkti pozicijų ir naudoti tas pačias pozicijas visų kross-validacijos etapų metu.
+                 kiekvienas kross-validacijos etapas turi atsirinkti pozicijas savarankiškai, vis iš naujo.
+- Sugalvoti protingesnių būdų klasifikatorių tikslumui palyginti
+  pvz.: ar amžiaus spėjimo tikslumas geresnis jaunesniems ar senesniems mėginiams, ar skiriasi nuspėtas amžius tarp kokių nors grupių (pvz.vyrų ir moterų).
