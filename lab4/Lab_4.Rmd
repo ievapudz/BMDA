@@ -2048,30 +2048,38 @@ In order to train the knn model, it is required to have the training,
 validation, and testing data sets. However, this time cross-validation will be 
 applied, thus the static division of the data set will not be applied.
 
+```{r loading_data_4th, include=FALSE, eval=FALSE}
+# Loading prepared data for further analysis
+beta <- readRDS(file='../data/GSE112179_beta_matrix.rds')
+
+# Removing left-over samples from beta matrix
+beta <- beta[, colnames(beta) != "GSM3059462_200590490031_R08C01"]
+beta <- beta[, colnames(beta) != "GSM3059520_200357150067_R08C01"]
+beta <- beta[, colnames(beta) != "GSM3059454_200590490031_R01C01"]
+
+# Validation that there are 858083 positions and 97 samples
+dim(beta)
+
+sample_annot <- readRDS(file='../data/GSE112179_clear.rds')
+
+# Loading position annotation data
+pos_annot <- readRDS(file='../data/GSE112179_anot.rds')
+```
+
 ```{r knn_implemented, include=FALSE, eval=FALSE}
 
-# Number of neighbours
-k <- 3
-
-train_data <- matrix(1:20, nrow=10, ncol=2)
-train_data[1, 1] <- 5
-train_data[1, 2] <- 12
-labels <- c(10, 12, 13, 24, 15, 16, 17, 19, 20, 22)
-
-point <- c(1, 2)
-
 knn_inference <- function(k, train_data, labels, point) {
- distances <- c() 
- for(i in 1:nrow(train_data)) {   
-  # Finding (Euclidean) distances between the input point and all points in the 
-  # training set.
-  distance <- 0
-  for(j in 1:ncol(train_data)) {
-    distance <- distance + (point[j] - train_data[i, j])**2
-  }
+  distances <- c() 
+  for(j in 1:ncol(train_data)) {   
+    # Finding (Euclidean) distances between the input point and all points in the 
+    # training set.
+    distance <- 0
+    for(i in 1:nrow(train_data)) {
+      distance <- distance + (point[i] - train_data[i, j])**2
+    }
     distances <- append(distances, (distance)**(1/2))
   }
-
+  
   # Sorting distances to get the nearest neighbours
   sorted_neighbours <- order(distances)
   
@@ -2085,10 +2093,30 @@ knn_inference <- function(k, train_data, labels, point) {
   return(knn_label_sum/k)
 }
 
+```
 
-print(knn_inference(3, train_data, labels, point))
+```{r knn_trivial_usage_case, include=FALSE, eval=FALSE}
+# Example (trivial case) usage of knn inference for our data
 
+# Taking first m positions (should be adjusted to take only most varying 
+# positions with respect of age) 
+m <- 1000
 
+# Taking first n points
+n <- 50
+
+# Index of an input point (to get knn "inference" - prediction)
+l <- 51
+
+train_data <- beta[1:m, 1:n]
+labels <- sample_annot@colData$age[1:n]
+
+point <- beta[1:m, l]
+
+point_label_predicted <- knn_inference(k=5, train_data, labels, point)
+
+print(paste('Predicted', point_label_predicted, 'vs real', 
+            sample_annot@colData$age[l]))
 ```
 
 # References {-}
