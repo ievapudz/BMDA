@@ -1,7 +1,7 @@
 ---
-title: "Third task"
+title: "Fourth task"
 author: "Akvilė Višniauskaitė ir Ieva Pudžiuvelytė"
-date: "5/18/2022"
+date: "5/30/2022"
 bibliography: references.bib
 csl: apa-single-spaced.csl
 output: pdf_document
@@ -2042,5 +2042,53 @@ Table 2.
   \end{center}
 \end{figure}
 
+# KNN regression to predict age
+
+In order to train the knn model, it is required to have the training, 
+validation, and testing data sets. However, this time cross-validation will be 
+applied, thus the static division of the data set will not be applied.
+
+```{r knn_implemented, include=FALSE, eval=FALSE}
+
+# Number of neighbours
+k <- 3
+
+train_data <- matrix(1:20, nrow=10, ncol=2)
+train_data[1, 1] <- 5
+train_data[1, 2] <- 12
+labels <- c(10, 12, 13, 24, 15, 16, 17, 19, 20, 22)
+
+point <- c(1, 2)
+
+knn_inference <- function(k, train_data, labels, point) {
+ distances <- c() 
+ for(i in 1:nrow(train_data)) {   
+  # Finding (Euclidean) distances between the input point and all points in the 
+  # training set.
+  distance <- 0
+  for(j in 1:ncol(train_data)) {
+    distance <- distance + (point[j] - train_data[i, j])**2
+  }
+    distances <- append(distances, (distance)**(1/2))
+  }
+
+  # Sorting distances to get the nearest neighbours
+  sorted_neighbours <- order(distances)
+  
+  # Summing up the labels of the nearest neighbours
+  knn_label_sum <- 0
+  for(i in 1:k) {
+    knn_label_sum <- knn_label_sum + labels[sorted_neighbours[i]]
+  }
+  
+  # Calculating mean of the nearest neighbours
+  return(knn_label_sum/k)
+}
+
+
+print(knn_inference(3, train_data, labels, point))
+
+
+```
 
 # References {-}
