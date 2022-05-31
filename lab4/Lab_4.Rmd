@@ -2119,4 +2119,39 @@ print(paste('Predicted', point_label_predicted, 'vs real',
             sample_annot@colData$age[l]))
 ```
 
+# PCA analysis
+
+```{r pca_names, include=FALSE, eval=FALSE}
+# Constructing more explanatory sample names
+pca_names <- c()
+for(i in 1:length(sample_annot@colData$id)) {
+  sample_name <- paste(sample_annot@colData$diagnosis[i],
+    sample_annot@colData$sex[i],
+    sample_annot@colData$age[i],
+    sample_annot@colData$race[i],
+    #sample_annot@colData$pmi[i],
+    sep='_')
+  pca_names <- append(pca_names, sample_name)
+}
+```
+
+```{r pca, include=FALSE, eval=FALSE}
+library(plyr)
+library(dplyr)
+library(ggbiplot)
+
+# Based on: https://www.datacamp.com/tutorial/pca-analysis-r
+
+samples <- 90
+positions <- 80000
+
+beta.pca <- prcomp(t(beta)[1:samples, 1:positions], center=TRUE, scale=TRUE)
+
+summary(beta.pca)
+
+ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,var.axes=FALSE,
+         labels=pca_names[1:samples], 
+         groups=sample_annot@colData$sex[1:samples])
+```
+
 # References {-}
