@@ -1,51 +1,29 @@
-Hipoteziu testavimas.
+Klasifikavimas
 
-Naudodamiesi savo komandos pasiruoštais duomenimis:
+Naudodamiesi savo komandos pasiruoštais duomenimis, bandykite sukurti amžiaus prediktorių.
 
-1. Atlikite statistini hipoteziu testavima vidurkiu tarp keliu grupiu palyginimui, pvz viršsvorio turintys ir neturintys, rūkantys vs nerūkantys, vyrai vs moterys, sveiki vs sergantys, etc.
-   Ta atlikti galite kviesdami R esancius testus (pvz t.test, wilcox.test), kiekvienai eilutei atskirai, ir is testo rezultato pasiimdami p-reiksmes.
-   Taip pat kiekvienai eilutei gaukite efekto dydzius (vidurkiu skirtuma tarp grupiu).
-   Gautus rezultatus atvaizduokite trimis budais:
-     1) Pavaizduokite p-verciu histograma.
-     2) Pavaizduokite penkiu patikimiausiu pozicijos (turinciu maziausia p-verte) DNR modifikacijos profili grafiskai.
-        a) x asyje atvaizduokite grupe kuri buvo lyginama (pvz 0 = rukantys, 1 = nerukantys).
-        b) y asyje atvaizduokite tos pozicijos meginiu DNR modifikacijos ivercius.
-     3) Issirinkite viena chromosoma ir pavaizduokite joje gautas p-vertes "manhattan plot" pavidalu.
-        Teisingai atlikus si zingsni turetumete gauti paveiksleli panasu i si: https://danielroelfs.com/blog/how-i-create-manhattan-plots-using-ggplot/index_files/figure-gfm/print-plot-1.png
-     4) Atvaizduokite visu chromosomu efektu dydzius ir p-vertes volcano-plot pavidalu.
-        Teisingai atlikus si zingsni turetumete gauti paveiksleli panasu i si: https://galaxyproject.github.io/training-material/topics/transcriptomics/images/rna-seq-viz-with-volcanoplot/volcanoplot.png
-     PASTABA: 3) ir 4) uzduotyje p-vertes transformuokite naudodami -log10(pvalues).
-2. Atlikite daugkartinio testavimo p-verciu korekcija ir parasykite kiek gavote:
-     1) Poziciju reiksmingu be korekcijos (p-reiksme <= 0.05).
-     2) Poziciju reiksmingu po FDR korekcijos (koreguota p-reiskme <= 0.05).
-     3) Poziciju reiksmingu po Bonferroni korekcijos (koreguota p-reiskme <= 0.05).
-     PASTABA: R turi funkcija korekcijoms atlikti: p.adjust()
-3. Atlikite Gene Ontology Enrichment analize gautoms pozicijoms su statistiskai patikimais skirtumais po FDR korekcijos.
-   PASTABA: Jeigu po FDR korekcijos neliks patikimu poziciju, tuomet patikimomis laikykite top 100 maziausias p-vertes turincias pozicijas.
-   Zingsniai:
-     1) Is anotacijos lenteles issirinktie visus unikaliu genu pavadinimus kurie randami pozicijose kuriu p-reiksme po FDR korekcijos buvo mazesne uz 0.05
-        Cia bus jusu "foreground" genu sarasas.
-     2) Is tos pacios lenteles issirinktie visus unikalius genu vardus (ir tuos kurie pateko tarp patikimu poziciju, ir tuos kurie buvo nepatikimose pozicijose).
-        Cia bus jusu "background" genu sarasas.
-     3) Naudokite GOrilla iranki genu aprasyams gauti: http://cbl-gorilla.cs.technion.ac.il/
-     4) GOrilla irankyje pasirinkite:
-        a) Homo Sapiens organizma
-        b) Two unranked list of genes rezima
-        c) Ikelkite savo foreground ir background genu sarasus i atitinkamus laukus
-        d) Atitinkmamai pasirinkite kokias genu savybes norite gauti (Procesu, Funkciju, Componentu, ar visas).
-        e) Kitus nustatymus palikte tokius kokie yra ir spauskite "Search".
-     5) Gavus atsakymus bandykite interpretuoti rezultatus.
-4. Visus auksciau aprašytus žingsnius pakartokite ieškodami pozicijų susijusių su amžiumi.
-   Šiuo atveju turėsite naudoti R lm() funkciją ir kontroliuoti papildomus pašalinius efektus (pvz lytį, rūkymą, BMI ir pan).
-     mod0 <- lm(m ~ bmi + sex + smoking_score)
-     mod1 <- lm(m ~ age + bmi + sex + smoking_score)
-     res  <- anova(mod0, mod1)
-   Ir, kaip ir pirmu atveju naudojant paprastus testus, tą atlikti kiekvienai pozicijai (eilutei) atskirai.
-
+1. Naudodami kNN klasifikatorių regresijai (amžiaus spėjimui):
+   - kNN klasifikatorių implementuokite patys (negalite naudotis paruoštomis klasifikavimo funkcijomis).
+   - Tačiau galite naudoti klasifikavimo žingsniams reikalingas R funkcijas tokias kaip dist() ir pan.
+2. Pasirinkite vieną papildomą klasifikavimo metodą ir bandykite amžių spėti su juo:
+   - pavyzdžiui: SVM, random forest, ir t.t.
+   - šiam klasifikatoriui susiraskite ir panaudokite jau egzistuojančią sukurtą funkciją (turėsite rasti R biblioteką).
+   - gali būti jog klasifikatorius neveiks su daug požymių, tokiu atveju susimažinkite požymių skaičių (pvz pasirinkdami top 10,000 variabiliausių ar pan).
+3. Panaudodami abu klasifikatorius atlikite kryžminę validaciją.
+   - Pasirinkite į kiek dalių skirstysite savo duomenis kryžminiai validacijai (pvz 10)
+   - Gaukite klasifikatorių paklaidos įverčius abiems naudotiems metodams.
+   - Palyginkite klasifikatorių tikslumą.
 
 Idėjos papildomiems taškams:
-  - GO analizeje atskirai analizuokite pozicijas kurios rodo teigiamus skirtumus, ir pozicijas kurios rdo neigiamus skirtumus.
-  - Išsamiau panagrinėkite gautas su senėjimu susijusias genomines pozicijas (kaip sugalvosite...).
-  - Sugalvokite/susiraskite papildomu tokiu rezultatu atvaizdavimo metodu, pvz patikimas pozicijas atvaizduokite "heatmap" pavidalu.
-  - Paieškokite "keistų" su amžiumi susijusių efektų, pvz pozicijų kuriose senstant modifikacijos kiekis kinta netiesiškai ar pan.
-
+- Atlikite savo duomenų PCA analizę.
+- Savo suprogramuotą klasifikatorių įgyvendinkite kaip R funkciją.
+- Klasifikavimui atlikti galite pabandyti panaudoti įvairių triukų
+  pvz.: vietoje to, kad naudoti visas genomines pozicijas, naudoti tik kažkiek variabiliausių.
+        k-NN atveju naudoti "protingesnį" būdą atstumams tarp mėginių skaičiuoti.
+        euklidinio klasifikatoriaus atveju susikurti daugiau nei vieną šabloną vienai klasei.
+        atlikti papildomą genominių pozicijų atrinkimą pagal tai ar jos skiriasi tarp klasių ar ne.
+        PASTABA: visus šiuos "triukus" reikia atlikti kryžminės validacijos viduje.
+                 t.y. Jūs negalite atsirinkti pozicijų ir naudoti tas pačias pozicijas visų kross-validacijos etapų metu.
+                 kiekvienas kross-validacijos etapas turi atsirinkti pozicijas savarankiškai, vis iš naujo.
+- Sugalvoti protingesnių būdų klasifikatorių tikslumui palyginti
+  pvz.: ar amžiaus spėjimo tikslumas geresnis jaunesniems ar senesniems mėginiams, ar skiriasi nuspėtas amžius tarp kokių nors grupių (pvz.vyrų ir moterų).
