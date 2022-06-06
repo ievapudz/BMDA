@@ -2129,7 +2129,7 @@ obvious) and for only a subset of positions. The subset was
 chosen to be composed of approximately 10\% of all positions - 80000. The subset
 was composed of first 80000 positions in the DNA methylation data table. 
 
-The output of principal component analysis (Figure 26) was the first principal 
+The output of principal component analysis (Figure ??) was the first principal 
 component that explained 9.6\% of variance and the second principal component 
 that explained 6.7\% of the set variance.
 
@@ -2148,7 +2148,7 @@ for(i in 1:length(sample_annot@colData$id)) {
 ```
 
 Afterwards, it was decided to keep the same grouping of sex, though this time to
-include all positions. The output of PCA (Figure 27) did not show a clear 
+include all positions. The output of PCA (Figure ??) did not show a clear 
 distinction of groups - female and male samples were mixed up in the output 
 plot. The second attempt of PCA showed that the first principal component 
 explained 11\% of the variance and the second one - 7.8\%. These percentages did 
@@ -2206,10 +2206,37 @@ ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,var.axes=FALSE,
   \end{center}
 \end{figure}
 
+```{r pca_sex_subset_ps, include=FALSE, eval=FALSE}
+
+tt_sex_ps <- readRDS(file='../data/GSE112179_t_test_sex_ps.rgcs')
+
+tt_sex_ps_sign_idx <- tt_sex_ps <= 0.05
+
+beta.pca.tt_sex_ps <- prcomp(t(beta)[1:samples, tt_sex_ps_sign_idx], 
+                              center=TRUE, scale=TRUE)
+
+summary(beta.pca.tt_sex_ps)
+
+ggbiplot(beta.pca.tt_sex_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
+         var.axes=FALSE,
+         groups=sample_annot@colData$sex[1:samples]) +
+         ggtitle("PCA for groups of sex including only statistically significant positions")
+```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./PCA_sex_stat_sign.png}
+    \caption{
+     PCA for groups of sex including all samples and only statistically 
+     significant positions
+    }
+  \end{center}
+\end{figure}
+
 Additionally, since there was analysis run with respect of sample donors' age. 
 At first, the grouping was made into three groups (23-40, 41-58, 59-77) just as 
 it was in the dendrogram of hierarchical clustering (Figure 9). The output plot
-(Figure 28) of PCA using only the subset of positions showed that groups 23-40 
+(Figure ??) of PCA using only the subset of positions showed that groups 23-40 
 and 41-58, 59-77 had different distribution tendencies. 
 
 ```{r pca_age_subset, include=FALSE, eval=FALSE}
@@ -2232,7 +2259,7 @@ ggbiplot(beta.pca.subset, ellipse=TRUE, obs.scale=1, var.scale=1,
          ggtitle("PCA for groups of age using positions' subset")
 ```
 
-However, after taking into account all positions (Figure 29), the output of PCA 
+However, after taking into account all positions (Figure ??), the output of PCA 
 showed more overlaps between the age groups. 
 
 \begin{figure}[!h]
@@ -2313,6 +2340,37 @@ ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,
 \end{figure}
 
 PCA of two groups of age using only subset and all positions showed different 
-tendencies of sample scores in the PCA plot (Figure 30 and Figure 31).
+tendencies of sample scores in the PCA plot (Figure ?? and Figure ??).
+
+```{r pca_age_subset_ps, include=FALSE, eval=FALSE}
+
+# NEED TO BE TESTED
+
+aov_age_ps <- readRDS(file='../data/GSE112179_aov_age_ps.rgcs')
+
+# The line below should return a vector of TRUE and FALSE to indicate which
+# positions should be included
+aov_age_ps_sign_idx <- aov_age_ps <= 0.05
+
+beta.pca.avo_age_ps <- prcomp(t(beta)[1:samples, aov_age_ps_sign_idx], 
+                              center=TRUE, scale=TRUE)
+
+summary(beta.pca.avo_age_ps)
+
+ggbiplot(beta.pca.avo_age_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
+         var.axes=FALSE,
+         groups=age_groups) +
+         ggtitle("PCA for groups of age including statistically significant positions")
+```
+
+```{r pca_age_2_subset_ps, include=FALSE, eval=FALSE}
+
+# NEED TO BE TESTED
+
+ggbiplot(beta.pca.avo_age_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
+         var.axes=FALSE,
+         groups=age_groups_2) +
+         ggtitle("PCA for two groups of age including statistically significant positions")
+```
 
 # References {-}
