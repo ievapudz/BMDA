@@ -2126,10 +2126,12 @@ print(paste('Predicted', point_label_predicted, 'vs real',
 In order to test the principal component analysis functionality, it was decided 
 to perform a simple case of PCA: for groups of sex (since the grouping was 
 obvious) and for only a subset of positions. The subset was 
-chosen to be composed of approximately 10\% of all positions - 80000. The output
-of principal component analysis (Figure 26) was the first principal component 
-that explained 9.6\% of variance and the second principal component that 
-explained 6.7\% of the set variance.
+chosen to be composed of approximately 10\% of all positions - 80000. The subset
+was composed of first 80000 positions in the DNA methylation data table. 
+
+The output of principal component analysis (Figure 26) was the first principal 
+component that explained 9.6\% of variance and the second principal component 
+that explained 6.7\% of the set variance.
 
 ```{r pca_names, include=FALSE, eval=FALSE}
 # Constructing more explanatory sample names
@@ -2204,6 +2206,12 @@ ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,var.axes=FALSE,
   \end{center}
 \end{figure}
 
+Additionally, since there was analysis run with respect of sample donors' age. 
+At first, the grouping was made into three groups (23-40, 41-58, 59-77) just as 
+it was in the dendrogram of hierarchical clustering (Figure 9). The output plot
+(Figure 28) of PCA using only the subset of positions showed that groups 23-40 
+and 41-58, 59-77 had different distribution tendencies. 
+
 ```{r pca_age_subset, include=FALSE, eval=FALSE}
 age_groups <- c()
 for(i in 1:length(sample_annot@colData$age)) {
@@ -2224,6 +2232,9 @@ ggbiplot(beta.pca.subset, ellipse=TRUE, obs.scale=1, var.scale=1,
          ggtitle("PCA for groups of age using positions' subset")
 ```
 
+However, after taking into account all positions (Figure 29), the output of PCA 
+showed more overlaps between the age groups. 
+
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=150mm]{./PCA_age_subset.png}
@@ -2240,7 +2251,6 @@ ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,
          groups=age_groups) +
          ggtitle("PCA for groups of age including all positions")
 ```
-
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=150mm]{./PCA_age_all.png}
@@ -2249,5 +2259,60 @@ ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,
     }
   \end{center}
 \end{figure}
+
+Such comparison suggests that it is worth to try to run the PCA for positions
+that had statistically significant variation between the age groups. In order 
+to correctly compare the results of hypothesis testing for age (Volcano plot
+was drawn after constructing only two age groups with the threshold of 47 
+years), PCA with two age groups had to be performed.
+
+Before extracting only the statistically significant positions between different
+age representatives, PCA for two age groups (23-46, 47-77) was run.
+
+```{r pca_age_2_subset, include=FALSE, eval=FALSE}
+age_groups_2 <- c()
+for(i in 1:length(sample_annot@colData$age)) {
+  if(sample_annot@colData$age[i] < 47) {
+    age_groups_2 <- append(age_groups_2, '23-46')
+  }
+  if(sample_annot@colData$age[i] >= 47) {
+    age_groups_2 <- append(age_groups_2, '47-77')
+  }
+}
+
+ggbiplot(beta.pca.subset, ellipse=TRUE, obs.scale=1, var.scale=1,
+         var.axes=FALSE,
+         groups=age_groups_2) +
+         ggtitle("PCA for two groups of age using positions' subset")
+```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./PCA_age_2_subset.png}
+    \caption{
+     PCA for two groups of age including all samples and a subset (first 80000)
+     of positions
+    }
+  \end{center}
+\end{figure}
+
+```{r pca_age_2_all, include=FALSE, eval=FALSE}
+ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,
+         var.axes=FALSE,
+         groups=age_groups_2) +
+         ggtitle("PCA for two groups of age including all positions")
+```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./PCA_age_2_all.png}
+    \caption{
+     PCA for two groups of age including all positions and all samples
+    }
+  \end{center}
+\end{figure}
+
+PCA of two groups of age using only subset and all positions showed different 
+tendencies of sample scores in the PCA plot (Figure 30 and Figure 31).
 
 # References {-}
