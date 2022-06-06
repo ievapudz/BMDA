@@ -2042,6 +2042,8 @@ Table 2.
   \end{center}
 \end{figure}
 
+\pagebreak
+
 # KNN regression to predict age
 
 In order to train the knn model, it is required to have the training, 
@@ -2121,6 +2123,14 @@ print(paste('Predicted', point_label_predicted, 'vs real',
 
 # PCA analysis
 
+In order to test the principal component analysis functionality, it was decided 
+to perform a simple case of PCA: for groups of sex (since the grouping was 
+obvious) and for only a subset of positions. The subset was 
+chosen to be composed of approximately 10\% of all positions - 80000. The output
+of principal component analysis (Figure 26) was the first principal component 
+that explained 9.6\% of variance and the second principal component that 
+explained 6.7\% of the set variance.
+
 ```{r pca_names, include=FALSE, eval=FALSE}
 # Constructing more explanatory sample names
 pca_names <- c()
@@ -2135,23 +2145,66 @@ for(i in 1:length(sample_annot@colData$id)) {
 }
 ```
 
-```{r pca, include=FALSE, eval=FALSE}
+Afterwards, it was decided to keep the same grouping of sex, though this time to
+include all positions. The output of PCA (Figure 27) did not show a clear 
+distinction of groups - female and male samples were mixed up in the output 
+plot. The second attempt of PCA showed that the first principal component 
+explained 11\% of the variance and the second one - 7.8\%. These percentages did 
+not differ significantly from the output of the first PCA.
+
+```{r pca_sex_subset, include=FALSE, eval=FALSE}
 library(plyr)
 library(dplyr)
 library(ggbiplot)
 
 # Based on: https://www.datacamp.com/tutorial/pca-analysis-r
 
-samples <- 90
+samples <- 97
 positions <- 80000
+
+beta.pca.subset <- prcomp(t(beta)[1:samples, 1:positions], center=TRUE, 
+                          scale=TRUE)
+summary(beta.pca.subset)
+
+ggbiplot(beta.pca.subset, ellipse=TRUE, obs.scale=1, var.scale=1,
+         var.axes=FALSE,
+         groups=sample_annot@colData$sex[1:samples]) +
+         ggtitle("PCA for groups of sex using positions' subset")
+```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./PCA_sex_subset.png}
+    \caption{
+     PCA for groups of sex including all samples and a subset (80000) of 
+     positions
+    }
+  \end{center}
+\end{figure}
+
+```{r pca_sex_all, include=FALSE, eval=FALSE}
+positions <- length(beta[,1])
+
 
 beta.pca <- prcomp(t(beta)[1:samples, 1:positions], center=TRUE, scale=TRUE)
 
 summary(beta.pca)
 
 ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,var.axes=FALSE,
-         labels=pca_names[1:samples], 
-         groups=sample_annot@colData$sex[1:samples])
+         #labels=pca_names[1:samples], 
+         groups=sample_annot@colData$sex[1:samples]) +
+         ggtitle("PCA for groups of sex including all positions")
 ```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./PCA_sex_all.png}
+    \caption{
+     PCA for groups of sex including all positions and all samples
+    }
+  \end{center}
+\end{figure}
+
+
 
 # References {-}
