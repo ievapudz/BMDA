@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  6 JUN 2022 08:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=pdflatex 2021.10.24)  6 JUN 2022 08:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -876,83 +876,110 @@ Package pdftex.def Info: ./PCA_sex_all.png  used on input line 1096.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
+<./PCA_age_subset.png, id=349, 702.625pt x 434.62375pt>
+File: ./PCA_age_subset.png Graphic file (type png)
+<use ./PCA_age_subset.png>
+Package pdftex.def Info: ./PCA_age_subset.png  used on input line 1105.
+(pdftex.def)             Requested size: 426.79945pt x 264.00595pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<./PCA_age_all.png, id=350, 702.625pt x 434.62375pt>
+File: ./PCA_age_all.png Graphic file (type png)
+<use ./PCA_age_all.png>
+Package pdftex.def Info: ./PCA_age_all.png  used on input line 1115.
+(pdftex.def)             Requested size: 426.79945pt x 264.00595pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 [17] [18pdfTeX warning (ext4): destination with the same identifier (name{figur
 e.16}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                       <./t_test_sex_methyl_prof_1.png> <./t_test_sex_methyl_pro
 f_2.png> <./t_test_sex_methyl_prof_3.png> <./t_test_sex_methyl_prof_4.png> <./t
 _test_sex_methyl_prof_5.png>] [19pdfTeX warning (ext4): destination with the sa
 me identifier (name{figure.17}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.18}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                       <./chr7_Manhattan_plot.png> <./t_test_sex_volcano_plot_r.
 png>] [20pdfTeX warning (ext4): destination with the same identifier (name{figu
 re.19}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.20}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                       <./go_component_part.png> <./go_process_part.png> <./go_p
 rocess_part_II.png>] [21pdfTeX warning (ext4): destination with the same identi
 fier (name{figure.21}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.22}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                       <./go_function_part.png> <./go_function_part_catalytic.pn
 g> <./anova_age.png>] [22pdfTeX warning (ext4): destination with the same ident
 ifier (name{figure.23}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                       <./pos_1.png> <./pos_2.png> <./pos_3.png> <./pos_4.png> <
 ./pos_5.png>] [23pdfTeX warning (ext4): destination with the same identifier (n
 ame{figure.24}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                       <./manhatan.png>] [24pdfTeX warning (ext4): destination w
 ith the same identifier (name{figure.25}) has been already used, duplicate igno
 red
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                       <./volcano_age_fixed.png>] [25pdfTeX warning (ext4): dest
 ination with the same identifier (name{figure.26}) has been already used, dupli
 cate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
+l.1184 \end{document}
                      pdfTeX warning (ext4): destination with the same identifie
 r (name{figure.27}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1165 \end{document}
-                      <./PCA_sex_subset.png> <./PCA_sex_all.png>] (./Lab_4.aux)
+l.1184 \end{document}
+                      <./PCA_sex_subset.png> <./PCA_sex_all.png>] [26pdfTeX war
+ning (ext4): destination with the same identifier (name{figure.28}) has been al
+ready used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1184 \end{document}
+                     pdfTeX warning (ext4): destination with the same identifie
+r (name{figure.29}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1184 \end{document}
+                      <./PCA_age_subset.png> <./PCA_age_all.png>] (./Lab_4.aux)
 Package rerunfilecheck Info: File `Lab_4.out' has not changed.
 (rerunfilecheck)             Checksum: E04DBC2F0C7BFA12160BF3D470B3F20C;6519.
  ) 
 Here is how much of TeX's memory you used:
- 10680 strings out of 480539
- 157288 string characters out of 5902059
- 464526 words of memory out of 5000000
- 27969 multiletter control sequences out of 15000+600000
+ 10697 strings out of 480539
+ 157630 string characters out of 5902059
+ 466145 words of memory out of 5000000
+ 27981 multiletter control sequences out of 15000+600000
  454079 words of font info for 69 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  60i,8n,66p,430b,383s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -971,10 +998,10 @@ s/ieva/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/ieva/L
 ibrary/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/ieva/Library
 /TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/ieva/Library/TinyT
 eX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on Lab_4.pdf (25 pages, 6945062 bytes).
+Output written on Lab_4.pdf (26 pages, 7195735 bytes).
 PDF statistics:
- 529 PDF objects out of 1000 (max. 8388607)
- 383 compressed objects within 4 object streams
- 138 named destinations out of 1000 (max. 500000)
- 514 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 540 PDF objects out of 1000 (max. 8388607)
+ 389 compressed objects within 4 object streams
+ 141 named destinations out of 1000 (max. 500000)
+ 524 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -2185,7 +2185,6 @@ ggbiplot(beta.pca.subset, ellipse=TRUE, obs.scale=1, var.scale=1,
 ```{r pca_sex_all, include=FALSE, eval=FALSE}
 positions <- length(beta[,1])
 
-
 beta.pca <- prcomp(t(beta)[1:samples, 1:positions], center=TRUE, scale=TRUE)
 
 summary(beta.pca)
@@ -2205,6 +2204,50 @@ ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,var.axes=FALSE,
   \end{center}
 \end{figure}
 
+```{r pca_age_subset, include=FALSE, eval=FALSE}
+age_groups <- c()
+for(i in 1:length(sample_annot@colData$age)) {
+  if(sample_annot@colData$age[i] < 41) {
+    age_groups <- append(age_groups, '23-40')
+  }
+  if(sample_annot@colData$age[i] >= 41 && sample_annot@colData$age[i] < 59) {
+    age_groups <- append(age_groups, '41-58')
+  }
+  if(sample_annot@colData$age[i] >= 59) {
+    age_groups <- append(age_groups, '59-77')
+  }
+}
 
+ggbiplot(beta.pca.subset, ellipse=TRUE, obs.scale=1, var.scale=1,
+         var.axes=FALSE,
+         groups=age_groups) +
+         ggtitle("PCA for groups of age using positions' subset")
+```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./PCA_age_subset.png}
+    \caption{
+     PCA for groups of age including all samples and a subset (80000) of 
+     positions
+    }
+  \end{center}
+\end{figure}
+
+```{r pca_age_all, include=FALSE, eval=FALSE}
+ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,
+         var.axes=FALSE,
+         groups=age_groups) +
+         ggtitle("PCA for groups of age including all positions")
+```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./PCA_age_all.png}
+    \caption{
+     PCA for groups of age including all positions and all samples
+    }
+  \end{center}
+\end{figure}
 
 # References {-}
