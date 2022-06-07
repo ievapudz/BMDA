@@ -2154,7 +2154,7 @@ plot. The second attempt of PCA showed that the first principal component
 explained 11\% of the variance and the second one - 7.8\%. These percentages did 
 not differ significantly from the output of the first PCA.
 
-```{r pca_sex_subset, include=FALSE, eval=FALSE}
+```{r preparation_for_pca, include=FALSE, eval=FALSE}
 library(plyr)
 library(dplyr)
 library(ggbiplot)
@@ -2162,6 +2162,9 @@ library(ggbiplot)
 # Based on: https://www.datacamp.com/tutorial/pca-analysis-r
 
 samples <- 97
+```
+
+```{r pca_sex_subset, include=FALSE, eval=FALSE}
 positions <- 80000
 
 beta.pca.subset <- prcomp(t(beta)[1:samples, 1:positions], center=TRUE, 
@@ -2239,7 +2242,7 @@ it was in the dendrogram of hierarchical clustering (Figure 9). The output plot
 (Figure ??) of PCA using only the subset of positions showed that groups 23-40 
 and 41-58, 59-77 had different distribution tendencies. 
 
-```{r pca_age_subset, include=FALSE, eval=FALSE}
+```{r prepare_age_groups, include=FALSE, eval=FALSE}
 age_groups <- c()
 for(i in 1:length(sample_annot@colData$age)) {
   if(sample_annot@colData$age[i] < 41) {
@@ -2252,7 +2255,9 @@ for(i in 1:length(sample_annot@colData$age)) {
     age_groups <- append(age_groups, '59-77')
   }
 }
+```
 
+```{r pca_age_subset, include=FALSE, eval=FALSE}
 ggbiplot(beta.pca.subset, ellipse=TRUE, obs.scale=1, var.scale=1,
          var.axes=FALSE,
          groups=age_groups) +
@@ -2296,7 +2301,7 @@ years), PCA with two age groups had to be performed.
 Before extracting only the statistically significant positions between different
 age representatives, PCA for two age groups (23-46, 47-77) was run.
 
-```{r pca_age_2_subset, include=FALSE, eval=FALSE}
+```{r prepare_age_groups_2, include=FALSE, eval=FALSE}
 age_groups_2 <- c()
 for(i in 1:length(sample_annot@colData$age)) {
   if(sample_annot@colData$age[i] < 47) {
@@ -2306,7 +2311,9 @@ for(i in 1:length(sample_annot@colData$age)) {
     age_groups_2 <- append(age_groups_2, '47-77')
   }
 }
+```
 
+```{r pca_age_2_subset, include=FALSE, eval=FALSE}
 ggbiplot(beta.pca.subset, ellipse=TRUE, obs.scale=1, var.scale=1,
          var.axes=FALSE,
          groups=age_groups_2) +
@@ -2344,12 +2351,8 @@ tendencies of sample scores in the PCA plot (Figure ?? and Figure ??).
 
 ```{r pca_age_subset_ps, include=FALSE, eval=FALSE}
 
-# NEED TO BE TESTED
-
 aov_age_ps <- readRDS(file='../data/GSE112179_aov_age_ps.rgcs')
 
-# The line below should return a vector of TRUE and FALSE to indicate which
-# positions should be included
 aov_age_ps_sign_idx <- aov_age_ps <= 0.05
 
 beta.pca.avo_age_ps <- prcomp(t(beta)[1:samples, aov_age_ps_sign_idx], 
@@ -2360,8 +2363,18 @@ summary(beta.pca.avo_age_ps)
 ggbiplot(beta.pca.avo_age_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
          var.axes=FALSE,
          groups=age_groups) +
-         ggtitle("PCA for groups of age including statistically significant positions")
+         ggtitle("PCA for three groups of age including only statistically significant positions")
 ```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./PCA_age_stat_sign.png}
+    \caption{
+     PCA for groups of age (3) including all samples and only statistically 
+     significant positions
+    }
+  \end{center}
+\end{figure}
 
 ```{r pca_age_2_subset_ps, include=FALSE, eval=FALSE}
 
@@ -2370,7 +2383,17 @@ ggbiplot(beta.pca.avo_age_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
 ggbiplot(beta.pca.avo_age_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
          var.axes=FALSE,
          groups=age_groups_2) +
-         ggtitle("PCA for two groups of age including statistically significant positions")
+         ggtitle("PCA for two groups of age including only statistically significant positions")
 ```
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=150mm]{./PCA_age_2_stat_sign.png}
+    \caption{
+     PCA for groups of age (2) including all samples and only statistically 
+     significant positions
+    }
+  \end{center}
+\end{figure}
 
 # References {-}
