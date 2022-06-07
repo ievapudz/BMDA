@@ -2159,8 +2159,6 @@ library(plyr)
 library(dplyr)
 library(ggbiplot)
 
-# Based on: https://www.datacamp.com/tutorial/pca-analysis-r
-
 samples <- 97
 ```
 
@@ -2195,7 +2193,6 @@ beta.pca <- prcomp(t(beta)[1:samples, 1:positions], center=TRUE, scale=TRUE)
 summary(beta.pca)
 
 ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,var.axes=FALSE,
-         #labels=pca_names[1:samples], 
          groups=sample_annot@colData$sex[1:samples]) +
          ggtitle("PCA for groups of sex including all positions")
 ```
@@ -2224,7 +2221,14 @@ ggbiplot(beta.pca.tt_sex_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
          var.axes=FALSE,
          groups=sample_annot@colData$sex[1:samples]) +
          ggtitle("PCA for groups of sex including only statistically significant positions")
+
 ```
+
+The principal component analysis using only statistically significant positions
+based on t-test that was run for groups of sex (Figure ??) confirmed that groups 
+of sex can be confidently distinguished using these positions. The first 
+principal component explains 23\% of variance and the second principal component 
+explains 8.8\% of the variance.
 
 \begin{figure}[!h]
   \begin{center}
@@ -2283,6 +2287,7 @@ ggbiplot(beta.pca, ellipse=TRUE, obs.scale=1, var.scale=1,
          groups=age_groups) +
          ggtitle("PCA for groups of age including all positions")
 ```
+
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=150mm]{./PCA_age_all.png}
@@ -2366,6 +2371,12 @@ ggbiplot(beta.pca.avo_age_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
          ggtitle("PCA for three groups of age including only statistically significant positions")
 ```
 
+Similarly to the groups of sex, PCA was run using only statistically significant 
+positions to distinguish groups of age. Nevertheless, the principal components
+explain similar amount of variance (PC1 23.7\% and PC2 8.7\%), though age 
+groups were not separated confidently. Such results confirmed observations from
+the dendrogram of hierarchical clustering (Figure 9). 
+
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=150mm]{./PCA_age_stat_sign.png}
@@ -2378,13 +2389,16 @@ ggbiplot(beta.pca.avo_age_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
 
 ```{r pca_age_2_subset_ps, include=FALSE, eval=FALSE}
 
-# NEED TO BE TESTED
-
 ggbiplot(beta.pca.avo_age_ps, ellipse=TRUE, obs.scale=1, var.scale=1,
          var.axes=FALSE,
          groups=age_groups_2) +
          ggtitle("PCA for two groups of age including only statistically significant positions")
 ```
+
+The same principal components were also applied to analyse the sample grouping 
+into two groups of age - the same way it was done for volcano plot analysis 
+after ANOVA (Figure ??). PCA (Figure ??) did not distinguish these groups 
+markedly.
 
 \begin{figure}[!h]
   \begin{center}
