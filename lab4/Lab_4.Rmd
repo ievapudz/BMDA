@@ -2097,30 +2097,6 @@ knn_inference <- function(k, train_data, labels, point) {
 
 ```
 
-```{r knn_trivial_usage_case, include=FALSE, eval=FALSE}
-# Example (trivial case) usage of knn inference for our data
-
-# Taking first m positions (should be adjusted to take only most varying 
-# positions with respect of age) 
-m <- 1000
-
-# Taking first n points
-n <- 50
-
-# Index of an input point (to get knn "inference" - prediction)
-l <- 51
-
-train_data <- beta[1:m, 1:n]
-labels <- sample_annot@colData$age[1:n]
-
-point <- beta[1:m, l]
-
-point_label_predicted <- knn_inference(k=5, train_data, labels, point)
-
-print(paste('Predicted', point_label_predicted, 'vs real', 
-            sample_annot@colData$age[l]))
-```
-
 # Cross validation
 
 In order to compare precision of implemented KNN model, cross-validation was
@@ -2129,7 +2105,7 @@ performed on it and on additional "Random forest" classifier.
 For cross validation samples were divided into 10 random parts. Every iteration 
 consists of smaller part of data (around 10% of samples are used as test data)
 and bigger part of data (around 90% of samples are used as training data). For
-faster calculations 10000 most varying positions were used.
+faster calculations 10000 most variable positions were used.
 
 ```{r best_positions_cv, include=FALSE, eval=FALSE}
 # Loading needed packages
@@ -2200,6 +2176,8 @@ rf_error_mean <- mean(difference_rf)
 knn_error_mean <- mean(difference_knn)
 ```
 
+Estimated classifier errors are 6.27 for "Random forest" and 8.27 for KNN model.
+
 Few examples of predicted age (Table 3) indicates, that ages around 40-50 are
 guessed more correctly, than younger one. This is quite understandable 
 given that most sample ages are distributed around this range. An interesting
@@ -2212,21 +2190,26 @@ considerable margin of error, the mean for both real age (47.19) and predicted
 		\caption{Few examples of real and predicted ages by KNN and 
 		                                  Random Forest classifiers}
 		\vspace{0.2cm}
-    \begin{tabular}{ | c | c | c | c | c | c | c |  }
+    \begin{tabular}{ | c | c | c | c |  }
       \hline
-        Sample & Bipolar female & Control female & Schizophrenia female 
-        & Bipolar male & Control male & Schizophrenia male   \\
-        Predicted by KNN & 48 & 44 & 50 & 48 & 48 & 49 \\
-        Predicted by Random Forest & 43 & 43 & 50 & 47 & 46 & 46\\
-        Real & 29 & 35 & 49 & 40  & 40 & 44 \\
+        Sample & Real & Predicted by KNN & Predicted by Random Forest \\
+        \hline\hline
+        Bipolar female & 29 & 48 & 43 \\
+        \hline
+        Control female & 35 & 44 & 43 \\
+        \hline
+        Schizophrenia female & 49 & 50 & 50 \\
+        \hline
+        Bipolar male & 40 & 48 & 47 \\
+        \hline
+        Control male & 40 & 48 & 46 \\
+        \hline
+        Schizophrenic male & 44 & 49 & 46 \\
       \hline
     \end{tabular}
   \end{center}
   \label{table:PredictedAges}
 \end{table}
-
-For both used methods estimated classifier errors are 6.27 for "Random forest"
-and 8.27 for KNN model.
 
 # PCA analysis
 
