@@ -2121,6 +2121,113 @@ print(paste('Predicted', point_label_predicted, 'vs real',
             sample_annot@colData$age[l]))
 ```
 
+# Cross validation
+
+In order to compare precision of implemented KNN model, cross-validation was
+performed on it and on additional "Random forest" classifier.
+
+For cross validation samples were divided into 10 random parts. Every iteration 
+consists of smaller part of data (around 10% of samples are used as test data)
+and bigger part of data (around 90% of samples are used as training data). For
+faster calculations 10000 most varying positions were used.
+
+```{r best_positions_cv, include=FALSE, eval=FALSE}
+# Loading needed packages
+library(randomForest)
+
+# Creating vector for random sample separation in cross validation
+folds <- c(sample(1:10,97, replace=TRUE, 
+                prob = c(0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1)))
+
+# Uploading variances matrix to find out best positions for cross validation
+variances <- readRDS(file='GSE112179_beta_variances.rgcs')
+
+ordered <- order(-variances)
+N <- 10000
+top_N_positions <- ordered[1:N]
+
+beta_most_variable <- beta[top_N_positions,]
+```
+
+```{r , include=FALSE, eval=FALSE}
+# Vectors for classifier errors
+difference_rf <- c()
+difference_knn <- c()
+
+# Vectors for storing predicted age
+predicted_age_knn_full <- c()
+predicted_age_rf_full <- c()
+predicted_age_knn_rownames <- c()
+
+for(i in 1:10) {
+  predicted_age_knn <- c()
+  predicted_age_rf <- c()
+  
+  train_sample_annots <- sample_annot[,folds != i]
+  test_sample_annots <- sample_annot[,folds == i]
+  
+  Beta_train <- t(beta_most_variable[,folds != i])
+  Beta_test <- t(beta_most_variable[,folds == i])
+  
+  for(point in 1:length(rownames(Beta_test))) {
+    predicted_age_knn <- append(predicted_age_knn, knn_inference(k=9, 
+                t(Beta_train), train_sample_annots$age, t(Beta_test)[,point]))
+  }
+  
+  predicted_age_knn_full <- append(predicted_age_knn_full, predicted_age_knn)
+  predicted_age_knn_rownames <- 
+                  append(predicted_age_knn_rownames,rownames(Beta_test))
+  
+  rf <- (randomForest(Beta_train, train_sample_annots$age, ntree = 500))
+  
+  predicted_age_rf <- predict(rf, Beta_test)
+  predicted_age_rf_full <- append(predicted_age_rf_full, predicted_age_rf)
+  
+  
+  difference_rf <- append(difference_rf, 
+                          mean(abs(predicted_age_rf - test_sample_annots$age)))
+  difference_knn <- append(difference_knn, 
+                          mean(abs(predicted_age_knn - test_sample_annots$age)))
+}
+
+saveRDS(difference_rf, file='GSE112179_difference_rf.rds')
+saveRDS(difference_knn, file='GSE112179_difference_knn.rds')
+
+saveRDS(predicted_age_rf_full, file='GSE112179_predicted_age_rf.rds')
+saveRDS(predicted_age_knn_full, file='GSE112179_predicted_age_knn.rds')
+
+rf_error_mean <- mean(difference_rf)
+knn_error_mean <- mean(difference_knn)
+```
+
+Few examples of predicted age (Table 3) indicates, that ages around 40-50 are
+guessed more correctly, than younger one. This is quite understandable 
+given that most sample ages are distributed around this range. An interesting
+observation is that although the ages are quite different and there is a
+considerable margin of error, the mean for both real age (47.19) and predicted
+(47.31 and 48.51) are very similar, indicating a fairly good classification.
+
+\begin{table}[h!]
+    \begin{center}
+		\caption{Few examples of real and predicted ages by KNN and 
+		                                  Random Forest classifiers}
+		\vspace{0.2cm}
+    \begin{tabular}{ | c | c | c | c | c | c | c |  }
+      \hline
+        Sample & Bipolar female & Control female & Schizophrenia female 
+        & Bipolar male & Control male & Schizophrenia male   \\
+        Predicted by KNN & 48 & 44 & 50 & 48 & 48 & 49 \\
+        Predicted by Random Forest & 43 & 43 & 50 & 47 & 46 & 46\\
+        Real & 29 & 35 & 49 & 40  & 40 & 44 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \label{table:PredictedAges}
+\end{table}
+
+For both used methods estimated classifier errors are 6.27 for "Random forest"
+and 8.27 for KNN model.
+
 # PCA analysis
 
 In order to test the principal component analysis functionality, it was decided 
